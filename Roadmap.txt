@@ -1,0 +1,38 @@
+Spotamuse
+Current Goal: Convert Javascript into Typescript to ensure quality and improve current program. 
+
+
+Features needed to Implement:
+
+Version 1: Launch
+• Sort Songs (most played, alphabtaical, date created, date added)
+• Global rewind (play very last song) 
+• Play Random song from all playlists (Global)
+• Last Played Personal Playlist (plays last 10 songs)
+• Play playlist backwards 
+• Listen to later tab. This can organize songs by priority, nonessential, eventually. Maybe even add discovery section 😁🤝
+• 5 Randomly Created playlists (4 songs per playlist)
+
+
+Version 2: Launch
+• Folders for Spotify 
+• Better queue grid 
+
+
+Album Order
+• create preferred order of albums. This button switches between original and the ones you just want to hear. 
+
+Organization 
+• Make breaks for Spotify playlists. (Breaks allow for random songs to be played within sections. EX you can’t play a song in section 2 if you’re skips aren’t broken. Max of 3 skips. Must hold to activate. )
+• temporary playlist through queue. It can repeat if you create a button to cycle. It’ll hit button again and be signaled as the restart.
+
+
+
+
+
+
+
+Note: M = Major, n = nothing serious
+Current Bugs: 										
+• M1: Playlist tracks can't be played if cover or song info is touched. | Messing with Z-index didn't solve this issue. Will have to research later. 
+

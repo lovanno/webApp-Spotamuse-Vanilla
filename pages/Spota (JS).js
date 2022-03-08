@@ -95,7 +95,6 @@
 
 
         const myDearMelancholy_EP = [
-            
             {
                 "id": "21",
                 "ISRC": "USUG11800560",
@@ -2570,36 +2569,23 @@
 
 
         const totalPlaylists = [downloadedFilesData];
-        const homeLibraryBoxBtn = document.querySelector("button.yourLibrary.playlistBtnCont.\\31");
 
 
             /*  Grabs downloaded files playlist */
             document.body.addEventListener("click", function(event){
             const from = event.target;
 
-            if(from == homeLibraryBoxBtn){
+            if(hasClass(from, "yourLibrary", "playlistBtnCont")){
                 allTabs.forEach(tabs => tabs.style.display = "none");
                 allTabs[4].style.display = "block";
                 
+
                 playlistTrackCount = 1;
 
                 refreshPlaylist();
                 createPlaylistTrack(1);
                 createDownloadedPlaylist();
                 updatePlaylistAudio(downloadedFilesData);
-            }
-
-            if(hasClass(from, "yourLibrary", "playlistBtnCont", 1) && from !== homeLibraryBoxBtn){
-                allTabs.forEach(tabs => tabs.style.display = "none");
-                allTabs[4].style.display = "block";
-                
-
-                console.log(totalPlaylists)
-                playlistTrackCount = 1;
-
-                refreshPlaylist();
-                createPlaylistTrack(1);
-                updatePlaylistAudio(totalPlaylists[totalPlaylists.length-1][0]);
             }
         })
 
