@@ -69,7 +69,14 @@ Better Queue
 
 &nbsp;
 
-# Current Bugs 😎
+# Realizations ⌛️
+
+• If there is an error in HTML markup, your css grid will break. 
+
+&nbsp;
+
+&nbsp;
+# Current Bugs & Problems 😎
 
 *Note: M = Major, n = nothing serious*
 
@@ -78,18 +85,26 @@ Better Queue
 
 &nbsp;
 
+## Problems
 
-# Realizations ⌛️
+*(05/05/22) Restructure - Removing the musicLibrary object data from javascript and retrieving it locally isn't simple*
 
-• If there is an error in HTML markup, your css grid will break. 
+>JSON data must be uploaded on a remote server to be retrieved for security reasons. Another angle was importing javascript files but this is only an ES6 feature. We'll just have to finish version 1 with the musicLibrary embedded and then restructure with firebase database.
 
-&nbsp;
-
-&nbsp;
 
 
 *📚 Sources*
 
+
+>Music metadata sources:
+
+https://genius.com/
+
+https://tunebat.com/
+
+https://songdata.io/search
+        
+        
 >Although there is this website that uses the spotify API with no auth, I don't want to risk safety. 
 
 http://sixdegreesofkanyewest.com/699OTQXzgjhIYAHMy9RyPD

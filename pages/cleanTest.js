@@ -2047,7 +2047,7 @@
 
 
 
-/*  Tab Functionality  */
+    /*                              Tab Functionality                                                   */
         const allTabs = document.querySelectorAll(".tab");
          document.body.addEventListener("click", function(event){
             const from = event.target;
@@ -2692,23 +2692,3 @@
         
         */
         
-
-
-
-        
-
-        
-
-        
-
-
-       
-        
-
-
-
-        /*music libary sources:
-            https://genius.com/
-            https://tunebat.com/
-            https://songdata.io/search
-        */
