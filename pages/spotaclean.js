@@ -2165,7 +2165,7 @@
                     else{
                         recentlyPlayed[recentlyPlayed.length-1].play();
                         playPauseToggle = false;
-                        updateCurrentSongTime();
+                        updateSongTime();
                     }
                 }
 
