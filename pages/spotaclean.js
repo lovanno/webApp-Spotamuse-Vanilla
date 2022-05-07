@@ -2022,6 +2022,24 @@
             album.forEach(songs => mp3UrlLibrary.push(songs.track_mp3Url));
         });
     
+           /* Updates Current songPlaying Info
+            musicLibrary.map((songs) => {
+                if(songs.id == (songOrder) + 1){
+                    currentSong.textContent = (songs.track_title);
+                    currentAlbum.textContent = (songs.track_album);
+                    currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
+                }
+            });
+
+            albumLibrary.map((album) => {
+                album.forEach(songs => {
+                    if(songs.id == (songOrder) + 1){
+                        currentSong.textContent = (songs.track_title);
+                        currentAlbum.textContent = (songs.track_album);
+                        currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
+                    }
+                })
+            });*/
     
     
     /***!          General Functions              !***/
@@ -2095,49 +2113,30 @@
         }
 
 
-        function updateCurrentSongTime() {
+        function updateSongTime() {
             var currentInterval = setInterval(function() {
+                const songSeconds = (Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime));
 
-                if(Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime % 60) < 10){
-                    currentSongTime.textContent = "0:0" + Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime % 60);
+                if(songSeconds % 60 < 10){
+                    currentSongTime.textContent = "0:0" + songSeconds % 60;
                 }
-                else {currentSongTime.textContent = "0:" + Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime % 60);}
+                else {currentSongTime.textContent = "0:" + songSeconds % 60;}
 
-
-                if(Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime % 60) == 30 || playPauseToggle !== false){ clearInterval(currentInterval);}
+                if(songSeconds % 60 == 30 && playPauseToggle !== false){clearInterval(currentInterval);}
 
             }, 0);
         }
 
 
-        function updateCurrentPlaylistInfo(chosenPlaylist){
+        function updatePlaylistSong(chosenPlaylist){
             playButtonToggle = false;
             song = new Audio(chosenPlaylist[songOrder]);
             recentlyPlayed.push(song);
             stopAll();
                 
             song.play();
-            updateCurrentSongTime();
         }
 
-        /* Updates Current songPlaying Info */
-            musicLibrary.map((songs) => {
-                if(songs.id == (songOrder) + 1){
-                    currentSong.textContent = (songs.track_title);
-                    currentAlbum.textContent = (songs.track_album);
-                    currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                }
-            });
-
-            albumLibrary.map((album) => {
-                album.forEach(songs => {
-                    if(songs.id == (songOrder) + 1){
-                        currentSong.textContent = (songs.track_title);
-                        currentAlbum.textContent = (songs.track_album);
-                        currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                    }
-                })
-            });
 
         function nowPlayingInfo(songData){
             currentSong.textContent = songData.track_title;
@@ -2146,40 +2145,17 @@
         }
 
 
-
-        function updatePlaylistAudio(audioData){
-            document.body.addEventListener("click", function(event){
-                const from = event.target;
-
-                if(hasClass(from, "newPlaylistSongs")){
-                    var clickedTrack = parseInt(from.className.slice(17));
-                    song = new Audio(audioData[clickedTrack-1].track_mp3Url);
-                    recentlyPlayed.push(song);
-                    stopAll();
-                    song.play();
-
-                    songOrder = clickedTrack-1;
-                }
-            })
-        }
-
-
         function updatePlayback (chosenPlaylist){ 
             document.body.addEventListener("click", function(event){
                 const from = event.target;
           
                 if(from == skipBackBtn){
-                    if(songOrder == 0){
-                        /*songOrder = chosenPlaylist.length-1;*/    /*This works as intended but*/
-                        songOrder = 19; /*      I haven't combined the music and album library metadata together. SO I have to manually reset*/
-                    }
-                    else{
-                        songOrder--;
-                    }
-                    updateCurrentPlaylistInfo(mp3UrlLibrary);
+                    /*songOrder = chosenPlaylist.length-1 : songOrder--*/ /*This works as intended but  I haven't combined the music and album library metadata together. SO I have to manually reset*/
+                    (songOrder == 0) ? songOrder = 19 : songOrder--;    
+                    updatePlaylistSong(chosenPlaylist);
                     nowPlayingInfo(musicLibrary[songOrder])
+                    updateSongTime()
                 }
-
 
                 if(from == pauseBtn){
                     if(playPauseToggle == false){
@@ -2189,28 +2165,24 @@
                     else{
                         recentlyPlayed[recentlyPlayed.length-1].play();
                         playPauseToggle = false;
-                        updateCurrentSongTime(chosenPlaylist);
+                        updateCurrentSongTime();
                     }
                 }
 
-
                 if(from == skipForwardBtn){
-                    if(songOrder == 20){    /*have to manually set for now - chosenPlaylist.length-1*/
-                        songOrder = 0;
-                    }
-                    else{
-                        songOrder++;
-                    }
-                    updateCurrentPlaylistInfo(chosenPlaylist);
+                   (songOrder == 19) ? songOrder = 0 : songOrder++; /*have to manually set for now - chosenPlaylist.length-1*/
+                    updatePlaylistSong(chosenPlaylist);
                     nowPlayingInfo(musicLibrary[songOrder])
+                    updateSongTime();
                 }
             })
         }
 
 
 
-        /*Allows home library to be available immediately */
+        /*      Allows home library to be available immediately         */
         updatePlayback(mp3UrlLibrary);
         playPauseToggle = true;
+        nowPlayingInfo(musicLibrary [0]);
         startSong = new Audio(mp3UrlLibrary[0]);
         recentlyPlayed.push(startSong);
