@@ -2016,10 +2016,14 @@
     
     /* Home Library Set up */
         const mp3UrlLibrary = [];
+        const albumUrlLib = [];        /*Playback function test*/
         musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
         
         albumLibrary.map((album) => {
-            album.forEach(songs => mp3UrlLibrary.push(songs.track_mp3Url));
+            album.forEach(songs => {
+                mp3UrlLibrary.push(songs.track_mp3Url);
+                albumUrlLib.push(songs.track_mp3Url);
+            })
         });
     
            /* Updates Current songPlaying Info
@@ -2143,10 +2147,14 @@
             currentAlbum.textContent = songData.track_album;
             currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
         }
+        
 
+        /*The updatePlayback function didn't make sense. A body listener would be created EVERYTIME the function was called.
+        Instead, I'll use a variable for the playlist and switch it out dependning on the playlist. The next 2 lines are a test. The result is on line 2232*/
+        let chosenPlaylist;
+        chosenPlaylist = mp3UrlLibrary;
 
-        function updatePlayback (chosenPlaylist){ 
-            document.body.addEventListener("click", function(event){
+        document.body.addEventListener("click", function(event){
                 const from = event.target;
           
                 if(from == skipBackBtn){
@@ -2176,13 +2184,15 @@
                     updateSongTime();
                 }
             })
-        }
+
 
 
 
         /*      Allows home library to be available immediately         */
-        updatePlayback(mp3UrlLibrary);
         playPauseToggle = true;
         nowPlayingInfo(musicLibrary [0]);
         startSong = new Audio(mp3UrlLibrary[0]);
         recentlyPlayed.push(startSong);
+
+
+        /*chosenPlaylist = albumUrlLib;       /*Playback Func Test passes.*/
