@@ -76,6 +76,7 @@ Better Queue
 &nbsp;
 
 &nbsp;
+
 # Current Bugs & Problems 😎
 
 *Note: M = Major, n = nothing serious*
@@ -91,7 +92,20 @@ Better Queue
 
 >JSON data must be uploaded on a remote server to be retrieved for security reasons. Another angle was importing javascript files but this is only an ES6 feature. We'll just have to finish version 1 with the musicLibrary embedded and then restructure with firebase database.
 
+&nbsp;
 
+&nbsp;
+
+### Big Questions during Development
+
+• *How would you cache data downloaded files and avoid multiple api calls for each song?*
+
+• *How can you make new playlists without duplicating data? Would you make a reference or would you duplicate each time (since firebase is noSQL and duplication is fine)?*
+
+• *Is it bad design to reuse one element variable multiple times? I keep thinking of using a getter or a way to lock the variable so only functions can modify them*
+
+
+&nbsp;
 
 *📚 Sources*
 

@@ -2016,37 +2016,23 @@
     
     /* Home Library Set up */
         const mp3UrlLibrary = [];
-        const albumUrlLib = [];        /*Playback function test*/
+        const albumData = [];   /*Line 2310 - playback test for switching different playlists*/
         musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
         
         albumLibrary.map((album) => {
             album.forEach(songs => {
                 mp3UrlLibrary.push(songs.track_mp3Url);
-                albumUrlLib.push(songs.track_mp3Url);
+
+                /*Line 2310 - Test for switching playlists*/
+                albumData.push(songs);
             })
         });
     
-           /* Updates Current songPlaying Info
-            musicLibrary.map((songs) => {
-                if(songs.id == (songOrder) + 1){
-                    currentSong.textContent = (songs.track_title);
-                    currentAlbum.textContent = (songs.track_album);
-                    currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                }
-            });
 
-            albumLibrary.map((album) => {
-                album.forEach(songs => {
-                    if(songs.id == (songOrder) + 1){
-                        currentSong.textContent = (songs.track_title);
-                        currentAlbum.textContent = (songs.track_album);
-                        currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                    }
-                })
-            });*/
-    
-    
-    /***!          General Functions              !***/
+
+
+
+    /***!          General Functions                     !***/
         function hasClass(elem, className) {            /*allows to access created button elements*/
             return elem.classList.contains(className);
         }
@@ -2071,8 +2057,7 @@
 
 
 
-
-    /*                              Tab Functionality                                                   */
+    /**                             Switch Between Tab Functionality                                                   **/
         const allTabs = document.querySelectorAll(".tab");
          document.body.addEventListener("click", function(event){
             const from = event.target;
@@ -2087,25 +2072,28 @@
 
 
 
+
+
+
+
+
     /*                                                              Core Functionality                                                                */
-        /*  Playback Buttons */
+        /*  Playback HTML Buttons */
         const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
         const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
         const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
         let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
 
-
-        /* Current songPlaying Info */
+        /* Current songPlaying HTML Info */
         const currentSong = document.querySelector("p.songPlayingName.\\31");
         const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
         const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
         const currentSongTime = document.querySelector("p.songProgressSec");
-
         const currentSongDuration = document.querySelector("p.songProgressSec.total");  
         currentSongDuration.textContent = "0:30";
 
 
-/*                                              Playback Functions                                                      */
+        /*  Playback Functions Setup    */
         const recentlyPlayed = [];        
         let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
@@ -2134,7 +2122,7 @@
 
         function updatePlaylistSong(chosenPlaylist){
             playButtonToggle = false;
-            song = new Audio(chosenPlaylist[songOrder]);
+            song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
             recentlyPlayed.push(song);
             stopAll();
                 
@@ -2147,46 +2135,43 @@
             currentAlbum.textContent = songData.track_album;
             currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
         }
-        
 
-        /*The updatePlayback function didn't make sense. A body listener would be created EVERYTIME the function was called.
-        Instead, I'll use a variable for the playlist and switch it out dependning on the playlist. The next 2 lines are a test. The result is on line 2232*/
+
+
+
+
+/**                                               Playback Functions                                                      **/
         let chosenPlaylist;
-        chosenPlaylist = mp3UrlLibrary;
-
-        document.body.addEventListener("click", function(event){
-                const from = event.target;
+        chosenPlaylist = musicLibrary;
+        document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
+            const from = event.target;
           
-                if(from == skipBackBtn){
-                    /*songOrder = chosenPlaylist.length-1 : songOrder--*/ /*This works as intended but  I haven't combined the music and album library metadata together. SO I have to manually reset*/
-                    (songOrder == 0) ? songOrder = 19 : songOrder--;    
-                    updatePlaylistSong(chosenPlaylist);
-                    nowPlayingInfo(musicLibrary[songOrder])
-                    updateSongTime()
-                }
+            if(from == skipBackBtn){
+                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                updatePlaylistSong(chosenPlaylist);
+                nowPlayingInfo(chosenPlaylist[songOrder])
+                updateSongTime()
+            }
 
-                if(from == pauseBtn){
-                    if(playPauseToggle == false){
-                        (recentlyPlayed[recentlyPlayed.length-1]).pause();
-                        playPauseToggle = true;
-                    }
-                    else{
-                        recentlyPlayed[recentlyPlayed.length-1].play();
-                        playPauseToggle = false;
-                        updateSongTime();
-                    }
+            if(from == pauseBtn){
+                if(playPauseToggle == false){
+                    (recentlyPlayed[recentlyPlayed.length-1]).pause();
+                    playPauseToggle = true;
                 }
-
-                if(from == skipForwardBtn){
-                   (songOrder == 19) ? songOrder = 0 : songOrder++; /*have to manually set for now - chosenPlaylist.length-1*/
-                    updatePlaylistSong(chosenPlaylist);
-                    nowPlayingInfo(musicLibrary[songOrder])
+                else{
+                    recentlyPlayed[recentlyPlayed.length-1].play();
+                    playPauseToggle = false;
                     updateSongTime();
                 }
-            })
+            }
 
-
-
+            if(from == skipForwardBtn){
+                (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                updatePlaylistSong(chosenPlaylist);
+                nowPlayingInfo(chosenPlaylist[songOrder])
+                updateSongTime();
+            }
+        })
 
         /*      Allows home library to be available immediately         */
         playPauseToggle = true;
@@ -2195,4 +2180,161 @@
         recentlyPlayed.push(startSong);
 
 
-        /*chosenPlaylist = albumUrlLib;       /*Playback Func Test passes.*/
+
+
+
+
+/**                                               Playlist Creation                                                     **/            
+
+    /*Playlist icon box creation test- pass*/
+            /*yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
+
+            yourLibraryPlaylistCont.addEventListener("click", function(){
+                createPlaylistBox();
+            })*/
+        function createPlaylistBox(){ 
+            const newPlaylistBox = document.createElement("button");
+            newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", 2);
+            yourLibraryPlaylistCont.appendChild(newPlaylistBox);
+
+                const newPlaylistCover = document.createElement("div");
+                newPlaylistCover.classList.add("yourLibrary", "playlistCover", 2)
+                newPlaylistBox.appendChild(newPlaylistCover);
+
+               const updatePlaylistName = document.createElement("div");
+                updatePlaylistName.classList.add("yourLibrary", "playlistName", 2);
+                /*updatePlaylistName.textContent = playlistName.textContent;*/
+                updatePlaylistName.textContent = "new playlist"
+                newPlaylistBox.appendChild(updatePlaylistName);
+        }
+
+
+
+
+
+
+        /*Creates the total playlist track divs but doesn't update the divs content*/
+        var playlistTrackCount = 1;
+        const allPlaylistTracksCont = document.querySelector("div.library.newPlaylistCont.\\31");
+        function createPlaylistTrack(){
+            const newPlaylistSongCont = document.createElement("button");
+            newPlaylistSongCont.classList.add("newPlaylistSongs", playlistTrackCount);
+            allPlaylistTracksCont.appendChild(newPlaylistSongCont);
+
+
+                    const trackOrderCont = document.createElement("div");
+                    trackOrderCont.classList.add("playlistSong", "orderCont", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(trackOrderCont);
+
+                            const trackOrderNumber = document.createElement("p");
+                            trackOrderNumber.classList.add("playlistSong", "trackOrder", + playlistTrackCount);
+                            trackOrderNumber.textContent = playlistTrackCount;
+                            trackOrderCont.appendChild(trackOrderNumber);
+
+                            const trackCoverImg = document.createElement("div");
+                            trackCoverImg.classList.add("playlistSong", "trackImage", + playlistTrackCount);
+                            trackOrderCont.appendChild(trackCoverImg);
+
+                            const trackInfoCont = document.createElement("div");
+                            trackInfoCont.classList.add("playlistSong", "trackInfoCont", + playlistTrackCount);
+                            trackOrderCont.appendChild(trackInfoCont);
+
+                                    const trackTitle = document.createElement("p");
+                                    trackTitle.textContent = "Track Title";
+                                    trackTitle.classList.add("playlistSong", "trackTitle", + playlistTrackCount); 
+                                    trackInfoCont.appendChild(trackTitle);
+
+                                    const trackArtist = document.createElement("p");
+                                    trackArtist.textContent = "Artist";
+                                    trackArtist.classList.add("playlistSong", "trackArtist", + playlistTrackCount); 
+                                    trackInfoCont.appendChild(trackArtist);
+
+                                    
+                    const trackAlbumCont = document.createElement("div");
+                    trackAlbumCont.classList.add("playlistSongs", "albumCont", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(trackAlbumCont);
+
+                            const trackAlbum = document.createElement("p");
+                            trackAlbum.textContent = "Album Name";
+                            trackAlbum.classList.add("playlistSong", "albumTitle", playlistTrackCount);
+                            trackAlbumCont.appendChild(trackAlbum);
+
+
+                    const trackDateAddedCont = document.createElement("div");
+                    trackDateAddedCont.classList.add("playlistSongs", "dateAddedCont", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(trackDateAddedCont);
+
+                            const dateAddedText = document.createElement("p");
+                            dateAddedText.textContent = "Sep 4, 2021";
+                            dateAddedText.classList.add("playlistSong", "dateAdded", playlistTrackCount);
+                            trackDateAddedCont.appendChild(dateAddedText);
+                    
+                            
+                    const trackDurationCont = document.createElement("div");
+                    trackDurationCont.classList.add("playlistSongs", "durationCont", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(trackDurationCont);
+
+                            const trackDurationText = document.createElement("p");
+                            trackDurationText.textContent = "0:00";
+                            trackDurationText.classList.add("playlistSong", "durationTime", playlistTrackCount);
+                            trackDurationCont.appendChild(trackDurationText);
+        }
+
+        
+        /*Updates the playlist content with photos, names, and music */
+        function createDownloadedPlaylist(){
+            document.querySelector("div.playlistSong.trackImage.\\31").style.backgroundImage = "url(\"" + chosenPlaylist[0].track_coverUrl; + "\")";
+            document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
+            document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
+            document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
+
+            /*Since DOM creation requires a base element, playlistTrackCount starts at 1 so it doesn't recreate the 1st div. */
+            let trackAdjust = playlistTrackCount;   /*This causes the [1]//2nd song to be skipped. Trackadjust fixes it by going back down the array by 1*/
+                if(playlistTrackCount < 9){
+                    document.querySelector("div.playlistSong.trackImage.\\3" + playlistTrackCount).style.backgroundImage = "url(\"" + chosenPlaylist[trackAdjust-1].track_coverUrl + "\")";
+                    document.querySelector("p.playlistSong.trackTitle.\\3" + playlistTrackCount).textContent = chosenPlaylist[trackAdjust-1].track_title;
+                    document.querySelector("p.playlistSong.trackArtist.\\3" + playlistTrackCount).textContent = chosenPlaylist[trackAdjust-1].artist;
+                    document.querySelector("p.playlistSong.albumTitle.\\3" + playlistTrackCount).textContent = chosenPlaylist[trackAdjust-1].track_album;
+                }
+                else if(playlistTrackCount < chosenPlaylist.length+1){
+                    document.querySelector("div.playlistSong.trackImage.\\3" + spaceTens(playlistTrackCount)).style.backgroundImage = "url(\"" + chosenPlaylist[trackAdjust-1].track_coverUrl + "\")";
+                    document.querySelector("p.playlistSong.trackTitle.\\3" + spaceTens(playlistTrackCount)).textContent = chosenPlaylist[trackAdjust-1].track_title;
+                    document.querySelector("p.playlistSong.trackArtist.\\3" + spaceTens(playlistTrackCount)).textContent = chosenPlaylist[trackAdjust-1].artist;
+                    document.querySelector("p.playlistSong.albumTitle.\\3" + spaceTens(playlistTrackCount)).textContent = chosenPlaylist[trackAdjust-1].track_album;
+                }
+            };     
+
+
+
+        let playlistShow = musicLibrary;
+        /*Switching out playlist library test - pass */         /*Right now, we'll have 2 variables for updating playlists: playlistShow, chosenPlaylist/
+        /*playlistShow = albumData;
+        chosenPlaylist = albumData;*/
+
+        document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from playlist*/
+            const from = event.target;
+
+            if(hasClass(from, "yourLibrary", "playlistBtnCont")){
+                allTabs.forEach(tabs => tabs.style.display = "none");
+                allTabs[4].style.display = "block";
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistTrackCount++;
+                    createPlaylistTrack();
+                    createDownloadedPlaylist();
+                }
+            }
+
+
+            if(hasClass(from, "newPlaylistSongs")){
+                var clickedTrack = parseInt(from.className.slice(17));
+                song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+                stopAll();
+                song.play();
+                recentlyPlayed.push(song);
+                updateSongTime();
+
+                songOrder = clickedTrack-1;
+                nowPlayingInfo(playlistShow[songOrder])
+            }
+        })
