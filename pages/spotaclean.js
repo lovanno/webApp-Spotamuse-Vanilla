@@ -1,3 +1,4 @@
+
     const myDearMelancholy_EP = [
             {
                 "id": "21",
@@ -2036,6 +2037,10 @@
         function hasClass(elem, className) {            /*allows to access created button elements*/
             return elem.classList.contains(className);
         }
+
+        function hasSuperClass(elem, className) {            /*allows to access created button elements*/
+            return elem.className == (className);
+        }
  
         function htmlSlice(element, number){
             return element.innerHTML.slice(number);
@@ -2184,14 +2189,38 @@
 
 
 
-/**                                               Playlist Creation                                                     **/            
+/**                                               Playlist Creation                                                     **/       
 
-    /*Playlist icon box creation test- pass*/
-            /*yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
 
-            yourLibraryPlaylistCont.addEventListener("click", function(){
+/*New Playlist Creation */
+        const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
+        const playlistName = document.querySelector("h1.newPlaylistName.\\31");
+        const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
+        const playlistRuntime = document.querySelector("div.newPlaylistUserTime.\\31");
+        
+        function refreshPlaylist(){
+            playlistTrackCount = 1;
+            const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
+            totalTracksPlaylist.forEach(playlistSongs => {
+                (document.querySelector("button.newPlaylistSongs.\\31") == playlistSongs) ? playlistSongs.style.display ="none" : playlistSongs.remove();
+            })
+        }
+        
+        createPlaylistTab.addEventListener("click", function(){
+            let newPlaylistName = prompt("Please enter a name for your Playlist");
+
+            if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Your Library" || createdPlaylistsName.includes(newPlaylistName)) {
+                console.log("Please enter a valid Playlist Name");
+            } 
+            else {
+                playlistName.textContent = newPlaylistName;
                 createPlaylistBox();
-            })*/
+                refreshPlaylist();
+            }
+
+        })
+
+        yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
         function createPlaylistBox(){ 
             const newPlaylistBox = document.createElement("button");
             newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", 2);
@@ -2203,14 +2232,9 @@
 
                const updatePlaylistName = document.createElement("div");
                 updatePlaylistName.classList.add("yourLibrary", "playlistName", 2);
-                /*updatePlaylistName.textContent = playlistName.textContent;*/
-                updatePlaylistName.textContent = "new playlist"
+                updatePlaylistName.textContent = playlistName.textContent;
                 newPlaylistBox.appendChild(updatePlaylistName);
         }
-
-
-
-
 
 
         /*Creates the total playlist track divs but doesn't update the divs content*/
@@ -2302,33 +2326,56 @@
                     document.querySelector("p.playlistSong.trackArtist.\\3" + spaceTens(playlistTrackCount)).textContent = chosenPlaylist[trackAdjust-1].artist;
                     document.querySelector("p.playlistSong.albumTitle.\\3" + spaceTens(playlistTrackCount)).textContent = chosenPlaylist[trackAdjust-1].track_album;
                 }
-            };     
-
+        };  
 
 
         let playlistShow = musicLibrary;
-        /*Switching out playlist library test - pass */         /*Right now, we'll have 2 variables for updating playlists: playlistShow, chosenPlaylist/
-        /*playlistShow = albumData;
-        chosenPlaylist = albumData;*/
-
+        let playcreateMode = false; /*Allows songs to be added to a playlist*/
+    
         document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from playlist*/
             const from = event.target;
 
-            if(hasClass(from, "yourLibrary", "playlistBtnCont")){
-                allTabs.forEach(tabs => tabs.style.display = "none");
-                allTabs[4].style.display = "block";
+            if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+                refreshPlaylist();
+                document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+
+                playlistName.textContent = "Your Library";
+                playlistShow = musicLibrary;
+                chosenPlaylist = musicLibrary;
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistTrackCount++;
                     createPlaylistTrack();
                     createDownloadedPlaylist();
                 }
+
+                allTabs.forEach(tabs => tabs.style.display = "none");
+                allTabs[4].style.display = "block";
             }
 
+            
+            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+                refreshPlaylist();
+                document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+
+                playlistName.textContent = from.lastElementChild.textContent;
+                playlistShow =  window["'" + playlistName.textContent + "'"];
+                chosenPlaylist = window["'" + playlistName.textContent + "'"];
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistTrackCount++;
+                    createPlaylistTrack();
+                    createDownloadedPlaylist();
+                }
+
+                allTabs.forEach(tabs => tabs.style.display = "none");
+                allTabs[4].style.display = "block";
+            }
 
             if(hasClass(from, "newPlaylistSongs")){
                 var clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+
                 stopAll();
                 song.play();
                 recentlyPlayed.push(song);
@@ -2336,5 +2383,60 @@
 
                 songOrder = clickedTrack-1;
                 nowPlayingInfo(playlistShow[songOrder])
+
+
+                if(playcreateMode == true){
+                    /*(window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);  Sets up object references*/
+                    (window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
+                }
             }
+        })
+
+
+        
+        const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
+        addNewSongsPlaylist.addEventListener("click", function(){
+            playcreateMode = true;
+            refreshPlaylist();
+
+           
+
+            window["'" + playlistName.textContent + "'"] = new Array();
+            createdPlaylists.push(window["'" + playlistName.textContent + "'"]);
+            createdPlaylistsName.push(playlistName.textContent);
+
+
+            /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
+            document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+            playlistShow = musicLibrary;
+            chosenPlaylist = musicLibrary;
+
+            for(let f=1; f<musicLibrary.length; f++){   
+                playlistTrackCount++;
+                createPlaylistTrack();
+                createDownloadedPlaylist();
+            }
+        })
+
+
+        const createdPlaylists = [];
+        const createdPlaylistsName = [];
+
+        document.body.addEventListener("click", function(event){
+                const from = event.target;
+
+                if(hasClass(from, "finishedPlaylistBtn")){
+                    playcreateMode = false;
+                    refreshPlaylist();
+                    document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+
+                    chosenPlaylist = window["'" + playlistName.textContent + "'"];
+                    playlistShow = window["'" + playlistName.textContent + "'"];
+
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistTrackCount++;
+                        createPlaylistTrack();
+                        createDownloadedPlaylist();
+                    }
+                }
         })
