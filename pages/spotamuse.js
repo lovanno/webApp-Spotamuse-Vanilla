@@ -2321,7 +2321,7 @@
             document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
             document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
             document.querySelector("p.playlistSong.dateAdded.\\3" + trackNum).textContent =  new Date(chosenPlaylist[trackAdjust-1].release_date).toDateString().slice(4);
-            
+            document.querySelector("p.playlistSong.durationTime.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].duration;
         }
 
         /*Updates the playlist content with photos, names, and music */
@@ -2330,7 +2330,8 @@
             document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
             document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
             document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
-            document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4)
+            document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4);
+            document.querySelector("p.playlistSong.durationTime.\\31").textContent = chosenPlaylist[0].duration;
 
             if(playlistTrackCount < 9){
                 updateTrackInfo(playlistTrackCount);
