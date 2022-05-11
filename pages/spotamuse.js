@@ -2192,7 +2192,6 @@
         recentlyPlayedPlaylist.push(musicLibrary[0])
 
 
-
 /**                                               Playlist Creation                                                     **/       
 
         /*New Playlist Creation - Variables */
@@ -2221,6 +2220,7 @@
                 playlistName.textContent = newPlaylistName;
                 createPlaylistBox();
                 refreshPlaylist();
+                backwardsBtn.style.display = "none";
                 finishedCreateBtn.style.display = "none";
                 addNewSongsPlaylist.style.display = "block";
             }
@@ -2343,8 +2343,6 @@
 
 
 
-
-
         /*All helper functions for creating a new playlist*/
         function openPlaylistTab(){
             allTabs.forEach(tabs => tabs.style.display = "none");
@@ -2366,13 +2364,41 @@
             refreshPlaylist();
             document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
         }
+
+
+    
+        /*backwards playlist toggle*/
+        let backwardsMode = false;  /*The toggle will reset each time a playlist is opened. This is to avoid writing duplicate code*/
+        const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
+        backwardsBtn.addEventListener("click", function(){
+            backwardsMode = !backwardsMode;
+            if(backwardsMode){
+                const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
+                newPlaylistPrep()
+                musicSource(reverseArr);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+            }
+            else{
+                newPlaylistPrep()
+                musicSource(playlistShow);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+            }
+            openPlaylistTab();
+            addNewSongsPlaylist.style.display = "none";
+            finishedCreateBtn.style.display = "none";
+        })
     
         document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
             const from = event.target;
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
                 playlistName.textContent = "Recently Played";
-
                 if(recent10){
                     newPlaylistPrep();
                     let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
@@ -2382,7 +2408,6 @@
                         playlistCreation();
                     }
                 }
-
                 openPlaylistTab();
                 addNewSongsPlaylist.style.display = "none";
                 finishedCreateBtn.style.display = "none";
@@ -2390,13 +2415,15 @@
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
                 playlistName.textContent = "Your Library";
+                backwardsMode = false;      
+                
                 newPlaylistPrep()
                 musicSource(musicLibrary);
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
                 }
-
+                
                 openPlaylistTab();
                 addNewSongsPlaylist.style.display = "none";
                 finishedCreateBtn.style.display = "none";
@@ -2417,6 +2444,7 @@
             }
 
             if(hasClass(from, "newPlaylistSongs")){
+                backwardsMode = false;
                 var clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
@@ -2463,11 +2491,13 @@
 
         /*Listens when new playlist creation is finished*/
         document.body.addEventListener("click", function(event){
-            const from = event.target;
+            const from = event.target;  
+            backwardsMode = false;
 
             if(hasClass(from, "finishedPlaylistBtn")){
                 playcreateMode = false;
                 finishedCreateBtn.style.display = "none";
+                backwardsBtn.style.display = "block";
 
                 newPlaylistPrep()
                 musicSource(window["'" + playlistName.textContent + "'"]);
