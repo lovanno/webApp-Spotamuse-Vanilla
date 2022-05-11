@@ -71,11 +71,12 @@ Better Queue
 
 # Realizations ⌛️
 
-• If there is an error in HTML markup, your css grid will break. 
+• If there is an error in the HTML markup, your css grid will break. 
 
 &nbsp;
 
 &nbsp;
+
 # Current Bugs & Problems 😎
 
 *Note: M = Major, n = nothing serious*
@@ -87,11 +88,67 @@ Better Queue
 
 ## Problems
 
-*(05/05/22) Restructure - Removing the musicLibrary object data from javascript and retrieving it locally isn't simple*
+• **(05/05/22) Restructure - Removing the musicLibrary object data from javascript and retrieving it locally isn't simple**
 
 >JSON data must be uploaded on a remote server to be retrieved for security reasons. Another angle was importing javascript files but this is only an ES6 feature. We'll just have to finish version 1 with the musicLibrary embedded and then restructure with firebase database.
 
+&nbsp;
 
+&nbsp;
+
+
+• **(05/10/22) Song Reference vs Copy - Playlist creation**
+
+&emsp; &emsp;The music library is an array with objects with each object being a song. To create a new playlist, you'd have to either copy these objects into a new array or reference them but referencing them within javascript isn't simple. Even referencing an entire database for 1 song doesn't make sense, at least in Firestore. The funny part was I knew this would be an issue and wrote it in Big Questions before facing it
+
+&nbsp;
+
+>Attempt 1: Creating strings that reference an array and converting it
+
+    if(chosenPlaylist.length > 1){
+        song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+    }
+
+    else{
+        let current = musicLibrary[((window["'" + playlistName.textContent + "'"])[clickedTrack-1])];
+        song = new Audio(current.track_mp3Url);
+    }
+
+The problem with this approach is string arrays can't be converted into references. I tried using window[] and an anonymous function to convert these strings but this only worked on primatives and functions. The reason might be in the way that they're stored. Objects are stored in the heap but primitives aren't. Functions are also stored in the heap but since they have pointers in the stack, they'll convert. 
+
+
+>Attempt 2: Using number references
+
+    (window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);
+
+&nbsp;
+
+
+&emsp; &emsp;While it worked, it had limitations. My playback functions relied on indexes and these reference arrays didn't hold the song objects. For it to work,I'd have to create different toggles and rewrite similar functions to accomodate the difference. 
+
+The other issue was track creation. The first playlist song would never be available because the creation of tracks and track modification happens at the same time. You can't go back to the 1st track or you'd create another track within the loop. In other words, the first track is never accessible and you'd  always have to skip it or repeat it. 
+
+
+🔑 *Current Solution: Copying objects*
+>(window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+### 🔱 Big Questions during Development 🔧
+
+• *How would you cache data downloaded files and avoid multiple api calls for each song?*
+
+• *How can you make new playlists without duplicating data? Would you make a reference or would you duplicate each time (since firebase is noSQL and duplication is fine)?*
+
+• *Is it bad design to reuse one element variable multiple times? I keep thinking of using a getter or a way to lock the variable so only functions can modify them*
+
+
+&nbsp;
 
 *📚 Sources*
 
