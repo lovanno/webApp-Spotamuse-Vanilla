@@ -139,7 +139,7 @@ The other issue was track creation. The first playlist song would never be avail
 &nbsp;
 
 
-### 🔱 Big Questions during Development 🔧
+### 🔱 Big Questions during Development 🔱
 
 • *How would you cache data downloaded files and avoid multiple api calls for each song?*
 
