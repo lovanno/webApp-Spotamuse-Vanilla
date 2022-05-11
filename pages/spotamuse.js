@@ -2068,7 +2068,6 @@
             const from = event.target;
 
             if(hasClass(from, "sideBarHeader")){
-                console.log
                 allTabs.forEach(tabs => tabs.style.display = "none");
 
                 const clickedTab = parseInt(from.className.slice(-1))-1;
@@ -2100,11 +2099,15 @@
 
 
         /*  Playback Functions Setup    */
-        const recentlyPlayed = [];        
+        const recentlyPlayedAudio = [];    
+        const recentlyPlayedPlaylist = []    
+        let recent10;
+
+
         let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
         function stopAll() {
-            recentlyPlayed.forEach(function(songs) {           /*This array will need to be updated as it expands*/
+            recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
                 songs.pause();
                 songs.currentTime = 0;
             });
@@ -2113,7 +2116,7 @@
 
         function updateSongTime() {
             var currentInterval = setInterval(function() {
-                const songSeconds = (Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime));
+                const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
 
                 if(songSeconds % 60 < 10){
                     currentSongTime.textContent = "0:0" + songSeconds % 60;
@@ -2129,9 +2132,11 @@
         function updatePlaylistSong(chosenPlaylist){
             playButtonToggle = false;
             song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
-            recentlyPlayed.push(song);
+            recentlyPlayedAudio.push(song);
+            recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
+            recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
             stopAll();
-                
             song.play();
         }
 
@@ -2161,11 +2166,11 @@
 
             if(from == pauseBtn){
                 if(playPauseToggle == false){
-                    (recentlyPlayed[recentlyPlayed.length-1]).pause();
+                    (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
                     playPauseToggle = true;
                 }
                 else{
-                    recentlyPlayed[recentlyPlayed.length-1].play();
+                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
                     playPauseToggle = false;
                     updateSongTime();
                 }
@@ -2183,9 +2188,8 @@
         playPauseToggle = true;
         nowPlayingInfo(musicLibrary [0]);
         startSong = new Audio(mp3UrlLibrary[0]);
-        recentlyPlayed.push(startSong);
-
-
+        recentlyPlayedAudio.push(startSong);
+        recentlyPlayedPlaylist.push(musicLibrary[0])
 
 
 
@@ -2366,6 +2370,24 @@
         document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
             const from = event.target;
 
+            if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+                playlistName.textContent = "Recently Played";
+
+                if(recent10){
+                    newPlaylistPrep();
+                    let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
+                    musicSource(unique);
+
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                }
+
+                openPlaylistTab();
+                addNewSongsPlaylist.style.display = "none";
+                finishedCreateBtn.style.display = "none";
+            }
+
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
                 playlistName.textContent = "Your Library";
                 newPlaylistPrep()
@@ -2380,11 +2402,11 @@
                 finishedCreateBtn.style.display = "none";
             }
             
-            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
                 refreshPlaylist();
                 document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
 
-                playlistName.textContent = from.lastElementChild.textContent;
+                playlistName.textContent = from.lastElementChild.textContent;                
                 musicSource(window["'" + playlistName.textContent + "'"]);
 
                 for(let f=1; f<playlistShow.length; f++){
@@ -2400,7 +2422,10 @@
 
                 stopAll();
                 song.play();
-                recentlyPlayed.push(song);
+                recentlyPlayedAudio.push(song);
+                recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1])
+                recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
                 updateSongTime();
 
                 songOrder = clickedTrack-1;
