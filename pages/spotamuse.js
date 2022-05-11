@@ -1771,7 +1771,7 @@
                 "played": "0",
 
                 "year": "2014",
-                "release_date": "06/20/14",
+                "release_date": "06/20/2014",
                 "explicit": "No",
                 "languages": "English",
                
@@ -2160,8 +2160,8 @@
             if(from == skipBackBtn){
                 (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
                 updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder])
-                updateSongTime()
+                nowPlayingInfo(chosenPlaylist[songOrder]);
+                updateSongTime();
             }
 
             if(from == pauseBtn){
@@ -2179,7 +2179,7 @@
             if(from == skipForwardBtn){
                 (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
                 updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder])
+                nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
             }
         })
@@ -2189,7 +2189,7 @@
         nowPlayingInfo(musicLibrary [0]);
         startSong = new Audio(mp3UrlLibrary[0]);
         recentlyPlayedAudio.push(startSong);
-        recentlyPlayedPlaylist.push(musicLibrary[0])
+        recentlyPlayedPlaylist.push(musicLibrary[0]);
 
 
 /**                                               Playlist Creation                                                     **/       
@@ -2320,6 +2320,8 @@
             document.querySelector("p.playlistSong.trackTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_title;
             document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
             document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
+            document.querySelector("p.playlistSong.dateAdded.\\3" + trackNum).textContent =  new Date(chosenPlaylist[trackAdjust-1].release_date).toDateString().slice(4);
+            
         }
 
         /*Updates the playlist content with photos, names, and music */
@@ -2328,6 +2330,7 @@
             document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
             document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
             document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
+            document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4)
 
             if(playlistTrackCount < 9){
                 updateTrackInfo(playlistTrackCount);
