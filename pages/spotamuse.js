@@ -1,86 +1,5 @@
 
-/*                  Section Functionality               
-
-    (1) navBar                                      section1 
-           
-    
-    (12) Footer                                     section12*             
-       
-
-    (14) prodFilters                                section14    |   (15) selectedFilters                          section15        
-         
-
-    /* (17) showAllProd1 (mens)                   section17             |            (20) showAllProd2 (wmns)                        section20  ^17             
-  
-
-    /*(21) trendingProd                   section21       
-
-    
-    
-    
-    
-    /****!                                                       Shared Classes JS                                                              !****/
-
-    /*      shoppingCart -  separate modules (Modal 1)               */  
-        var count = 1;  /*keeps track of number of items added*/
-        let boxAddCount = 0;
-        let cartContainer = document.querySelector(".cartContainer");  
-        let cartTotalPrice = document.querySelector(".prodPrice");
-        const totalShipping = document.querySelector("p.cartProdSale.-\\31");
-
-
-        /*Cart Buttons*/
-        cartOpener = document.querySelector("li.personalCartLink.\\33");
-        var modalCheckoutCart = document.getElementById("modalCheckout");
-        var cartCloseX = document.getElementsByClassName("close")[0];
-
-
-
-/*                  modal Functions                       
-        cartOpener.onclick = function() {   /*opens cart if cart btn is clicked
-            document.body.style.overflowY = "hidden";
-            modalCheckoutCart.style.display = "block";
-        }
-
-        cartCloseX.onclick = function() {        /*closes cartModal (Modal 1)
-            document.body.style.overflowY = "visible";
-            modalCheckoutCart.style.display = "none";
-        }
-        
-        window.onclick = function(event) {        /*closes modal if click is outside of modal
-            if (event.target == modalCheckoutCart) {
-                modalCheckoutCart.style.display = "none";
-                document.body.style.overflowY = "visible";
-            }
-        }
- 
-
-/***!          General Functions              !***/
-        function hasClass(elem, className) {            /*allows to access created button elements*/
-            return elem.classList.contains(className);
-        }
- 
-        function htmlSlice(element, number){
-            return element.innerHTML.slice(number);
-        }
-
-        function wordTest(str) { 
-            return str.split(" ");
-        }
- 
-        function spaceTens(num){
-            return num.toString().replace(/\B(?<!\.\d*)(?=(\d{1})+(?!\d))/g, " ")
-        }
-
-        function retrieveProdImage(image){
-            const prodImgRetrieve = window.getComputedStyle(image).backgroundImage; 
-            const prodImgUrl = "url(" + prodImgRetrieve + ")";
-            return prodImgUrl
-        }
- 
-
-
-        const myDearMelancholy_EP = [
+    const myDearMelancholy_EP = [
             {
                 "id": "21",
                 "ISRC": "USUG11800560",
@@ -1216,7 +1135,6 @@
 
 
         const musicLibrary = [
-
             {
                 "id": "1",
                 "ISRC": "QM42K1946534",
@@ -2096,19 +2014,61 @@
                 "loudness": "-7",
             },
         ]
+    
+    /* Home Library Set up */
+        const mp3UrlLibrary = [];
+        const albumData = [];   /*Line 2310 - playback test for switching different playlists*/
+        musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
+        
+        albumLibrary.map((album) => {
+            album.forEach(songs => {
+                mp3UrlLibrary.push(songs.track_mp3Url);
+
+                /*Line 2310 - Test for switching playlists*/
+                albumData.push(songs);
+            })
+        });
+    
 
 
 
 
+    /***!          General Functions                     !***/
+        function hasClass(elem, className) {            /*allows to access created button elements*/
+            return elem.classList.contains(className);
+        }
+
+        function hasSuperClass(elem, className) {            /*allows to access created button elements*/
+            return elem.className == (className);
+        }
+ 
+        function htmlSlice(element, number){
+            return element.innerHTML.slice(number);
+        }
+
+        function wordTest(str) { 
+            return str.split(" ");
+        }
+ 
+        function spaceTens(num){
+            return num.toString().replace(/\B(?<!\.\d*)(?=(\d{1})+(?!\d))/g, " ")
+        }
+
+        function retrieveProdImage(image){
+            const prodImgRetrieve = window.getComputedStyle(image).backgroundImage; 
+            const prodImgUrl = "url(" + prodImgRetrieve + ")";
+            return prodImgUrl
+        }
 
 
 
-        /*  Tab Functionality  */
+    /**                             Switch Between Tab Functionality                                                   **/
         const allTabs = document.querySelectorAll(".tab");
-        document.body.addEventListener("click", function(event){
+         document.body.addEventListener("click", function(event){
             const from = event.target;
 
             if(hasClass(from, "sideBarHeader")){
+                console.log
                 allTabs.forEach(tabs => tabs.style.display = "none");
 
                 const clickedTab = parseInt(from.className.slice(-1))-1;
@@ -2123,94 +2083,58 @@
 
 
 
-/*                                                              Core Functionality                                                                */
-
-        /*  Playback Buttons */
+    /*                                                              Core Functionality                                                                */
+        /*  Playback HTML Buttons */
         const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
         const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
         const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
-        var songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
+        let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
 
-
-        /* Current songPlaying Info */
+        /* Current songPlaying HTML Info */
         const currentSong = document.querySelector("p.songPlayingName.\\31");
         const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
         const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
         const currentSongTime = document.querySelector("p.songProgressSec");
-
         const currentSongDuration = document.querySelector("p.songProgressSec.total");  
         currentSongDuration.textContent = "0:30";
 
 
-        
-
-
-
-        /*                                              Playback Functions                                                      */
-
-
-
-        const songsPlayed = [];         /*Used for playback functions and recently played playlist*/
-        var playButtonToggle = 0;       /*Switch toggle for paused songs*/
-
-        /*function stop(insertSong) {
-            insertSong.pause();
-            insertSong.currentTime = 0;
-        }*/
+        /*  Playback Functions Setup    */
+        const recentlyPlayed = [];        
+        let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
         function stopAll() {
-            songsPlayed.forEach(function(songs) {
-                /*stop(songs);*/
+            recentlyPlayed.forEach(function(songs) {           /*This array will need to be updated as it expands*/
                 songs.pause();
                 songs.currentTime = 0;
             });
         }
 
 
-        function updateCurrentSongTime() {
+        function updateSongTime() {
             var currentInterval = setInterval(function() {
+                const songSeconds = (Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime));
 
-                if(Math.floor(songsPlayed[songsPlayed.length-1].currentTime % 60) < 10){
-                    currentSongTime.textContent = "0:0" + Math.floor(songsPlayed[songsPlayed.length-1].currentTime % 60);
+                if(songSeconds % 60 < 10){
+                    currentSongTime.textContent = "0:0" + songSeconds % 60;
                 }
-                else {currentSongTime.textContent = "0:" + Math.floor(songsPlayed[songsPlayed.length-1].currentTime % 60);}
+                else {currentSongTime.textContent = "0:" + songSeconds % 60;}
 
-
-                if(Math.floor(songsPlayed[songsPlayed.length-1].currentTime % 60) == 30 || playButtonToggle !== 0){ clearInterval(currentInterval);}
+                if(songSeconds % 60 == 30 && playPauseToggle !== false){clearInterval(currentInterval);}
 
             }, 0);
         }
 
 
-        function updateCurrentPlaylistInfo(chosenPlaylist){
-            playButtonToggle = 0;
-            song = new Audio(chosenPlaylist[songOrder]);
-            songsPlayed.push(song);
+        function updatePlaylistSong(chosenPlaylist){
+            playButtonToggle = false;
+            song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
+            recentlyPlayed.push(song);
             stopAll();
                 
             song.play();
-            updateCurrentSongTime();
         }
 
-        /* Updates Current songPlaying Info 
-
-            musicLibrary.map((songs) => {
-                if(songs.id == (songOrder) + 1){
-                    currentSong.textContent = (songs.track_title);
-                    currentAlbum.textContent = (songs.track_album);
-                    currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                }
-            });
-
-            albumLibrary.map((album) => {
-                album.forEach(songs => {
-                    if(songs.id == (songOrder) + 1){
-                        currentSong.textContent = (songs.track_title);
-                        currentAlbum.textContent = (songs.track_album);
-                        currentAlbumCover.style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                    }
-                })
-            });*/
 
         function nowPlayingInfo(songData){
             currentSong.textContent = songData.track_title;
@@ -2220,554 +2144,311 @@
 
 
 
-        function updatePlaylistAudio(audioData){
-            document.body.addEventListener("click", function(event){
-                const from = event.target;
-
-                if(hasClass(from, "newPlaylistSongs")){
-                    var clickedTrack = parseInt(from.className.slice(17));
-                    song = new Audio(audioData[clickedTrack-1].track_mp3Url);
-                    songsPlayed.push(song);
-                    stopAll();
-                    song.play();
-
-                    songOrder = clickedTrack-1;
-                }
-            })
-        }
-
-        
 
 
-        /*document.body.addEventListener("click", function(event){
-            const from = event.target;
-          
-        if(thisValue == 0){
-            if(from == skipBackBtn){
-                if(songOrder == 0){
-                    songOrder = mp3UrlLibrary.length-1;
-                }
-                else{
-                    songOrder--;
-                }
-
-                updateCurrentPlaylistInfo(mp3UrlLibrary);
-            }
-
-
-            if(from == pauseBtn){
-                if(playButtonToggle == 0){
-                    songsPlayed[songsPlayed.length-1].pause();
-                    playButtonToggle++;
-                }
-                else{
-                    songsPlayed[songsPlayed.length-1].play();
-                    playButtonToggle = 0;
-                    updateCurrentSongTime(mp3UrlLibrary);
-                }
-            }
-
-
-            if(from == skipForwardBtn){
-                if(songOrder == mp3UrlLibrary.length-1){
-                    songOrder = 0;
-                }
-                else{
-                    songOrder++;
-                }
-
-                updateCurrentPlaylistInfo(mp3UrlLibrary);
-            }
-
-        }
-        else{
-            if(from == skipBackBtn){
-                if(songOrder == 0){
-                    songOrder = totalPlaylists[totalPlaylists.length-1].length-1;
-                }
-                else{
-                    songOrder--;
-                }
-                updateCurrentPlaylistInfo(totalPlaylists[totalPlaylists.length-1][0]);
-
-            }
-
-
-            if(from == pauseBtn){
-                if(playButtonToggle == 0){
-                    songsPlayed[songsPlayed.length-1].pause();
-                    playButtonToggle++;
-                }
-                else{
-                    songsPlayed[songsPlayed.length-1].play();
-                    playButtonToggle = 0;
-                    updateCurrentPlaylistInfo(totalPlaylists[totalPlaylists.length-1][0]);
-                }
-            }
-
-
-            if(from == skipForwardBtn){
-                if(songOrder == totalPlaylists[totalPlaylists.length-1].length-1){
-                    songOrder = 0;
-                }
-                else{
-                    songOrder++;
-                }
-                updateCurrentPlaylistInfo(totalPlaylists[totalPlaylists.length-1][0]);
-
-            }
-
-
-        }
-        })*/
-
-
-
-        function updatePlayback (chosenPlaylist){
-    
-        document.body.addEventListener("click", function(event){
+/**                                               Playback Functions                                                      **/
+        let chosenPlaylist;
+        chosenPlaylist = musicLibrary;
+        document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
             const from = event.target;
           
             if(from == skipBackBtn){
-                if(songOrder == 0){
-                    songOrder = chosenPlaylist.length-1;
-                }
-                else{
-                    songOrder--;
-                }
-
-                updateCurrentPlaylistInfo(mp3UrlLibrary);
+                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                updatePlaylistSong(chosenPlaylist);
+                nowPlayingInfo(chosenPlaylist[songOrder])
+                updateSongTime()
             }
-
 
             if(from == pauseBtn){
-                if(playButtonToggle == 0){
-                    songsPlayed[songsPlayed.length-1].pause();
-                    playButtonToggle++;
+                if(playPauseToggle == false){
+                    (recentlyPlayed[recentlyPlayed.length-1]).pause();
+                    playPauseToggle = true;
                 }
                 else{
-                    songsPlayed[songsPlayed.length-1].play();
-                    playButtonToggle = 0;
-                    updateCurrentSongTime(chosenPlaylist);
+                    recentlyPlayed[recentlyPlayed.length-1].play();
+                    playPauseToggle = false;
+                    updateSongTime();
                 }
             }
 
-
             if(from == skipForwardBtn){
-                if(songOrder == chosenPlaylist.length-1){
-                    songOrder = 0;
-                }
-                else{
-                    songOrder++;
-                }
-
-                updateCurrentPlaylistInfo(chosenPlaylist);
+                (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                updatePlaylistSong(chosenPlaylist);
+                nowPlayingInfo(chosenPlaylist[songOrder])
+                updateSongTime();
             }
         })
+
+        /*      Allows home library to be available immediately         */
+        playPauseToggle = true;
+        nowPlayingInfo(musicLibrary [0]);
+        startSong = new Audio(mp3UrlLibrary[0]);
+        recentlyPlayed.push(startSong);
+
+
+
+
+
+/**                                               Playlist Creation                                                     **/       
+
+        /*New Playlist Creation - Variables */
+        const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
+        const playlistName = document.querySelector("h1.newPlaylistName.\\31");
+        const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
+        const playlistRuntime = document.querySelector("div.newPlaylistUserTime.\\31");
+        const finishedCreateBtn = document.querySelector("button.finishedPlaylistBtn");
+        
+        function refreshPlaylist(){
+            playlistTrackCount = 1;
+            const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
+            totalTracksPlaylist.forEach(playlistSongs => {
+                (document.querySelector("button.newPlaylistSongs.\\31") == playlistSongs) ? playlistSongs.style.display ="none" : playlistSongs.remove();
+            })
         }
+        
+        /*This starts the process of playlist creation*/
+        createPlaylistTab.addEventListener("click", function(){
+            let newPlaylistName = prompt("Please enter a name for your Playlist");
 
+            if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Your Library" || createdPlaylistsName.includes(newPlaylistName)) {
+                console.log("Please enter a valid Playlist Name");
+            } 
+            else {
+                playlistName.textContent = newPlaylistName;
+                createPlaylistBox();
+                refreshPlaylist();
+                finishedCreateBtn.style.display = "none";
+                addNewSongsPlaylist.style.display = "block";
+            }
 
+        })
 
-
-
-        /*                                                                            Created Elements                                                  */
+        /*Creates a playlist icon box in the "Your Library" Tab*/
         yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
         function createPlaylistBox(){ 
             const newPlaylistBox = document.createElement("button");
             newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", 2);
             yourLibraryPlaylistCont.appendChild(newPlaylistBox);
 
-                    const newPlaylistCover = document.createElement("div");
-                    newPlaylistCover.classList.add("yourLibrary", "playlistCover", 2)
-                    newPlaylistBox.appendChild(newPlaylistCover);
+                const newPlaylistCover = document.createElement("div");
+                newPlaylistCover.classList.add("yourLibrary", "playlistCover", 2)
+                newPlaylistBox.appendChild(newPlaylistCover);
 
-                    const updatePlaylistName = document.createElement("div");
-                    updatePlaylistName.classList.add("yourLibrary", "playlistName", 2);
-                    updatePlaylistName.textContent = playlistName.textContent;
-                    newPlaylistBox.appendChild(updatePlaylistName);
+               const updatePlaylistName = document.createElement("div");
+                updatePlaylistName.classList.add("yourLibrary", "playlistName", 2);
+                updatePlaylistName.textContent = playlistName.textContent;
+                newPlaylistBox.appendChild(updatePlaylistName);
         }
 
 
-
-        const allPlaylistTracksCont = document.querySelector("div.library.newPlaylistCont.\\31");
+        /*Creates the total playlist track divs but doesn't update it w/ song info*/
         var playlistTrackCount = 1;
-        function createPlaylistTrack(interval){
-            playlistTrackCount++;
-
+        const allPlaylistTracksCont = document.querySelector("div.library.newPlaylistCont.\\31");
+        function createPlaylistTrack(){
             const newPlaylistSongCont = document.createElement("button");
-            newPlaylistSongCont.classList.add("newPlaylistSongs", interval);
+            newPlaylistSongCont.classList.add("newPlaylistSongs", playlistTrackCount);
             allPlaylistTracksCont.appendChild(newPlaylistSongCont);
 
 
                     const trackOrderCont = document.createElement("div");
-                    trackOrderCont.classList.add("playlistSong", "orderCont", + interval);
+                    trackOrderCont.classList.add("playlistSong", "orderCont", + playlistTrackCount);
                     newPlaylistSongCont.appendChild(trackOrderCont);
 
                             const trackOrderNumber = document.createElement("p");
-                            trackOrderNumber.classList.add("playlistSong", "trackOrder", + interval);
-                            trackOrderNumber.textContent = interval;
+                            trackOrderNumber.classList.add("playlistSong", "trackOrder", + playlistTrackCount);
+                            trackOrderNumber.textContent = playlistTrackCount;
                             trackOrderCont.appendChild(trackOrderNumber);
 
                             const trackCoverImg = document.createElement("div");
-                            trackCoverImg.classList.add("playlistSong", "trackImage", + interval);
+                            trackCoverImg.classList.add("playlistSong", "trackImage", + playlistTrackCount);
                             trackOrderCont.appendChild(trackCoverImg);
 
                             const trackInfoCont = document.createElement("div");
-                            trackInfoCont.classList.add("playlistSong", "trackInfoCont", + interval);
+                            trackInfoCont.classList.add("playlistSong", "trackInfoCont", + playlistTrackCount);
                             trackOrderCont.appendChild(trackInfoCont);
 
                                     const trackTitle = document.createElement("p");
                                     trackTitle.textContent = "Track Title";
-                                    trackTitle.classList.add("playlistSong", "trackTitle", + interval); 
+                                    trackTitle.classList.add("playlistSong", "trackTitle", + playlistTrackCount); 
                                     trackInfoCont.appendChild(trackTitle);
 
                                     const trackArtist = document.createElement("p");
                                     trackArtist.textContent = "Artist";
-                                    trackArtist.classList.add("playlistSong", "trackArtist", + interval); 
+                                    trackArtist.classList.add("playlistSong", "trackArtist", + playlistTrackCount); 
                                     trackInfoCont.appendChild(trackArtist);
 
                                     
                     const trackAlbumCont = document.createElement("div");
-                    trackAlbumCont.classList.add("playlistSongs", "albumCont", + interval);
+                    trackAlbumCont.classList.add("playlistSongs", "albumCont", + playlistTrackCount);
                     newPlaylistSongCont.appendChild(trackAlbumCont);
 
                             const trackAlbum = document.createElement("p");
                             trackAlbum.textContent = "Album Name";
-                            trackAlbum.classList.add("playlistSong", "albumTitle", interval);
+                            trackAlbum.classList.add("playlistSong", "albumTitle", playlistTrackCount);
                             trackAlbumCont.appendChild(trackAlbum);
 
 
                     const trackDateAddedCont = document.createElement("div");
-                    trackDateAddedCont.classList.add("playlistSongs", "dateAddedCont", + interval);
+                    trackDateAddedCont.classList.add("playlistSongs", "dateAddedCont", + playlistTrackCount);
                     newPlaylistSongCont.appendChild(trackDateAddedCont);
 
                             const dateAddedText = document.createElement("p");
                             dateAddedText.textContent = "Sep 4, 2021";
-                            dateAddedText.classList.add("playlistSong", "dateAdded", interval);
+                            dateAddedText.classList.add("playlistSong", "dateAdded", playlistTrackCount);
                             trackDateAddedCont.appendChild(dateAddedText);
                     
                             
                     const trackDurationCont = document.createElement("div");
-                    trackDurationCont.classList.add("playlistSongs", "durationCont", + interval);
+                    trackDurationCont.classList.add("playlistSongs", "durationCont", + playlistTrackCount);
                     newPlaylistSongCont.appendChild(trackDurationCont);
 
                             const trackDurationText = document.createElement("p");
                             trackDurationText.textContent = "0:00";
-                            trackDurationText.classList.add("playlistSong", "durationTime", interval);
+                            trackDurationText.classList.add("playlistSong", "durationTime", playlistTrackCount);
                             trackDurationCont.appendChild(trackDurationText);
         }
 
+        /*Helper function for the createDownloadedPlaylist() function*/
+        function updateTrackInfo(trackNum){
+            /*Since DOM creation requires a base element, playlistTrackCount starts at 1 so it doesn't recreate the 1st div. */
+            let trackAdjust = playlistTrackCount;   /*This causes the [1]//2nd song to be skipped. Trackadjust fixes it by going back down the array by 1*/
+            document.querySelector("div.playlistSong.trackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + chosenPlaylist[trackAdjust-1].track_coverUrl + "\")";
+            document.querySelector("p.playlistSong.trackTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_title;
+            document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
+            document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Home Library Set up */
-        const mp3UrlLibrary = [];
-        musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
-        
-        albumLibrary.map((album) => {
-            album.forEach(songs => mp3UrlLibrary.push(songs.track_mp3Url));
-        });
-
-        const downloadedFilesData = []
-
-
+        /*Updates the playlist content with photos, names, and music */
         function createDownloadedPlaylist(){
-                document.querySelector("div.playlistSong.trackImage.\\31").style.backgroundImage = "url(\"" + musicLibrary[0].track_coverUrl; + "\")";
-                document.querySelector("p.playlistSong.trackTitle.\\31").textContent = musicLibrary[0].track_title;
-                document.querySelector("p.playlistSong.trackArtist.\\31").textContent = musicLibrary[0].artist;
-                document.querySelector("p.playlistSong.albumTitle.\\31").textContent = musicLibrary[0].track_album;
-                document.querySelector("p.playlistSong.durationTime.\\31").textContent = musicLibrary[0].duration;
+            document.querySelector("div.playlistSong.trackImage.\\31").style.backgroundImage = "url(\"" + chosenPlaylist[0].track_coverUrl; + "\")";
+            document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
+            document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
+            document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
 
-                createPlaylistData(musicLibrary[0], downloadedFilesData);
-                
-            for(let c = 2; c <mp3UrlLibrary.length + 1; c++){
-                createPlaylistTrack(playlistTrackCount);
+            if(playlistTrackCount < 9){
+                updateTrackInfo(playlistTrackCount);
+            }
+            else if(playlistTrackCount < chosenPlaylist.length+1){
+                updateTrackInfo(spaceTens(playlistTrackCount));
+            }
+        };  
 
 
-                if(c < 9){
-                    document.querySelector("div.playlistSong.trackImage.\\3" + c).style.backgroundImage = "url(\"" + musicLibrary[c-1].track_coverUrl + "\")";
-                    document.querySelector("p.playlistSong.trackTitle.\\3" + c).textContent = musicLibrary[c-1].track_title;
-                    document.querySelector("p.playlistSong.trackArtist.\\3" + c).textContent = musicLibrary[c-1].artist;
-                    document.querySelector("p.playlistSong.albumTitle.\\3" + c).textContent = musicLibrary[c-1].track_album;
-                    document.querySelector("p.playlistSong.durationTime.\\3" + c).textContent = musicLibrary[c-1].duration;
+        let playlistShow = musicLibrary;
+        let playcreateMode = false; /*Allows songs to be added to a playlist*/
 
-                    createPlaylistData(musicLibrary[c-1], downloadedFilesData);
-                }
-                else if(c < musicLibrary.length + 1){
-                    document.querySelector("div.playlistSong.trackImage.\\3" + spaceTens(c)).style.backgroundImage = "url(\"" + musicLibrary[c-1].track_coverUrl + "\")";
-                    document.querySelector("p.playlistSong.trackTitle.\\3" + spaceTens(c)).textContent = musicLibrary[c-1].track_title;
-                    document.querySelector("p.playlistSong.trackArtist.\\3" + spaceTens(c)).textContent = musicLibrary[c-1].artist;
-                    document.querySelector("p.playlistSong.albumTitle.\\3" + spaceTens(c)).textContent = musicLibrary[c-1].track_album;
-                    document.querySelector("p.playlistSong.durationTime.\\3" + spaceTens(c)).textContent = musicLibrary[c-1].duration;
 
-                    createPlaylistData(musicLibrary[c-1], downloadedFilesData);
-                }
-                else{
-                    albumLibrary.forEach(album =>{
-                        album.forEach(songs =>{
-                            if(songs.id == (c)){
-                                document.querySelector("div.playlistSong.trackImage.\\3" + spaceTens(c)).style.backgroundImage = "url(\"" + songs.track_coverUrl + "\")";
-                                document.querySelector("p.playlistSong.trackTitle.\\3" + spaceTens(c)).textContent = songs.track_title;
-                                document.querySelector("p.playlistSong.trackArtist.\\3" + spaceTens(c)).textContent = songs.artist;
-                                document.querySelector("p.playlistSong.albumTitle.\\3" + spaceTens(c)).textContent = songs.track_album;
-                                document.querySelector("p.playlistSong.durationTime.\\3" + spaceTens(c)).textContent = songs.duration;
-                                
-                                createPlaylistData(songs, downloadedFilesData);
-                            }
-                        })
-                    })
-                }
 
-            };     
+
+
+        /*All helper functions for creating a new playlist*/
+        function openPlaylistTab(){
+            allTabs.forEach(tabs => tabs.style.display = "none");
+            allTabs[4].style.display = "block";
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        /*                              Reset Playlist Function                     */
-        function refreshPlaylist(){
-            const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
-            totalTracksPlaylist.forEach(playlistSongs => playlistSongs.remove());
+        function playlistCreation(){
+            playlistTrackCount++;
+            createPlaylistTrack();
+            createDownloadedPlaylist();
         }
 
+        function musicSource(array){
+            playlistShow = array;
+            chosenPlaylist = array;
+        }
 
-
-
-
-        const totalPlaylists = [downloadedFilesData];
-
-
-            /*  Grabs downloaded files playlist */
-            document.body.addEventListener("click", function(event){
+        function newPlaylistPrep(){
+            refreshPlaylist();
+            document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+        }
+    
+        document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
             const from = event.target;
 
-            if(hasClass(from, "yourLibrary", "playlistBtnCont")){
-                allTabs.forEach(tabs => tabs.style.display = "none");
-                allTabs[4].style.display = "block";
-                
+            if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+                playlistName.textContent = "Your Library";
+                newPlaylistPrep()
+                musicSource(musicLibrary);
 
-                playlistTrackCount = 1;
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
 
+                openPlaylistTab();
+                addNewSongsPlaylist.style.display = "none";
+                finishedCreateBtn.style.display = "none";
+            }
+            
+            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
                 refreshPlaylist();
-                createPlaylistTrack(1);
-                createDownloadedPlaylist();
-                updatePlaylistAudio(downloadedFilesData);
+                document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+
+                playlistName.textContent = from.lastElementChild.textContent;
+                musicSource(window["'" + playlistName.textContent + "'"]);
+
+                for(let f=1; f<playlistShow.length; f++){
+                   playlistCreation();
+                }
+
+                openPlaylistTab();
+            }
+
+            if(hasClass(from, "newPlaylistSongs")){
+                var clickedTrack = parseInt(from.className.slice(17));
+                song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+
+                stopAll();
+                song.play();
+                recentlyPlayed.push(song);
+                updateSongTime();
+
+                songOrder = clickedTrack-1;
+                nowPlayingInfo(playlistShow[songOrder])
+
+
+                if(playcreateMode == true){
+                    /*(window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);  Sets up object references*/
+                    (window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
+                }
             }
         })
 
 
-
-
-
- 
-
-        
-
-        /*New Playlist Creation */
-        const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
-        const playlistName = document.querySelector("h1.newPlaylistName.\\31");
-        const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
-        const playlistRuntime = document.querySelector("div.newPlaylistUserTime.\\31");
-        
-        
-        createPlaylistTab.addEventListener("click", function(){
-            refreshPlaylist();
-            let newPlaylistName = prompt("Please enter a name for your Playlist");
-
-            if (newPlaylistName == null || newPlaylistName == "") {
-                console.log("not choosen");
-            } 
-            else {
-                playlistName.textContent = newPlaylistName;
-            }
-
-        })
-
-
-
-
-        function createPlaylistData(audioData, newPlaylistArr){
-            var obj = {};
-                obj["artist"] = audioData.artist;
-                obj["feature"] = audioData.feature;
-
-                obj["track_title"] = audioData.track_title;
-                obj["track_subTitle"] = audioData.track_subTitle;
-                obj["track_album"] = audioData.track_album;
-                obj["track_subAlbum"] = audioData.track_subAlbum;
-
-                obj["track_mp3Url"] = audioData.track_mp3Url;
-                obj["track_coverUrl"] = audioData.track_coverUrl;
-                obj["duration"] = audioData.duration;
-                    
-            newPlaylistArr.push(obj);
-        }
-
-
-        function makeNewPlaylist(){
-            var playlist = new Array();
-
-            document.body.addEventListener("click", function(event){
-                const from = event.target;
-
-                if(hasClass(from, "newPlaylistSongs")){
-                    var clickedTrack = parseInt(from.className.slice(17));
-                    playlist.push(downloadedFilesData[clickedTrack-1]);      
-                }
-
-                if(hasClass(from, "finishedPlaylistBtn")){
-                    totalPlaylists.push(new Array(playlist));
-                    refreshPlaylist();
-                    playlistTrackCount = 1;
-
-                    updatePlaylistAudio(totalPlaylists[totalPlaylists.length-1][0]);
-
-                    for(let t=0; t<totalPlaylists[totalPlaylists.length-1][0].length; t++){
-                        createPlaylistTrack(playlistTrackCount);
-
-                        if(t < 9){
-                            document.querySelector("div.playlistSong.trackImage.\\3" + (t+1)).style.backgroundImage = "url(\"" + totalPlaylists[totalPlaylists.length-1][0][t].track_coverUrl + "\")";
-                            document.querySelector("p.playlistSong.trackTitle.\\3" + (t+1)).textContent = totalPlaylists[totalPlaylists.length-1][0][t].track_title;
-                            document.querySelector("p.playlistSong.trackArtist.\\3" + (t+1)).textContent = totalPlaylists[totalPlaylists.length-1][0][t].artist;
-                            document.querySelector("p.playlistSong.albumTitle.\\3" + (t+1)).textContent = totalPlaylists[totalPlaylists.length-1][0][t].track_album;
-                            document.querySelector("p.playlistSong.durationTime.\\3" + (t+1)).textContent = totalPlaylists[totalPlaylists.length-1][0][t].duration;
-                        }
-                        else {
-                            document.querySelector("div.playlistSong.trackImage.\\3" + spaceTens((t+1))).style.backgroundImage = "url(\"" + totalPlaylists[totalPlaylists.length-1][0][t].track_coverUrl + "\")";
-                            document.querySelector("p.playlistSong.trackTitle.\\3" + spaceTens((t+1))).textContent = totalPlaylists[totalPlaylists.length-1][0][t].track_title;
-                            document.querySelector("p.playlistSong.trackArtist.\\3" + spaceTens((t+1))).textContent = totalPlaylists[totalPlaylists.length-1][0][t].artist;
-                            document.querySelector("p.playlistSong.albumTitle.\\3" + spaceTens((t+1))).textContent = totalPlaylists[totalPlaylists.length-1][0][t].track_album;
-                            document.querySelector("p.playlistSong.durationTime.\\3" + spaceTens((t+1))).textContent = totalPlaylists[totalPlaylists.length-1][0][t].duration;
-                        }
-                }
-                createPlaylistBox();
-            }
-        }
-            )}
-
-
+        /*Add songs to a new Playlist*/
+        const createdPlaylists = [];
+        const createdPlaylistsName = [];
         const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
+        addNewSongsPlaylist.addEventListener("click", function(){
+            playcreateMode = true;
+            finishedCreateBtn.style.display = "block";
+            addNewSongsPlaylist.style.display = "none";
 
-            addNewSongsPlaylist.addEventListener("click", function(){
-            playlistTrackCount = 1;
-                
+            window["'" + playlistName.textContent + "'"] = new Array();
+            createdPlaylists.push(window["'" + playlistName.textContent + "'"]);
+            createdPlaylistsName.push(playlistName.textContent);
 
-            refreshPlaylist();
-            createPlaylistTrack(1);
-            createDownloadedPlaylist();
-            makeNewPlaylist()
+            newPlaylistPrep();               /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
+            musicSource(musicLibrary);
 
-
+            for(let f=1; f<musicLibrary.length; f++){   
+                playlistCreation();
+            }
         })
 
+        /*Listens when new playlist creation is finished*/
+        document.body.addEventListener("click", function(event){
+            const from = event.target;
 
+            if(hasClass(from, "finishedPlaylistBtn")){
+                playcreateMode = false;
+                finishedCreateBtn.style.display = "none";
 
+                newPlaylistPrep()
+                musicSource(window["'" + playlistName.textContent + "'"]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-        
-     
-
-
-
-
-
-        
-
-
-
-
-
-        /*Random Ideas */
-        
-/*
-        switch ("Oranges") {
-            case 'Oranges':
-                console.log('Oranges');
-                updatePlaylistAudio(mp3UrlLibrary);
-                
-                break;
-            case 'Mangoes':
-            case 'Papayas':
-                console.log('Mangoes and papayas');
-                break;
-        }*/
-
-
-        /*const downloadedFilesData = [];
-        var obj = {};
-                obj["artist"] = musicLibrary[0].artist;
-                obj["feature"] = musicLibrary[0].feature;
-                obj["track_title"] = musicLibrary[0].track_title;
-                obj["track_title"] = musicLibrary[0].track_subTitle;
-
-                obj["track_album"] = musicLibrary[0].track_album;
-                obj["track_album"] = musicLibrary[0].track_subAlbum
-                obj["track_coverUrl"] = musicLibrary[0].track_coverUrl;
-                obj["duration"] = musicLibrary[0].duration;
-                    
-            downloadedFilesData.push(obj);
-        
-        */
-        
-
-
-
-        
-
-        
-
-        
-
-
-       
-        
-
-
-
-        /*music libary sources:
-            https://genius.com/
-            https://tunebat.com/
-            https://songdata.io/search
-        */
-
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+            }
+        })

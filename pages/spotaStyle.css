@@ -1300,8 +1300,10 @@
 
 
 
-
-
+    /*This allows playback functions to work because the svg covers the button sometimes*/
+    svg {
+      display: none;
+    }
 
 
 
