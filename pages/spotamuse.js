@@ -2152,16 +2152,36 @@
 
 
 /**                                               Playback Functions                                                      **/
+
+
+        /*    Shuffle Feature   */
+        let shuffleMode = false;
+        let lastSongOrder;
+        const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
+        shuffleBtn.addEventListener("click", function(){
+            shuffleMode = !shuffleMode;
+        });
+
         let chosenPlaylist;
         chosenPlaylist = musicLibrary;
         document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
             const from = event.target;
           
             if(from == skipBackBtn){
-                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                if(shuffleMode == true){
+                    songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                    if(songOrder == -1 || songOrder == lastSongOrder){
+                        songOrder = Math.floor(Math.random() * playlistShow.length);
+                    }
+                }
+                else{
+                    (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
+                lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
             }
 
             if(from == pauseBtn){
@@ -2177,7 +2197,16 @@
             }
 
             if(from == skipForwardBtn){
-                (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                if(shuffleMode == true){
+                    songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                    if(songOrder == -1 || songOrder == lastSongOrder){
+                        songOrder = Math.floor(Math.random() * playlistShow.length);
+                    }
+                }
+                else{
+                    (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
@@ -2532,7 +2561,7 @@
 
             if(hasClass(from, "newPlaylistSongs")){
                 backwardsMode = false;
-                var clickedTrack = parseInt(from.className.slice(17));
+                let clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
                 stopAll();
@@ -2594,4 +2623,4 @@
                     playlistCreation();
                 }
             }
-        })
+        });

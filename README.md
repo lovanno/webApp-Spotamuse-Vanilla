@@ -34,18 +34,13 @@ This forced me to develop the application without an API, which is a bummer but 
 
 Sort Songs (most played, alphabetical, date created, date added) ✅
 
-*Global rewind (play last played song)*
-
-*Play a Random song from all your playlists (Global)*
-
 Last Played Personal Playlist (plays last 10 songs and updates with each song) ✅
 
 Play a playlist backwards ✅
 
-*Listen to later tab. This can organize songs by priority, nonessential, eventually. Maybe even add discovery section 😁🤝*
+*Create a playlist shuffle*
 
-
-## Version 2 🌌
+*Listen to later tab. This can organize songs by priority, nonessential, eventually*
 
 *Folders for Spotify*
 
@@ -69,6 +64,14 @@ Better Queue
 
 &nbsp;
 
+## Version 2: Experience 🌌
+
+Music Filters
+• Slow down music or Speed it up
+• Add an echo to a song (reverb)
+
+
+&nbsp;
 # Realizations ⌛️
 
 • If there is an error in the HTML markup, your css grid will break. 
@@ -149,6 +152,16 @@ The other issue was track creation. The first playlist song would never be avail
 
 
 &nbsp;
+
+
+*Scraped Features*
+
+   >Global Rewind and Shuffle
+    
+    Global rewind is a feature I'd love in Spotify. With global rewind, you'd be able to play the last song listened to from a previous playlist. To make a true global experience, I also wanted to make a global shuffle feature that allowed you to play a random song from all your playlists. 
+
+    Reason for Removal: All created playlists are based on home library of MP3's. So playing a song from a random playlist is just playing a random from the home library.It just doesn't make sense to implement this feature. This reasoning also extends to the global shuffle. Instead, I'll just make a shuffle feature for the current playlist. 
+
 
 *📚 Sources*
 
