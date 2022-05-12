@@ -32,15 +32,15 @@ This forced me to develop the application without an API, which is a bummer but 
 
 ## Version 1: Launch 🌌
 
-*Sort Songs (most played, alphabetical, date created, date added)*
+Sort Songs (most played, alphabetical, date created, date added) ✅
 
 *Global rewind (play last played song)*
 
 *Play a Random song from all your playlists (Global)*
 
-*Last Played Personal Playlist (plays last 10 songs and updates with each song)*
+Last Played Personal Playlist (plays last 10 songs and updates with each song) ✅
 
-*Play a playlist backwards*
+Play a playlist backwards ✅
 
 *Listen to later tab. This can organize songs by priority, nonessential, eventually. Maybe even add discovery section 😁🤝*
 

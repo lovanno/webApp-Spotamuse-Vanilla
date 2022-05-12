@@ -2370,7 +2370,6 @@
             document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
         }
 
-
     
         /*backwards playlist toggle*/
         let backwardsMode = false;  /*The toggle will reset each time a playlist is opened. This is to avoid writing duplicate code*/
@@ -2398,6 +2397,11 @@
             addNewSongsPlaylist.style.display = "none";
             finishedCreateBtn.style.display = "none";
         })
+
+
+
+
+
 
         /*                                                                      Sort Playlists Filters                                      */
         function sortAlpha(list, _attribute){
@@ -2430,13 +2434,22 @@
             return list
         }
 
+        function createSortPlaylist(attribute){
+            newPlaylistPrep()
+            musicSource(sortAlpha(playlistShow, attribute));
+            for(let f=1; f<playlistShow.length; f++){
+                playlistCreation();
+            }
+            openPlaylistTab();
+        }
 
         let currentInfoFilter = 0;
         const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
         const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
         const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
+
         playlistInfoFilterBtn.addEventListener("click", function(){
-            if(currentInfoFilter > playlistInfoFilters.length-2){
+            if(currentInfoFilter > playlistInfoFilters.length-2){       /*iterates through playlistInfoFilters on each click*/
                 currentInfoFilter = -1;
             }
 
@@ -2446,30 +2459,16 @@
             switch(playlistInfoFilters[currentInfoFilter]){
 
                 case "Title": 
-                    const sortTitle = sortAlpha(playlistShow, 'track_title');
-                   
-                    newPlaylistPrep()
-                    musicSource(sortTitle);
-                    for(let f=1; f<playlistShow.length; f++){
-                        playlistCreation();
-                    }
-                    openPlaylistTab();   
+                    createSortPlaylist('track_title');
                     break;
                 
                 case "Artists":
-                    const sortArtist = sortAlpha(playlistShow, 'artist');
-                    newPlaylistPrep()
-                    musicSource(sortArtist);
-                    for(let f=1; f<playlistShow.length; f++){
-                        playlistCreation();
-                    }
-                    openPlaylistTab();   
+                    createSortPlaylist('artist');
                     break;
 
                 case "Date":
-                    const sortDater = sortByDate(playlistShow, 'release_date');
                     newPlaylistPrep()
-                    musicSource(sortDater);
+                    musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
                     for(let f=1; f<playlistShow.length; f++){
                         playlistCreation();
                     }
@@ -2477,13 +2476,7 @@
                     break;
 
                 case "Duration":
-                    const sortDuration = sortAlpha(playlistShow, 'duration');
-                    newPlaylistPrep()
-                    musicSource(sortDuration);
-                    for(let f=1; f<playlistShow.length; f++){
-                        playlistCreation();
-                    }
-                    openPlaylistTab();   
+                    createSortPlaylist('duration');
                     break;
             }
         })
