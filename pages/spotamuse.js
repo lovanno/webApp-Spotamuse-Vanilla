@@ -1771,7 +1771,7 @@
                 "played": "0",
 
                 "year": "2014",
-                "release_date": "06/20/14",
+                "release_date": "06/20/2014",
                 "explicit": "No",
                 "languages": "English",
                
@@ -2068,7 +2068,6 @@
             const from = event.target;
 
             if(hasClass(from, "sideBarHeader")){
-                console.log
                 allTabs.forEach(tabs => tabs.style.display = "none");
 
                 const clickedTab = parseInt(from.className.slice(-1))-1;
@@ -2100,11 +2099,15 @@
 
 
         /*  Playback Functions Setup    */
-        const recentlyPlayed = [];        
+        const recentlyPlayedAudio = [];    
+        const recentlyPlayedPlaylist = []    
+        let recent10;
+
+
         let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
         function stopAll() {
-            recentlyPlayed.forEach(function(songs) {           /*This array will need to be updated as it expands*/
+            recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
                 songs.pause();
                 songs.currentTime = 0;
             });
@@ -2113,7 +2116,7 @@
 
         function updateSongTime() {
             var currentInterval = setInterval(function() {
-                const songSeconds = (Math.floor(recentlyPlayed[recentlyPlayed.length-1].currentTime));
+                const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
 
                 if(songSeconds % 60 < 10){
                     currentSongTime.textContent = "0:0" + songSeconds % 60;
@@ -2129,9 +2132,11 @@
         function updatePlaylistSong(chosenPlaylist){
             playButtonToggle = false;
             song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
-            recentlyPlayed.push(song);
+            recentlyPlayedAudio.push(song);
+            recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
+            recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
             stopAll();
-                
             song.play();
         }
 
@@ -2155,17 +2160,17 @@
             if(from == skipBackBtn){
                 (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
                 updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder])
-                updateSongTime()
+                nowPlayingInfo(chosenPlaylist[songOrder]);
+                updateSongTime();
             }
 
             if(from == pauseBtn){
                 if(playPauseToggle == false){
-                    (recentlyPlayed[recentlyPlayed.length-1]).pause();
+                    (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
                     playPauseToggle = true;
                 }
                 else{
-                    recentlyPlayed[recentlyPlayed.length-1].play();
+                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
                     playPauseToggle = false;
                     updateSongTime();
                 }
@@ -2174,7 +2179,7 @@
             if(from == skipForwardBtn){
                 (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
                 updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder])
+                nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
             }
         })
@@ -2183,10 +2188,8 @@
         playPauseToggle = true;
         nowPlayingInfo(musicLibrary [0]);
         startSong = new Audio(mp3UrlLibrary[0]);
-        recentlyPlayed.push(startSong);
-
-
-
+        recentlyPlayedAudio.push(startSong);
+        recentlyPlayedPlaylist.push(musicLibrary[0]);
 
 
 /**                                               Playlist Creation                                                     **/       
@@ -2217,6 +2220,8 @@
                 playlistName.textContent = newPlaylistName;
                 createPlaylistBox();
                 refreshPlaylist();
+                backwardsBtn.style.display = "none";
+                playlistInfoFilterBtn.style.display = "none";
                 finishedCreateBtn.style.display = "none";
                 addNewSongsPlaylist.style.display = "block";
             }
@@ -2316,6 +2321,8 @@
             document.querySelector("p.playlistSong.trackTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_title;
             document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
             document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
+            document.querySelector("p.playlistSong.dateAdded.\\3" + trackNum).textContent =  new Date(chosenPlaylist[trackAdjust-1].release_date).toDateString().slice(4);
+            document.querySelector("p.playlistSong.durationTime.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].duration;
         }
 
         /*Updates the playlist content with photos, names, and music */
@@ -2324,6 +2331,8 @@
             document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
             document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
             document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
+            document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4);
+            document.querySelector("p.playlistSong.durationTime.\\31").textContent = chosenPlaylist[0].duration;
 
             if(playlistTrackCount < 9){
                 updateTrackInfo(playlistTrackCount);
@@ -2336,8 +2345,6 @@
 
         let playlistShow = musicLibrary;
         let playcreateMode = false; /*Allows songs to be added to a playlist*/
-
-
 
 
 
@@ -2362,29 +2369,158 @@
             refreshPlaylist();
             document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
         }
+
+    
+        /*backwards playlist toggle*/
+        let backwardsMode = false;  /*The toggle will reset each time a playlist is opened. This is to avoid writing duplicate code*/
+        const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
+        backwardsBtn.addEventListener("click", function(){
+            backwardsMode = !backwardsMode;
+            if(backwardsMode){
+                const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
+                newPlaylistPrep()
+                musicSource(reverseArr);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+            }
+            else{
+                newPlaylistPrep()
+                musicSource(playlistShow);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+            }
+            openPlaylistTab();
+            addNewSongsPlaylist.style.display = "none";
+            finishedCreateBtn.style.display = "none";
+        })
+
+
+
+
+
+
+        /*                                                                      Sort Playlists Filters                                      */
+        function sortAlpha(list, _attribute){
+            if (list !== undefined && list !== null) {
+                list.sort((a, b) => {
+                if (a[_attribute] > b[_attribute]) {
+                    return 1;  
+                }
+                if (a[_attribute] < b[_attribute]) {
+                    return -1; 
+                }
+                    return 0;
+                })
+            }
+            return list
+        }
+
+        function sortByDate(list, _attribute){
+            if (list !== undefined && list !== null) {
+                list.sort((a, b) => {
+                if ((new Date(a[_attribute])) > (new Date(b[_attribute]))) {
+                    return 1;   
+                }
+                if ((new Date(a[_attribute])) < (new Date(b[_attribute]))) {
+                    return -1
+                }
+                    return 0;
+                })
+            }
+            return list
+        }
+
+        function createSortPlaylist(attribute){
+            newPlaylistPrep()
+            musicSource(sortAlpha(playlistShow, attribute));
+            for(let f=1; f<playlistShow.length; f++){
+                playlistCreation();
+            }
+            openPlaylistTab();
+        }
+
+        let currentInfoFilter = 0;
+        const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
+        const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
+        const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
+
+        playlistInfoFilterBtn.addEventListener("click", function(){
+            if(currentInfoFilter > playlistInfoFilters.length-2){       /*iterates through playlistInfoFilters on each click*/
+                currentInfoFilter = -1;
+            }
+
+            currentInfoFilter++;
+            infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
+
+            switch(playlistInfoFilters[currentInfoFilter]){
+
+                case "Title": 
+                    createSortPlaylist('track_title');
+                    break;
+                
+                case "Artists":
+                    createSortPlaylist('artist');
+                    break;
+
+                case "Date":
+                    newPlaylistPrep()
+                    musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                    openPlaylistTab();   
+                    break;
+
+                case "Duration":
+                    createSortPlaylist('duration');
+                    break;
+            }
+        })
     
         document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
             const from = event.target;
 
+            if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+                playlistName.textContent = "Recently Played";
+                if(recent10){
+                    newPlaylistPrep();
+                    let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
+                    musicSource(unique);
+
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                }
+                openPlaylistTab();
+                addNewSongsPlaylist.style.display = "none";
+                finishedCreateBtn.style.display = "none";
+            }
+
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
                 playlistName.textContent = "Your Library";
+                backwardsMode = false;      
+                
                 newPlaylistPrep()
                 musicSource(musicLibrary);
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
                 }
-
+                
                 openPlaylistTab();
                 addNewSongsPlaylist.style.display = "none";
                 finishedCreateBtn.style.display = "none";
             }
             
-            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
                 refreshPlaylist();
                 document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
 
-                playlistName.textContent = from.lastElementChild.textContent;
+                playlistName.textContent = from.lastElementChild.textContent;                
                 musicSource(window["'" + playlistName.textContent + "'"]);
 
                 for(let f=1; f<playlistShow.length; f++){
@@ -2395,12 +2531,16 @@
             }
 
             if(hasClass(from, "newPlaylistSongs")){
+                backwardsMode = false;
                 var clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
                 stopAll();
                 song.play();
-                recentlyPlayed.push(song);
+                recentlyPlayedAudio.push(song);
+                recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1])
+                recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
                 updateSongTime();
 
                 songOrder = clickedTrack-1;
@@ -2438,11 +2578,14 @@
 
         /*Listens when new playlist creation is finished*/
         document.body.addEventListener("click", function(event){
-            const from = event.target;
+            const from = event.target;  
+            backwardsMode = false;
 
             if(hasClass(from, "finishedPlaylistBtn")){
                 playcreateMode = false;
                 finishedCreateBtn.style.display = "none";
+                backwardsBtn.style.display = "block";
+                playlistInfoFilterBtn.style.display = "block";
 
                 newPlaylistPrep()
                 musicSource(window["'" + playlistName.textContent + "'"]);
