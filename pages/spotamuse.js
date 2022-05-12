@@ -2221,6 +2221,7 @@
                 createPlaylistBox();
                 refreshPlaylist();
                 backwardsBtn.style.display = "none";
+                playlistInfoFilterBtn.style.display = "none";
                 finishedCreateBtn.style.display = "none";
                 addNewSongsPlaylist.style.display = "block";
             }
@@ -2397,6 +2398,95 @@
             addNewSongsPlaylist.style.display = "none";
             finishedCreateBtn.style.display = "none";
         })
+
+        /*                                                                      Sort Playlists Filters                                      */
+        function sortAlpha(list, _attribute){
+            if (list !== undefined && list !== null) {
+                list.sort((a, b) => {
+                if (a[_attribute] > b[_attribute]) {
+                    return 1;  
+                }
+                if (a[_attribute] < b[_attribute]) {
+                    return -1; 
+                }
+                    return 0;
+                })
+            }
+            return list
+        }
+
+        function sortByDate(list, _attribute){
+            if (list !== undefined && list !== null) {
+                list.sort((a, b) => {
+                if ((new Date(a[_attribute])) > (new Date(b[_attribute]))) {
+                    return 1;   
+                }
+                if ((new Date(a[_attribute])) < (new Date(b[_attribute]))) {
+                    return -1
+                }
+                    return 0;
+                })
+            }
+            return list
+        }
+
+
+        let currentInfoFilter = 0;
+        const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
+        const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
+        const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
+        playlistInfoFilterBtn.addEventListener("click", function(){
+            if(currentInfoFilter > playlistInfoFilters.length-2){
+                currentInfoFilter = -1;
+            }
+
+            currentInfoFilter++;
+            infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
+
+            switch(playlistInfoFilters[currentInfoFilter]){
+
+                case "Title": 
+                    const sortTitle = sortAlpha(playlistShow, 'track_title');
+                   
+                    newPlaylistPrep()
+                    musicSource(sortTitle);
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                    openPlaylistTab();   
+                    break;
+                
+                case "Artists":
+                    const sortArtist = sortAlpha(playlistShow, 'artist');
+                    newPlaylistPrep()
+                    musicSource(sortArtist);
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                    openPlaylistTab();   
+                    break;
+
+                case "Date":
+                    const sortDater = sortByDate(playlistShow, 'release_date');
+                    newPlaylistPrep()
+                    musicSource(sortDater);
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                    openPlaylistTab();   
+                    break;
+
+                case "Duration":
+                    const sortDuration = sortAlpha(playlistShow, 'duration');
+                    newPlaylistPrep()
+                    musicSource(sortDuration);
+                    for(let f=1; f<playlistShow.length; f++){
+                        playlistCreation();
+                    }
+                    openPlaylistTab();   
+                    break;
+            }
+        })
     
         document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
             const from = event.target;
@@ -2502,6 +2592,7 @@
                 playcreateMode = false;
                 finishedCreateBtn.style.display = "none";
                 backwardsBtn.style.display = "block";
+                playlistInfoFilterBtn.style.display = "block";
 
                 newPlaylistPrep()
                 musicSource(window["'" + playlistName.textContent + "'"]);
