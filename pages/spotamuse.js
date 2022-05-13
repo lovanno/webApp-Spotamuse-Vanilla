@@ -2624,3 +2624,95 @@
                 }
             }
         });
+
+
+
+
+        /*                                  Listen Later Tab                                       */
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.className);
+        }
+
+        function dragEntire(ev) {
+            ev.dataTransfer.setData("text", (ev.target.parentElement).className);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementsByClassName(data)[0]);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*              Just have to add song functionality. Will have to add a seting on right side of songs to add it to listen later*/
+        const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
+        const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
+        const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
+
+
+        /*let dragSongCount = 1;*/
+        function laterDragSong(dropzone, listname, dragSongCount){
+            const listenSongCont = document.createElement("div");
+            listenSongCont.classList.add(listname, "listenSongCont", dragSongCount);
+            dropzone.appendChild(listenSongCont);
+
+                    const handleBar = document.createElement("div");
+                    handleBar.classList.add("songHandleBar");
+                    handleBar.textContent = "Bar";
+                    handleBar.draggable = true;         /*these attributes make dynamic songs draggable/droppable*/
+                    handleBar.ondragstart = dragEntire;
+                    listenSongCont.appendChild(handleBar);
+
+                    const songBtnCont = document.createElement("button");
+                    songBtnCont.classList.add(listname, "SongBtnCont", dragSongCount)
+                    listenSongCont.appendChild(songBtnCont);
+
+                        const listenTrackImage = document.createElement("div");
+                        listenTrackImage.classList.add(listname, "listenTrackImage", dragSongCount)
+                        songBtnCont.appendChild(listenTrackImage);
+
+                        const listenOrderCont = document.createElement("div");
+                        listenOrderCont.classList.add(listname, "listenOrderCont", dragSongCount)
+                        songBtnCont.appendChild(listenOrderCont);
+
+                            const listenTrackInfoCont = document.createElement("div");
+                            listenTrackInfoCont.classList.add(listname, "listenTrackInfoCont", dragSongCount)
+                            listenOrderCont.appendChild(listenTrackInfoCont);
+
+                                const listenTrackTitle = document.createElement("p");
+                                listenTrackTitle.classList.add(listname, "listenTrackTitle", dragSongCount)
+                                listenTrackInfoCont.appendChild(listenTrackTitle);
+
+                                const listenTrackArtist = document.createElement("p");
+                                listenTrackArtist.classList.add(listname, "listenTrackArtist", dragSongCount)
+                                listenTrackInfoCont.appendChild(listenTrackArtist);
+
+                        const listenDurationCont = document.createElement("div");
+                        listenDurationCont.classList.add(listname, "listenTrackInfoCont", dragSongCount)
+                        songBtnCont.appendChild(listenDurationCont);
+
+                            const listenAlbumTitle = document.createElement("p");
+                            listenAlbumTitle.classList.add(listname, "listenAlbumTitle", dragSongCount)
+                            listenDurationCont.appendChild(listenAlbumTitle);
+
+                            const listenDurationTime = document.createElement("p");
+                            listenDurationTime.classList.add(listname, "listenDurationTime", dragSongCount)
+                            listenDurationCont.appendChild(listenDurationTime);
+        }
+
+        laterDragSong(priorityZoneDiv, "prioritySong", 2);

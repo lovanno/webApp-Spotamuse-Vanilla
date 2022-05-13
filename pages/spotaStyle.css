@@ -818,7 +818,41 @@
       font-size: 16px;
     }
 
+    /*    Drag and Drop     */
+    .allDropZoneLists {
+      display: flex;
+      justify-content: space-between;
+    }
 
+    div.dropzone {
+      height: 20rem;
+      background-color: red;
+    }
+
+    .listenTrackImage{
+      background-image: url("../material/song_artCovers/shadowLady_song1.jfif");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 3rem;
+      width: 3rem;
+    }
+
+
+    /*  Song Containers */
+    .listenSongCont {
+      display: flex;
+      align-items: center;
+    }
+
+    button.SongBtnCont{
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+
+
+  
     /*Tab 4 - Search for Items */
     a.productSectLink {
       font-size: 16px;
@@ -1056,7 +1090,7 @@
 
 
     /*Tab 5*/
-    .playlistSong.trackImage {
+    .trackImage {
       background-repeat: no-repeat;
       background-size: cover;
       height: 3rem;

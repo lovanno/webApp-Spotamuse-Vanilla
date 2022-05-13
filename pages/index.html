@@ -151,7 +151,75 @@
                 <button class = "laterTabHeader 3">Eventually</button>
             </div>
 
-            <div class = "Header">Add Songs!</div>
+         
+            <div class = "allDropZoneLists">
+                <div class="priorityList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Add a Song</p>
+
+
+                    <!-- fix name on all. Must be same for priority-->
+                    <div class="prioritySong listenSongCont 1">
+                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
+                        <button class = "prioritySong SongBtnCont 1">
+                            <div class = "prioritySong listenTrackImage 1"></div>
+                            <div class = "prioritySong listenOrderCont 1">
+                                <div class = "prioritySong listenTrackInfoCont 1">
+                                    <p class = "prioritySong listenTrackTitle 1">Suit & Tie</p>
+                                    <p class = "prioritySong listenTrackArtist 1">Justin Timber</p>
+                                </div>
+                            </div>
+                            <div class = "prioritySong listenDurationCont 1">
+                                <p class = "prioritySong listenAlbumTitle 1">20/20</p>
+                                <p class = "prioritySong listenDurationTime 1">0:00</p>
+                            </div>
+                        </button>     
+                    </div>
+                </div>
+
+
+                <div class="nonEssentialList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Add a Song</p>
+
+                    <div class="nonEssSong listenSongCont 1">
+                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
+                        <button class = "nonEssSong SongBtnCont 1">
+                            <div class = "nonEssSong listenTrackImage 1"></div>
+                            <div class = "nonEssSong listenOrderCont 1">
+                                <div class = "nonEssSong listenTrackInfoCont 1">
+                                    <p class = "nonEssSong listenTrackTitle 1">Title</p>
+                                    <p class = "nonEssSong listenTrackArtist 1">Artist</p>
+                                </div>
+                            </div>
+                            <div class = "nonEssSong durationCont 1">
+                                <p class = "nonEssSong listenAlbumTitle 1">Album</p>
+                                <p class = "nonEssSong durationTime 1">0:00</p>
+                            </div>
+                        </button>   
+                    </div>  
+                </div>
+
+                <div class="eventuallyList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Add a Song</p>
+
+                    <div class="eventuallySong listenSongCont 1">
+                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
+                        <button class = "eventuallySong SongBtnCont 1">
+                            <div class = "eventuallySong listenTrackImage 1"></div>
+                            <div class = "eventuallySong listenOrderCont 1">
+                                <div class = "eventuallySong listenTrackInfoCont 1">
+                                    <p class = "eventuallySong listenTrackTitle 1">Title</p>
+                                    <p class = "eventuallySong listenTrackArtist 1">Artist</p>
+                                </div>
+                            </div>
+                            <div class = "eventuallySong listenDurationCont 1">
+                                <p class = "eventuallySong listenAlbumTitle 1">Album</p>
+                                <p class = "eventuallySong listenDurationTime 1">0:00</p>
+                            </div>
+                        </button>     
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -460,18 +528,14 @@
                             <p class = "playlistSong trackTitle 1"></p>
                             <p class = "playlistSong trackArtist 1"></p>
                         </div>
-                                                <!-- <p class = "playlistSong trackTitle 1">Sun Goes Down</p> -->
                     </div>
 
                     <div class = "playlistSongs albumCont 1">
                         <p class = "playlistSong albumTitle 1"></p>
-                                               <!-- <p class = "playlistSong albumTitle 1">Drip, Drip</p> -->
                     </div>
 
                     <div class = "playlistSongs dateAddedCont 1">
                         <p class = "playlistSong dateAdded 1"></p>
-                                                <!--  <p class = "playlistSong dateAdded 1">Sep 4, 2021</p>  -->
-
                     </div>
 
                     <div class = "playlistSongs durationCont 1">
