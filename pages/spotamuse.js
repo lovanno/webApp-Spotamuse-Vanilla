@@ -2392,17 +2392,17 @@
                                         listenLaterOptionLI.appendChild(level2UL);
 
                                             const priorityLaterOptionLI = document.createElement("li");
-                                            priorityLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            priorityLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
                                             priorityLaterOptionLI.textContent = "Priority";
                                             level2UL.appendChild(priorityLaterOptionLI);
 
                                             const nonEssLaterOptionLI = document.createElement("li");
-                                            nonEssLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            nonEssLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
                                             nonEssLaterOptionLI.textContent = "Non Essential";
                                             level2UL.appendChild(nonEssLaterOptionLI);
 
                                             const eventuallyLaterOptionLI = document.createElement("li");
-                                            eventuallyLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            eventuallyLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
                                             eventuallyLaterOptionLI.textContent = "Eventually";
                                             level2UL.appendChild(eventuallyLaterOptionLI);
         }
@@ -2726,9 +2726,8 @@
         let nonEssListCount = 1;
         let eventuallyListCount = 1;
 
-        function laterDragSong(dropzone, listname, dragSongCount){
-            dragSongCount++;
-            console.log(dragSongCount);
+
+        function createLaterDNDTrack(dropzone, listname, dragSongCount){
             const listenSongCont = document.createElement("div");
             listenSongCont.classList.add(listname, "listenSongCont", dragSongCount);
             dropzone.appendChild(listenSongCont);
@@ -2777,6 +2776,109 @@
                             listenDurationCont.appendChild(listenDurationTime);
         }
 
-        laterDragSong(priorityZoneDiv, "prioritySong", priorityListCount);
+        function updatelaterTrackInfo(listname, trackNum, playlistSong){
+            document.querySelector("div." + listname + ".listenTrackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + playlistShow[playlistSong].track_coverUrl; + "\")";
+            document.querySelector("p." + listname + ".listenTrackTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_title;
+            document.querySelector("p." + listname + ".listenTrackArtist.\\3" + trackNum).textContent = playlistShow[playlistSong].artist;
+            document.querySelector("p." + listname + ".listenAlbumTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_album;
+            document.querySelector("p." + listname + ".listenDurationTime.\\3" + trackNum).textContent = playlistShow[playlistSong].duration;
+        }
+
+
+        /*makes the listen later base songs hidden on launch*/
+        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "none";
+        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "none";
+        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "none";
+    
+
+        /*Adds a song to the Listen Later from any playlist*/
+        document.body.addEventListener("click", function(event){
+            const from = event.target;
+            let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
+
+            if(hasSuperClass(from, ("optionHeader later " + songNumOrder))){    
+                songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
+
+                if(from.textContent == "Priority"){
+
+                    if(priorityListCount == 1){
+                        priorityListCount++;
+                        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/     
+                        updatelaterTrackInfo("prioritySong", 1, songNumOrder)
+                    }
+                    else if (priorityListCount < 9){
+                        priorityListCount++;
+                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                        updatelaterTrackInfo("prioritySong", priorityListCount, songNumOrder);
+                    }
+                    else{
+                        priorityListCount++;
+                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                        updatelaterTrackInfo("prioritySong", spaceTens(priorityListCount), songNumOrder);
+                    }
+                    
+                }
+
+                if(from.textContent == "Non Essential"){
+                    if(nonEssListCount == 1){
+                        nonEssListCount++;
+                        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "flex";
+                        updatelaterTrackInfo("nonEssSong", 1, songNumOrder)
+                    }
+                    else if (nonEssListCount < 9){
+                        nonEssListCount++;
+                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                        updatelaterTrackInfo("nonEssSong", nonEssListCount, songNumOrder);
+                    }
+                    else{
+                        nonEssListCount++;
+                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                        updatelaterTrackInfo("nonEssSong", spaceTens(nonEssListCount), songNumOrder);
+                    }
+                }
+
+                if(from.textContent == "Eventually"){
+                    if(eventuallyListCount == 1){
+                        eventuallyListCount++;
+                        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "flex";
+                        updatelaterTrackInfo("eventuallySong", 1, songNumOrder)
+                    }
+                    else if (eventuallyListCount < 9){
+                        eventuallyListCount++;
+                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                        updatelaterTrackInfo("eventuallySong", eventuallyListCount, songNumOrder);
+                    }
+                    else{
+                        eventuallyListCount++;
+                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                        updatelaterTrackInfo("eventuallySong", spaceTens(eventuallyListCount), songNumOrder);
+                    }
+                }
+
+            }
+
+        });
+
+
+        const listenedLaterSongs = [];
+        document.body.addEventListener("click", function(event){
+            const from = event.target;
+            if(hasClass(from, "SongBtnCont")){
+                let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
+                songName = "../material/songs_mp3/" + songName + "mp3";
+
+                laterSong = new Audio(songName);
+                listenedLaterSongs.push(laterSong)
+
+                listenedLaterSongs.forEach(playedSongs => {           /*This array will need to be updated as it expands*/
+                    playedSongs.pause();
+                    playedSongs.currentTime = 0;
+                })
+
+                laterSong.play();
+
+            }
+
+        })
 
 

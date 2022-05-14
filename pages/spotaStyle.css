@@ -361,7 +361,9 @@
       width: fit-content; 
       background: #033677;
       position: relative;
-      left: -6%;
+
+
+      left: -32%;     /*-6*/
     }
 
     .menuGear{
@@ -454,8 +456,9 @@
     }
 
     div.dropzone {
-      height: 20rem;
+      height: 30rem;
       background-color: red;
+      overflow-x: auto;
     }
 
     .listenTrackImage{
@@ -471,6 +474,7 @@
     .listenSongCont {
       display: flex;
       align-items: center;
+      margin-bottom: 2rem;
     }
 
     button.SongBtnCont{
