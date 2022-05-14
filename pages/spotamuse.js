@@ -2276,7 +2276,7 @@
 
 
         /*Creates the total playlist track divs but doesn't update it w/ song info*/
-        var playlistTrackCount = 1;
+        let playlistTrackCount = 1;
         const allPlaylistTracksCont = document.querySelector("div.library.newPlaylistCont.\\31");
         function createPlaylistTrack(){
             const newPlaylistSongCont = document.createElement("button");
@@ -2340,7 +2340,75 @@
                             trackDurationText.textContent = "0:00";
                             trackDurationText.classList.add("playlistSong", "durationTime", playlistTrackCount);
                             trackDurationCont.appendChild(trackDurationText);
+
+
+                    /*Song Drop Down Options Nav*/
+                    const songNav = document.createElement("nav");
+                    songNav.classList.add("song-nav", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(songNav);
+
+                        const songNavUL = document.createElement("ul");
+                        songNavUL.classList.add("song-nav-ul");
+                        songNav.appendChild(songNavUL);
+
+                            const settingGearLI = document.createElement("li");
+                            settingGearLI.classList.add("liHeader1", "optionHeader");
+                            songNavUL.appendChild(settingGearLI);
+
+                                const settingGearIcon = document.createElement("div");
+                                settingGearIcon.classList.add("menuGear");
+                                settingGearLI.appendChild(settingGearIcon);
+
+                            const level1UL = document.createElement("ul");
+                            level1UL.classList.add("level1");
+                            songNavUL.appendChild(level1UL);
+
+                                const subNavUL = document.createElement("ul");
+                                subNavUL.classList.add("sub-nav-ul");
+                                level1UL.appendChild(subNavUL);
+
+                                    const likeOptionLI = document.createElement("li");
+                                    likeOptionLI.classList.add("liHeader", "optionHeader");
+                                    likeOptionLI.textContent = "Like";
+                                    subNavUL.appendChild(likeOptionLI);
+
+                                    const queueOptionLI = document.createElement("li");
+                                    queueOptionLI.classList.add("liHeader", "optionHeader");
+                                    queueOptionLI.textContent = "Queue";
+                                    subNavUL.appendChild(queueOptionLI);
+
+                                    const addPlayOptionLI = document.createElement("li");
+                                    addPlayOptionLI.classList.add("liHeader", "optionHeader");
+                                    addPlayOptionLI.textContent = "Add to Playlist";
+                                    subNavUL.appendChild(addPlayOptionLI);
+
+                                    const listenLaterOptionLI = document.createElement("li");
+                                    listenLaterOptionLI.classList.add("liHeader", "optionHeader");
+                                    listenLaterOptionLI.textContent = "Listen Later";
+                                    subNavUL.appendChild(listenLaterOptionLI);
+
+                                        const level2UL = document.createElement("ul");      /*Gets attatched to Listen Later LI because sub menu belongs to it*/
+                                        level2UL.classList.add("level2");
+                                        listenLaterOptionLI.appendChild(level2UL);
+
+                                            const priorityLaterOptionLI = document.createElement("li");
+                                            priorityLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            priorityLaterOptionLI.textContent = "Priority";
+                                            level2UL.appendChild(priorityLaterOptionLI);
+
+                                            const nonEssLaterOptionLI = document.createElement("li");
+                                            nonEssLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            nonEssLaterOptionLI.textContent = "Non Essential";
+                                            level2UL.appendChild(nonEssLaterOptionLI);
+
+                                            const eventuallyLaterOptionLI = document.createElement("li");
+                                            eventuallyLaterOptionLI.classList.add("optionHeader", playlistTrackCount);
+                                            eventuallyLaterOptionLI.textContent = "Eventually";
+                                            level2UL.appendChild(eventuallyLaterOptionLI);
         }
+
+
+
 
         /*Helper function for the createDownloadedPlaylist() function*/
         function updateTrackInfo(trackNum){
@@ -2628,7 +2696,7 @@
 
 
 
-        /*                                  Listen Later Tab                                       */
+        /*                                                                    Listen Later Tab                                       */
         function allowDrop(ev) {
             ev.preventDefault();
         }
@@ -2649,17 +2717,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-        /*              Just have to add song functionality. Will have to add a seting on right side of songs to add it to listen later*/
+        /*     Creates a new song element w/ handle bars*/
         const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
         const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
         const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
@@ -2720,3 +2778,5 @@
         }
 
         laterDragSong(priorityZoneDiv, "prioritySong", priorityListCount);
+
+
