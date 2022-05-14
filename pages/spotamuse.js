@@ -2181,6 +2181,7 @@
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
+                stopLaterSongs();
                 lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
             }
 
@@ -2194,6 +2195,7 @@
                     playPauseToggle = false;
                     updateSongTime();
                 }
+                stopLaterSongs();
             }
 
             if(from == skipForwardBtn){
@@ -2210,6 +2212,7 @@
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
+                stopLaterSongs();
             }
         })
 
@@ -2862,6 +2865,13 @@
         });
 
 
+        function stopLaterSongs(){
+            listenedLaterSongs.forEach(playedSongs => {           /*This array will need to be updated as it expands*/
+                playedSongs.pause();
+                playedSongs.currentTime = 0;
+            })
+        }
+
         const listenedLaterSongs = [];
         document.body.addEventListener("click", function(event){
             const from = event.target;
@@ -2870,15 +2880,12 @@
                 songName = "../material/songs_mp3/" + songName + "mp3";
 
                 laterSong = new Audio(songName);
-                listenedLaterSongs.push(laterSong)
+                listenedLaterSongs.push(laterSong);
+                stopLaterSongs();
+                stopAll();
 
-                listenedLaterSongs.forEach(playedSongs => {           /*This array will need to be updated as it expands*/
-                    playedSongs.pause();
-                    playedSongs.currentTime = 0;
-                })
 
                 laterSong.play();
-
             }
 
         })
