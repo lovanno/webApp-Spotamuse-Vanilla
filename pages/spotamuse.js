@@ -2792,13 +2792,15 @@
     
 
         /*Adds a song to the Listen Later from any playlist*/
+        const addedLaterOrder = [];
         document.body.addEventListener("click", function(event){
             const from = event.target;
             let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
 
-            if(hasSuperClass(from, ("optionHeader later " + songNumOrder))){    
+            if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
                 songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
-
+                addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
+        
                 if(from.textContent == "Priority"){
 
                     if(priorityListCount == 1){
