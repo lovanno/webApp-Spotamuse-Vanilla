@@ -38,17 +38,29 @@ Last Played Personal Playlist (plays last 10 songs and updates with each song) �
 
 Play a playlist backwards ✅
 
-*Create a playlist shuffle*
+Create a playlist shuffle ✅
 
 *Listen to later tab. This can organize songs by priority, nonessential, eventually*
 
-*Folders for Spotify*
-
-*Better queue grid*
+*Allow songs to replay if repeat cycle button is toggled*
 
 *Album Order*
 
 &emsp; &emsp; • create a preferred order of albums. This button switches between original and the ones you just want to hear. 
+
+*Folders for Spotify*
+
+## Version 2: Experience 🌌
+
+Music Filters
+• Slow down music or Speed it up
+• Add an echo to a song (reverb)
+
+&nbsp;
+
+*Better queue grid*
+
+&emsp; &emsp;• Make temporary playlists through the queue. Temporary Playlists can repeat if you create a button to cycle.
 
 *Organization*
 
@@ -58,20 +70,8 @@ Play a playlist backwards ✅
 • Folders for Spotify 
 • Sort Songs (most played, alphabetical, date created, date added)
 
-
-Better Queue
-• temporary playlist through queue. It can repeat if you create a button to cycle. It’ll hit the button again and be signaled as the restart.
-
 &nbsp;
 
-## Version 2: Experience 🌌
-
-Music Filters
-• Slow down music or Speed it up
-• Add an echo to a song (reverb)
-
-
-&nbsp;
 # Realizations ⌛️
 
 • If there is an error in the HTML markup, your css grid will break. 
@@ -196,3 +196,11 @@ https://api.audiomack.com/v1/music/song/the-weeknd/song/save-your-tears (1003, 4
 
 https://api.audiomack.com/v1/playlist/trending (1003, 401)
 
+
+
+
+>Song Settings: Vertical Dropdown Menu w/ Submenu Inspo
+
+https://codepen.io/Wingedness/pen/dPByby
+
+https://stackoverflow.com/questions/47403239/cannot-make-vertical-menu-horizontally

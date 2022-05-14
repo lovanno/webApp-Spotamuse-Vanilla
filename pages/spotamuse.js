@@ -2664,9 +2664,13 @@
         const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
         const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
 
+        let priorityListCount = 1;
+        let nonEssListCount = 1;
+        let eventuallyListCount = 1;
 
-        /*let dragSongCount = 1;*/
         function laterDragSong(dropzone, listname, dragSongCount){
+            dragSongCount++;
+            console.log(dragSongCount);
             const listenSongCont = document.createElement("div");
             listenSongCont.classList.add(listname, "listenSongCont", dragSongCount);
             dropzone.appendChild(listenSongCont);
@@ -2715,4 +2719,4 @@
                             listenDurationCont.appendChild(listenDurationTime);
         }
 
-        laterDragSong(priorityZoneDiv, "prioritySong", 2);
+        laterDragSong(priorityZoneDiv, "prioritySong", priorityListCount);
