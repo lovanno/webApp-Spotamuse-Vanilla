@@ -2162,6 +2162,12 @@
             shuffleMode = !shuffleMode;
         });
 
+        let repeatCycleMode = false;
+        const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
+        repeatCycleBtn.addEventListener("click", function(){
+            repeatCycleMode = !repeatCycleMode;
+        });
+
         let chosenPlaylist;
         chosenPlaylist = musicLibrary;
         document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
@@ -2177,6 +2183,10 @@
                 }
                 else{
                     (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                }
+
+                if(repeatCycleMode == true){
+                    songOrder = lastSongOrder;
                 }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
@@ -2209,10 +2219,15 @@
                 else{
                     (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
                 }
+
+                if(repeatCycleMode == true){
+                    songOrder = lastSongOrder;
+                }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
                 stopLaterSongs();
+                lastSongOrder = songOrder;
             }
         })
 

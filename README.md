@@ -40,15 +40,9 @@ Play a playlist backwards ✅
 
 Create a playlist shuffle ✅
 
-*Listen to later tab. This can organize songs by priority, nonessential, eventually*
+Listen to later tab. This can organize songs by priority, nonessential, eventually ✅
 
 *Allow songs to replay if repeat cycle button is toggled*
-
-*Album Order*
-
-&emsp; &emsp; • create a preferred order of albums. This button switches between original and the ones you just want to hear. 
-
-*Folders for Spotify*
 
 ## Version 2: Experience 🌌
 
@@ -71,6 +65,12 @@ Music Filters
 • Sort Songs (most played, alphabetical, date created, date added)
 
 &nbsp;
+
+*Album Order*
+
+&emsp; &emsp; • create a preferred order of albums. This button switches between original and the ones you just want to hear. 
+
+*Folders for Spotify*
 
 # Realizations ⌛️
 
