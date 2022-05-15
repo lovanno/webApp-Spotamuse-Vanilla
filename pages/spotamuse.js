@@ -2152,16 +2152,47 @@
 
 
 /**                                               Playback Functions                                                      **/
+
+
+        /*    Shuffle Feature   */
+        let shuffleMode = false;
+        let lastSongOrder;
+        const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
+        shuffleBtn.addEventListener("click", function(){
+            shuffleMode = !shuffleMode;
+        });
+
+        let repeatCycleMode = false;
+        const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
+        repeatCycleBtn.addEventListener("click", function(){
+            repeatCycleMode = !repeatCycleMode;
+        });
+
         let chosenPlaylist;
         chosenPlaylist = musicLibrary;
         document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
             const from = event.target;
           
             if(from == skipBackBtn){
-                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                if(shuffleMode == true){
+                    songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                    if(songOrder == -1 || songOrder == lastSongOrder){
+                        songOrder = Math.floor(Math.random() * playlistShow.length);
+                    }
+                }
+                else{
+                    (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+                }
+
+                if(repeatCycleMode == true){
+                    songOrder = lastSongOrder;
+                }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
+                stopLaterSongs();
+                lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
             }
 
             if(from == pauseBtn){
@@ -2174,13 +2205,29 @@
                     playPauseToggle = false;
                     updateSongTime();
                 }
+                stopLaterSongs();
             }
 
             if(from == skipForwardBtn){
-                (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                if(shuffleMode == true){
+                    songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                    if(songOrder == -1 || songOrder == lastSongOrder){
+                        songOrder = Math.floor(Math.random() * playlistShow.length);
+                    }
+                }
+                else{
+                    (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
+                }
+
+                if(repeatCycleMode == true){
+                    songOrder = lastSongOrder;
+                }
                 updatePlaylistSong(chosenPlaylist);
                 nowPlayingInfo(chosenPlaylist[songOrder]);
                 updateSongTime();
+                stopLaterSongs();
+                lastSongOrder = songOrder;
             }
         })
 
@@ -2247,7 +2294,7 @@
 
 
         /*Creates the total playlist track divs but doesn't update it w/ song info*/
-        var playlistTrackCount = 1;
+        let playlistTrackCount = 1;
         const allPlaylistTracksCont = document.querySelector("div.library.newPlaylistCont.\\31");
         function createPlaylistTrack(){
             const newPlaylistSongCont = document.createElement("button");
@@ -2311,7 +2358,75 @@
                             trackDurationText.textContent = "0:00";
                             trackDurationText.classList.add("playlistSong", "durationTime", playlistTrackCount);
                             trackDurationCont.appendChild(trackDurationText);
+
+
+                    /*Song Drop Down Options Nav*/
+                    const songNav = document.createElement("nav");
+                    songNav.classList.add("song-nav", + playlistTrackCount);
+                    newPlaylistSongCont.appendChild(songNav);
+
+                        const songNavUL = document.createElement("ul");
+                        songNavUL.classList.add("song-nav-ul");
+                        songNav.appendChild(songNavUL);
+
+                            const settingGearLI = document.createElement("li");
+                            settingGearLI.classList.add("liHeader1", "optionHeader");
+                            songNavUL.appendChild(settingGearLI);
+
+                                const settingGearIcon = document.createElement("div");
+                                settingGearIcon.classList.add("menuGear");
+                                settingGearLI.appendChild(settingGearIcon);
+
+                            const level1UL = document.createElement("ul");
+                            level1UL.classList.add("level1");
+                            songNavUL.appendChild(level1UL);
+
+                                const subNavUL = document.createElement("ul");
+                                subNavUL.classList.add("sub-nav-ul");
+                                level1UL.appendChild(subNavUL);
+
+                                    const likeOptionLI = document.createElement("li");
+                                    likeOptionLI.classList.add("liHeader", "optionHeader");
+                                    likeOptionLI.textContent = "Like";
+                                    subNavUL.appendChild(likeOptionLI);
+
+                                    const queueOptionLI = document.createElement("li");
+                                    queueOptionLI.classList.add("liHeader", "optionHeader");
+                                    queueOptionLI.textContent = "Queue";
+                                    subNavUL.appendChild(queueOptionLI);
+
+                                    const addPlayOptionLI = document.createElement("li");
+                                    addPlayOptionLI.classList.add("liHeader", "optionHeader");
+                                    addPlayOptionLI.textContent = "Add to Playlist";
+                                    subNavUL.appendChild(addPlayOptionLI);
+
+                                    const listenLaterOptionLI = document.createElement("li");
+                                    listenLaterOptionLI.classList.add("liHeader", "optionHeader");
+                                    listenLaterOptionLI.textContent = "Listen Later";
+                                    subNavUL.appendChild(listenLaterOptionLI);
+
+                                        const level2UL = document.createElement("ul");      /*Gets attatched to Listen Later LI because sub menu belongs to it*/
+                                        level2UL.classList.add("level2");
+                                        listenLaterOptionLI.appendChild(level2UL);
+
+                                            const priorityLaterOptionLI = document.createElement("li");
+                                            priorityLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
+                                            priorityLaterOptionLI.textContent = "Priority";
+                                            level2UL.appendChild(priorityLaterOptionLI);
+
+                                            const nonEssLaterOptionLI = document.createElement("li");
+                                            nonEssLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
+                                            nonEssLaterOptionLI.textContent = "Non Essential";
+                                            level2UL.appendChild(nonEssLaterOptionLI);
+
+                                            const eventuallyLaterOptionLI = document.createElement("li");
+                                            eventuallyLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
+                                            eventuallyLaterOptionLI.textContent = "Eventually";
+                                            level2UL.appendChild(eventuallyLaterOptionLI);
         }
+
+
+
 
         /*Helper function for the createDownloadedPlaylist() function*/
         function updateTrackInfo(trackNum){
@@ -2380,14 +2495,6 @@
                 const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
                 newPlaylistPrep()
                 musicSource(reverseArr);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-            }
-            else{
-                newPlaylistPrep()
-                musicSource(playlistShow);
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
@@ -2532,7 +2639,7 @@
 
             if(hasClass(from, "newPlaylistSongs")){
                 backwardsMode = false;
-                var clickedTrack = parseInt(from.className.slice(17));
+                let clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
                 stopAll();
@@ -2594,4 +2701,218 @@
                     playlistCreation();
                 }
             }
+        });
+
+
+
+
+        /*                                                                    Listen Later Tab                                       */
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.className);
+        }
+
+        function dragEntire(ev) {       /*I rewrote drag to grab the parent element instead. This is what allows the handle bar to work by grabbing all child elements instead of the individual item*/
+            ev.dataTransfer.setData("text", (ev.target.parentElement).className);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementsByClassName(data)[0]);
+        }
+
+
+
+        /*     Creates a new song element w/ handle bars*/
+        let priorityListCount = 1;
+        let nonEssListCount = 1;
+        let eventuallyListCount = 1;
+        const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
+        const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
+        const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
+
+        function createLaterDNDTrack(dropzone, listname, dragSongCount){
+            const listenSongCont = document.createElement("div");
+            listenSongCont.classList.add(listname, "listenSongCont", dragSongCount);
+            dropzone.appendChild(listenSongCont);
+
+                    const handleBar = document.createElement("div");
+                    handleBar.classList.add("songHandleBar");
+                    handleBar.textContent = "Bar";
+                    handleBar.draggable = true;         /*these attributes make dynamic songs draggable/droppable*/
+                    handleBar.ondragstart = dragEntire;
+                    listenSongCont.appendChild(handleBar);
+
+                    const songBtnCont = document.createElement("button");
+                    songBtnCont.classList.add(listname, "SongBtnCont", dragSongCount)
+                    listenSongCont.appendChild(songBtnCont);
+
+                        const listenTrackImage = document.createElement("div");
+                        listenTrackImage.classList.add(listname, "listenTrackImage", dragSongCount)
+                        songBtnCont.appendChild(listenTrackImage);
+
+                        const listenOrderCont = document.createElement("div");
+                        listenOrderCont.classList.add(listname, "listenOrderCont", dragSongCount)
+                        songBtnCont.appendChild(listenOrderCont);
+
+                            const listenTrackInfoCont = document.createElement("div");
+                            listenTrackInfoCont.classList.add(listname, "listenTrackInfoCont", dragSongCount)
+                            listenOrderCont.appendChild(listenTrackInfoCont);
+
+                                const listenTrackTitle = document.createElement("p");
+                                listenTrackTitle.classList.add(listname, "listenTrackTitle", dragSongCount)
+                                listenTrackInfoCont.appendChild(listenTrackTitle);
+
+                                const listenTrackArtist = document.createElement("p");
+                                listenTrackArtist.classList.add(listname, "listenTrackArtist", dragSongCount)
+                                listenTrackInfoCont.appendChild(listenTrackArtist);
+
+                        const listenDurationCont = document.createElement("div");
+                        listenDurationCont.classList.add(listname, "listenTrackInfoCont", dragSongCount)
+                        songBtnCont.appendChild(listenDurationCont);
+
+                            const listenAlbumTitle = document.createElement("p");
+                            listenAlbumTitle.classList.add(listname, "listenAlbumTitle", dragSongCount)
+                            listenDurationCont.appendChild(listenAlbumTitle);
+
+                            const listenDurationTime = document.createElement("p");
+                            listenDurationTime.classList.add(listname, "listenDurationTime", dragSongCount)
+                            listenDurationCont.appendChild(listenDurationTime);
+                        
+                    const listenLaterPause = document.createElement("button");
+                    listenLaterPause.classList.add(listname, "listenLaterPause", dragSongCount);
+                    listenLaterPause.textContent = "Pause";
+                    listenSongCont.appendChild(listenLaterPause);
+                    
+        }
+
+        function updatelaterTrackInfo(listname, trackNum, playlistSong){
+            document.querySelector("div." + listname + ".listenTrackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + playlistShow[playlistSong].track_coverUrl; + "\")";
+            document.querySelector("p." + listname + ".listenTrackTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_title;
+            document.querySelector("p." + listname + ".listenTrackArtist.\\3" + trackNum).textContent = playlistShow[playlistSong].artist;
+            document.querySelector("p." + listname + ".listenAlbumTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_album;
+            document.querySelector("p." + listname + ".listenDurationTime.\\3" + trackNum).textContent = playlistShow[playlistSong].duration;
+        }
+
+
+        /*makes the listen later base songs hidden on launch*/
+        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "none";
+        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "none";
+        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "none";
+    
+
+        /*Adds a song to the Listen Later from any playlist*/
+        const addedLaterOrder = [];
+        document.body.addEventListener("click", function(event){
+            const from = event.target;
+            let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
+
+            if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
+                songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
+                addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
+        
+                if(from.textContent == "Priority"){
+
+                    if(priorityListCount == 1){
+                        priorityListCount++;
+                        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/     
+                        updatelaterTrackInfo("prioritySong", 1, songNumOrder)
+                    }
+                    else if (priorityListCount < 9){
+                        priorityListCount++;
+                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                        updatelaterTrackInfo("prioritySong", priorityListCount, songNumOrder);
+                    }
+                    else{
+                        priorityListCount++;
+                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                        updatelaterTrackInfo("prioritySong", spaceTens(priorityListCount), songNumOrder);
+                    }
+                    
+                }
+
+                if(from.textContent == "Non Essential"){
+                    if(nonEssListCount == 1){
+                        nonEssListCount++;
+                        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "flex";
+                        updatelaterTrackInfo("nonEssSong", 1, songNumOrder)
+                    }
+                    else if (nonEssListCount < 9){
+                        nonEssListCount++;
+                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                        updatelaterTrackInfo("nonEssSong", nonEssListCount, songNumOrder);
+                    }
+                    else{
+                        nonEssListCount++;
+                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                        updatelaterTrackInfo("nonEssSong", spaceTens(nonEssListCount), songNumOrder);
+                    }
+                }
+
+                if(from.textContent == "Eventually"){
+                    if(eventuallyListCount == 1){
+                        eventuallyListCount++;
+                        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "flex";
+                        updatelaterTrackInfo("eventuallySong", 1, songNumOrder)
+                    }
+                    else if (eventuallyListCount < 9){
+                        eventuallyListCount++;
+                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                        updatelaterTrackInfo("eventuallySong", eventuallyListCount, songNumOrder);
+                    }
+                    else{
+                        eventuallyListCount++;
+                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                        updatelaterTrackInfo("eventuallySong", spaceTens(eventuallyListCount), songNumOrder);
+                    }
+                }
+
+            }
+
+        });
+
+
+        function stopLaterSongs(){
+            listenedLaterSongs.forEach(playedSongs => {          
+                playedSongs.pause();
+            })
+        }
+
+        const listenedLaterSongs = [];
+        const listenedLaterDivs = [];
+        let listenLaterPause;
+        
+        document.body.addEventListener("click", function(event){
+            const from = event.target;
+            if(hasClass(from, "SongBtnCont")){    
+                listenLaterPause = false; 
+                let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
+                songName = "../material/songs_mp3/" + songName + "mp3";
+                laterSong = new Audio(songName);
+
+                listenedLaterDivs.push(from.parentElement);
+                listenedLaterSongs.push(laterSong);
+
+                stopAll();
+                stopLaterSongs();
+                laterSong.play();
+            }
+
+            if(hasClass(from, "listenLaterPause")){
+                /*If a pause button from another song is pressed, the pause button's parent element div will be checked against the last pause button parent div. If they are the same, the function will run. If they aren't, it won't run. */
+                if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
+                    (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
+                    listenLaterPause = true;
+                }
+                else{
+                    listenedLaterSongs[listenedLaterSongs.length-1].play();
+                    listenLaterPause = false;
+                    updateSongTime();
+                }
+            }
+
         })
