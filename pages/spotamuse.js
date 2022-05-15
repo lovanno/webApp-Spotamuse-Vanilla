@@ -2872,23 +2872,26 @@
 
 
         function stopLaterSongs(){
-            listenedLaterSongs.forEach(playedSongs => {           /*This array will need to be updated as it expands*/
+            listenedLaterSongs.forEach(playedSongs => {          
                 playedSongs.pause();
-                /*playedSongs.currentTime = 0;*/
             })
         }
 
         const listenedLaterSongs = [];
-        let listenLaterPause = true;
-        let previousPauseBtn;
+        const listenedLaterDivs = [];
+        let listenLaterPause;
         
         document.body.addEventListener("click", function(event){
             const from = event.target;
-            if(hasClass(from, "SongBtnCont")){     
+            if(hasClass(from, "SongBtnCont")){    
+                listenLaterPause = false; 
                 let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
                 songName = "../material/songs_mp3/" + songName + "mp3";
 
                 laterSong = new Audio(songName);
+
+                
+                listenedLaterDivs.push(from.parentElement);
                 listenedLaterSongs.push(laterSong);
                 stopAll();
                 stopLaterSongs();
@@ -2897,7 +2900,7 @@
             }
 
             if(hasClass(from, "listenLaterPause")){
-                if(listenLaterPause == false){
+                if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
                     (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
                     listenLaterPause = true;
                 }
