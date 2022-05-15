@@ -2777,6 +2777,12 @@
                             const listenDurationTime = document.createElement("p");
                             listenDurationTime.classList.add(listname, "listenDurationTime", dragSongCount)
                             listenDurationCont.appendChild(listenDurationTime);
+                        
+                    const listenLaterPause = document.createElement("button");
+                    listenLaterPause.classList.add(listname, "listenLaterPause", dragSongCount);
+                    listenLaterPause.textContent = "Pause";
+                    listenSongCont.appendChild(listenLaterPause);
+                    
         }
 
         function updatelaterTrackInfo(listname, trackNum, playlistSong){
@@ -2868,24 +2874,38 @@
         function stopLaterSongs(){
             listenedLaterSongs.forEach(playedSongs => {           /*This array will need to be updated as it expands*/
                 playedSongs.pause();
-                playedSongs.currentTime = 0;
+                /*playedSongs.currentTime = 0;*/
             })
         }
 
         const listenedLaterSongs = [];
+        let listenLaterPause = true;
+        let previousPauseBtn;
+        
         document.body.addEventListener("click", function(event){
             const from = event.target;
-            if(hasClass(from, "SongBtnCont")){
+            if(hasClass(from, "SongBtnCont")){     
                 let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
                 songName = "../material/songs_mp3/" + songName + "mp3";
 
                 laterSong = new Audio(songName);
                 listenedLaterSongs.push(laterSong);
-                stopLaterSongs();
                 stopAll();
-
+                stopLaterSongs();
 
                 laterSong.play();
+            }
+
+            if(hasClass(from, "listenLaterPause")){
+                if(listenLaterPause == false){
+                    (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
+                    listenLaterPause = true;
+                }
+                else{
+                    listenedLaterSongs[listenedLaterSongs.length-1].play();
+                    listenLaterPause = false;
+                    updateSongTime();
+                }
             }
 
         })
