@@ -2485,14 +2485,6 @@
                     playlistCreation();
                 }
             }
-            else{
-                newPlaylistPrep()
-                musicSource(playlistShow);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-            }
             openPlaylistTab();
             addNewSongsPlaylist.style.display = "none";
             finishedCreateBtn.style.display = "none";
@@ -2708,7 +2700,7 @@
             ev.dataTransfer.setData("text", ev.target.className);
         }
 
-        function dragEntire(ev) {
+        function dragEntire(ev) {       /*I rewrote drag to grab the parent element instead. This is what allows the handle bar to work by grabbing all child elements instead of the individual item*/
             ev.dataTransfer.setData("text", (ev.target.parentElement).className);
         }
 
@@ -2721,14 +2713,12 @@
 
 
         /*     Creates a new song element w/ handle bars*/
-        const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
-        const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
-        const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
-
         let priorityListCount = 1;
         let nonEssListCount = 1;
         let eventuallyListCount = 1;
-
+        const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
+        const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
+        const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
 
         function createLaterDNDTrack(dropzone, listname, dragSongCount){
             const listenSongCont = document.createElement("div");
@@ -2887,19 +2877,18 @@
                 listenLaterPause = false; 
                 let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
                 songName = "../material/songs_mp3/" + songName + "mp3";
-
                 laterSong = new Audio(songName);
 
-                
                 listenedLaterDivs.push(from.parentElement);
                 listenedLaterSongs.push(laterSong);
+
                 stopAll();
                 stopLaterSongs();
-
                 laterSong.play();
             }
 
             if(hasClass(from, "listenLaterPause")){
+                /*If a pause button from another song is pressed, the pause button's parent element div will be checked against the last pause button parent div. If they are the same, the function will run. If they aren't, it won't run. */
                 if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
                     (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
                     listenLaterPause = true;
@@ -2912,5 +2901,3 @@
             }
 
         })
-
-
