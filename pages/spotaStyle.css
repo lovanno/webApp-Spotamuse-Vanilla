@@ -9,6 +9,7 @@
 
     body {
       overflow-x: hidden;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
 
@@ -202,6 +203,8 @@
     .searchCont.tab4 {
       background-color: #121212;
       height: fit-content;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
 
     .library.newPlaylistInfo {
@@ -498,34 +501,140 @@
       position: relative;
       top: 51%;
       left: -15%;
-      padding: 10px 15px 8px 30px;
-
       border: none;
-      background-color: transparent;
       border-bottom: 1px solid black;
+      background-color:#ffffff;
+      border-radius: 300px;
+      display: inline-block;
+      font-size: 13px;
+      line-height: 26px;
+      padding: 6px 48px;
+      width: 365px;
     }
 
     input.searchProductInput.\31::placeholder {
       font-size: 13px;
-      color: #000000;
-      opacity: 1;
+      color: #A7A7A7;
     }
 
     input.searchProductInput.\31:focus {
       outline: none;
     }
 
-    li.searchProductLink.\31 ::after {
-      content: "";
-      display: block;
-      /*background: url("../..");*/
-
-      position: relative;
-      left: -15%;
-      margin-top: -24px;
-      height: 24px;
-      width: 24px;
+    button.recentSearch.seeAll.\31{
+      cursor: pointer;
+      color: #a7a7a7;
+      display: inline-block;    
+      line-height: 27px;
+      padding: 14px 32px;
+      text-align: center;
+      border: none;
+      font-size: 13px;
+      background-color: transparent;
+      text-transform: uppercase;
     }
+
+    .recentSearch.textCont {
+      text-align: left;
+      line-height: 1.2rem;
+      margin-top: 0.7rem;
+    }
+  
+
+
+
+
+    /*Search Tab 4*/
+    .albumBlocksCont.\31 {
+      margin-left: 30px;
+    }
+
+    /*Recent Search Div Area */
+    .recentSearchHeadersCont {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .recentSearch.allAlbumCont {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .recentSearchAlbumCont {
+      background-color: #1c1c1c;
+      height: 18.5rem;
+      width: 13rem;
+    }
+
+    .recentSearch.albumInfo {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+
+    .recentSearch.albumInfoCover {
+      height: 12rem;
+      width: 11rem;
+      margin-top: 1rem;
+    }
+
+    button.recentSearch.albumRemove {
+      position: relative;
+      top: 10%;
+      left: 32%;
+    }
+
+    /*Text Albums */
+    p.recentSearch.albumInfoName {
+      color: white;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    p.recentSearch.albumInfoArtist {
+      color: #B3B3B3;
+    }
+
+    /*For headers */
+    p.recentSearchHeader {
+      font-size: 24px;
+      color: white;
+      font-weight: 700;
+      letter-spacing: -0.96px;
+      line-height: 3.75rem;
+      margin-top: 1rem;
+    }
+
+
+
+
+    .recentSearch.albumInfoCover.\31 {
+      background-image: url(../material/albums/seven/seven_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .recentSearch.albumInfoCover.\32 {
+      background-image: url(../material/albums/currentsB/currentsB_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .recentSearch.albumInfoCover.\33 {
+      background-image: url(../material/albums/myDearMelancholy/myDearMelancholy_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .recentSearch.albumInfoCover.\34 {
+      background-image: url(../material/albums/whereDoesTheDevilHide/whereDoesTheDevilHide_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+
+
+
 
     /* colors: amber, lavender, hotPink, scarlet, jade, navy, azure, thistle, tawnyBrown, greenPear, skyBlue, teal, gray*/
 
@@ -583,140 +692,98 @@
     }
 
 
-
-
-
-
-
-
-
-
-
-
-    /*Search Tab 4*/
-    .albumBlocksCont.\31 {
-      margin-left: 30px;
-    }
-
-    /*Recent Search Div Area */
-    .recentSearchHeadersCont {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .recentSearch.allAlbumCont {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .recentSearchAlbumCont {
-      background-color: #1c1c1c;
-      height: 18rem;
-      width: 12rem;
-    }
-
-    .recentSearch.albumInfo {
-      margin-left: 15px;
-      margin-right: 15px;
-    }
-
-    .recentSearch.albumInfoCover {
-      height: 12rem;
-      width: 100%;
-    }
-
-    button.recentSearch.albumRemove {
-      position: relative;
-      top: 10%;
-      left: 32%;
-    }
-
-    /*Text Albums */
-    p.recentSearch.albumInfoName {
-      color: white;
-    }
-
-    p.recentSearch.albumInfoArtist {
-      color: #B3B3B3;
-    }
-
-
-
-    .recentSearch.albumInfoCover.\31 {
-      background-image: url(../material/albums/seven/seven_albumCover.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    .recentSearch.albumInfoCover.\32 {
-      background-image: url(../material/albums/currentsB/currentsB_albumCover.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    .recentSearch.albumInfoCover.\33 {
-      background-image: url(../material/albums/myDearMelancholy/myDearMelancholy_albumCover.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    .recentSearch.albumInfoCover.\34 {
-      background-image: url(../material/albums/whereDoesTheDevilHide/whereDoesTheDevilHide_albumCover.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-
-
-
-
-
-
-
-
     /*Genres Section*/
     .genreBlockCont {
       display: flex;
-      /* justify-content: space-around; */
-      gap: 1.5rem;
+      gap: 1.4rem;
       width: fit-content;
     }
 
     .topGenre.genreBlock {
       height: 10rem;
-      width: 25rem;
+      width: 28rem;
+      border-radius: 8px;
+      gap: 1.0rem;
+      overflow: hidden;
     }
 
     .browseAll.genreBlock {
       height: 12rem;
-      width: 13rem;
+      width: 12rem;
+      border-radius: 8px;
+      overflow: hidden;           /*makes coverImg disappear as it leaves the color block*/
     }
 
     p.topGenre.genreBlockHeader {
+      float: left;
       font-size: 30px;
-
+      margin-left: 20px;
     }
 
     p.genreBlockHeader {
       color: white;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 24px;
+      letter-spacing: -0.4px;
+      line-height: 31.2px;
+      padding: 18px;
+      float: left;
     }
 
-    /*For headers */
-    p.recentSearchHeader {
-      font-size: 20px;
-      font-weight: bold;
-      color: white;
+    /*genreBlock Images*/
+    .genreBlockImage {
+      position: relative;
+      top: 28%;
+      left: 77%;
+      height: 125px;
+      width: 125px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: rotate(25deg);
+    }
+
+    .browseAll.genreBlockImage {
+      position: relative;
+      top: 47%;
+      left: 57%;
+      height: 100px;
+      width: 100px;
     }
 
 
+    /*top block images*/
+    .topGenre.genreBlockImage.\31 {background-image: url('../material/genreListCovers/genreList_hipHop.jpg');}
+    .topGenre.genreBlockImage.\32 {background-image: url('../material/genreListCovers/genreList_pop.jpg');}
+    .topGenre.genreBlockImage.\33 {background-image: url('../material/genreListCovers/genreList_dance.electronic.jpg');}
 
+    /*bottom block images*/
+    .browseAll.genreBlockImage.\31 {background-image: url('../material/genreListCovers/genreList_podcasts.jpg');}
+    .browseAll.genreBlockImage.\32 {background-image: url('../material/genreListCovers/genreList_madeForYou.png');}
+    .browseAll.genreBlockImage.\33 {background-image: url('../material/genreListCovers/genreList_charts.jpg');}
+    .browseAll.genreBlockImage.\34 {background-image: url('../material/genreListCovers/genreList_newReleases.jpg');}
+    .browseAll.genreBlockImage.\35 {background-image: url('../material/genreListCovers/genreList_discover.jpeg');}
+    .browseAll.genreBlockImage.\36 {background-image: url('../material/genreListCovers/genreList_concerts.jpg');}
+    .browseAll.genreBlockImage.\37 {background-image: url('../material/genreListCovers/genreList_country.jpg');}
+    .browseAll.genreBlockImage.\38 {background-image: url('../material/genreListCovers/genreList_frequency.jpg');}
+    .browseAll.genreBlockImage.\39 {background-image: url('../material/genreListCovers/genreList_workout.jpg');}
+    .browseAll.genreBlockImage.\31 0 {background-image: url('../material/genreListCovers/genreList_latin.jpg');}
+    .browseAll.genreBlockImage.\31 1 {background-image: url('../material/genreListCovers/genreList_netflix.jpg');}
+    .browseAll.genreBlockImage.\31 2 {background-image: url('../material/genreListCovers/genreList_rnb.jpg');}
+    .browseAll.genreBlockImage.\31 3 {background-image: url('../material/genreListCovers/genreList_wellness.jpg');}
+    .browseAll.genreBlockImage.\31 4 {background-image: url('../material/genreListCovers/genreList_mood.jpg');}
+    .browseAll.genreBlockImage.\31 5 {background-image: url('../material/genreListCovers/genreList_sleep.jpg');}
+    .browseAll.genreBlockImage.\31 6 {background-image: url('../material/genreListCovers/genreList_indie.jpg');}
+    .browseAll.genreBlockImage.\31 7 {background-image: url('../material/genreListCovers/genreList_christianNGospel.jpeg');}
+    .browseAll.genreBlockImage.\31 8 {background-image: url('../material/genreListCovers/genreList_regionalMexican.jpeg');}
+    .browseAll.genreBlockImage.\31 9 {background-image: url('../material/genreListCovers/genreList_chill.jpg');}
+    .browseAll.genreBlockImage.\32 0 {background-image: url('../material/genreListCovers/genreList_kidsNFamily.png');}
+  
 
     /*Bottom Container */
     .browseAll.genreBlockCont.\32 {
       display: flex;
-      height: 20rem;
+      height: 0.2rem;
       flex-wrap: wrap;
     }
 
