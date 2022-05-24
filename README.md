@@ -88,7 +88,7 @@ Music Filters
 *• M2: Listen Later songs can be played by other pause buttons. (Replicate: Press play on right side, then pause. The press a different song's right side button and it will play the previous song* 
 
 
-*• n: SVG icons can cause an error with .className slice - line 2812* 
+*• n: Listen Later songs can be placed on top of each other* 
 
 &nbsp;
 

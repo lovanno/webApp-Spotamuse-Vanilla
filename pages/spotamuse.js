@@ -2723,9 +2723,13 @@
             ev.preventDefault();
             let data = ev.dataTransfer.getData("text");
             ev.target.appendChild(document.getElementsByClassName(data)[0]);
+
+            /*Checks each dropzone and sees if "Add a Song" state is on*/
+            if(ev.target.firstElementChild.style.display != "none"){
+                ev.target.firstElementChild.style.display = "none"; /*Makes the "Add a Song" text disappear*/
+                ev.target.firstElementChild.nextElementSibling.style.display = "none"; /*Makes the cover image disappear*/
+            }
         }
-
-
 
         /*     Creates a new song element w/ handle bars*/
         let priorityListCount = 1;
@@ -2734,6 +2738,7 @@
         const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
         const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
         const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
+        const allDropzones = [priorityZoneDiv, nonEssZoneDiv, eventuallyZoneDiv];
 
        
        /*Drag and Drop Song SVG's - these functions are added later to createLaterDNDTrack*/
@@ -2860,8 +2865,11 @@
         const addedLaterOrder = [];
         document.body.addEventListener("click", function(event){
             const from = event.target;
-            let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
 
+/*SongNumOrder produces an error because some elements don't have a class (mainly SVG's). Since this element is function scoped, try catch is a good solution*/
+/*It's also a poor declaration because it will attempt to parse every string, leading to NaN's.*/
+try{
+            let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
             if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
                 songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
                 addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
@@ -2928,8 +2936,10 @@
                 }
 
             }
-
+}
+catch{}     
         });
+
 
 
         function stopLaterSongs(){
