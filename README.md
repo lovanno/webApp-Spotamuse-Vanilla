@@ -85,7 +85,10 @@ Music Filters
 *Note: M = Major, n = nothing serious*
 
 *• M1: Playlist tracks can't be played if cover or song info is touched. | Messing with Z-index didn't solve this issue. Will have to research later.* 
+*• M2: Listen Later songs can be played by other pause buttons. (Replicate: Press play on right side, then pause. The press a different song's right side button and it will play the previous song* 
 
+
+*• n: SVG icons can cause an error with .className slice - line 2812* 
 
 &nbsp;
 

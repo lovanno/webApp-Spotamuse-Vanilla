@@ -2706,7 +2706,7 @@
 
 
 
-        /*                                                                    Listen Later Tab                                       */
+        /*                                                                               Listen Later Tab                                             */
         function allowDrop(ev) {
             ev.preventDefault();
         }
@@ -2735,6 +2735,54 @@
         const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
         const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
 
+       
+       /*Drag and Drop Song SVG's - these functions are added later to createLaterDNDTrack*/
+        function createHandlebarSvg(){
+            let handleBarSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');   /*Creates a path for SVG*/
+            handleBarSvg.setAttribute("aria-hidden", "true");
+            handleBarSvg.setAttribute("role", "img");
+            handleBarSvg.setAttribute("height", "24");
+            handleBarSvg.setAttribute("width", "18");
+            handleBarSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+            handleBarSvg.setAttribute("viewBox", "0 0 48 48");
+
+                let gClass = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    gClass.setAttribute("fill", "#fff");
+                    gClass.setAttribute("fill-rule", "evenodd");
+                    gClass.setAttribute("clip-rule", "evenodd");
+                    handleBarSvg.appendChild(gClass);
+
+                        let path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');     
+                        let path2 = document.createElementNS("http://www.w3.org/2000/svg", 'path'); 
+
+                            /*These create the dotted columns for the handle bar. (Path 1 = left, Path 2 = right)*/
+                            path1.setAttribute('d', "M19 10C19 12.2091 17.2091 14 15 14C12.7909 14 11 12.2091 11 10C11 7.79086 12.7909 6 15 6C17.2091 6 19 7.79086 19 10ZM15 28C17.2091 28 19 26.2091 19 24C19 21.7909 17.2091 20 15 20C12.7909 20 11 21.7909 11 24C11 26.2091 12.7909 28 15 28ZM15 42C17.2091 42 19 40.2091 19 38C19 35.7909 17.2091 34 15 34C12.7909 34 11 35.7909 11 38C11 40.2091 12.7909 42 15 42Z");
+                            path2.setAttribute('d', "M37 10C37 12.2091 35.2091 14 33 14C30.7909 14 29 12.2091 29 10C29 7.79086 30.7909 6 33 6C35.2091 6 37 7.79086 37 10ZM33 28C35.2091 28 37 26.2091 37 24C37 21.7909 35.2091 20 33 20C30.7909 20 29 21.7909 29 24C29 26.2091 30.7909 28 33 28ZM33 42C35.2091 42 37 40.2091 37 38C37 35.7909 35.2091 34 33 34C30.7909 34 29 35.7909 29 38C29 40.2091 30.7909 42 33 42Z");
+                            gClass.appendChild(path1);
+                            gClass.appendChild(path2);
+
+                            return handleBarSvg;
+       }
+
+       function createPlayBtnSvg(){
+            let playBtnSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');  
+            playBtnSvg.setAttribute("aria-hidden", "true");
+            playBtnSvg.setAttribute("role", "img");
+            playBtnSvg.setAttribute("height", "24");
+            playBtnSvg.setAttribute("width", "24");
+            playBtnSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+            playBtnSvg.setAttribute("viewBox", "0 0 24 24");
+
+                let path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');    
+                path1.setAttribute("fill", "#fff"); 
+                path1.setAttribute('d', "m15 12.33l-6 4.33V8l6 4.33Z");
+                playBtnSvg.appendChild(path1);
+
+                return playBtnSvg;
+       }
+
+
+
         function createLaterDNDTrack(dropzone, listname, dragSongCount){
             const listenSongCont = document.createElement("div");
             listenSongCont.classList.add(listname, "listenSongCont", dragSongCount);
@@ -2742,11 +2790,13 @@
 
                     const handleBar = document.createElement("div");
                     handleBar.classList.add("songHandleBar");
-                    handleBar.textContent = "Bar";
                     handleBar.draggable = true;         /*these attributes make dynamic songs draggable/droppable*/
                     handleBar.ondragstart = dragEntire;
                     listenSongCont.appendChild(handleBar);
 
+                    const handleBarIcon = createHandlebarSvg();
+                    handleBar.appendChild(handleBarIcon);
+                    
                     const songBtnCont = document.createElement("button");
                     songBtnCont.classList.add(listname, "SongBtnCont", dragSongCount)
                     listenSongCont.appendChild(songBtnCont);
@@ -2785,9 +2835,10 @@
                         
                     const listenLaterPause = document.createElement("button");
                     listenLaterPause.classList.add(listname, "listenLaterPause", dragSongCount);
-                    listenLaterPause.textContent = "Pause";
                     listenSongCont.appendChild(listenLaterPause);
-                    
+
+                    const pauseBtnSvg = createPlayBtnSvg();
+                    listenLaterPause.appendChild(pauseBtnSvg);
         }
 
         function updatelaterTrackInfo(listname, trackNum, playlistSong){
@@ -2816,11 +2867,12 @@
                 addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
         
                 if(from.textContent == "Priority"){
-
                     if(priorityListCount == 1){
                         priorityListCount++;
-                        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/     
-                        updatelaterTrackInfo("prioritySong", 1, songNumOrder)
+                        updatelaterTrackInfo("prioritySong", 1, songNumOrder);
+                        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/   
+                        document.querySelector("p.priorityList.dropzoneHeader.\\31").style.display = "none";  /*Removes "add a song" state from listen later dropzones*/
+                        document.querySelector("div.priorityList.dropzoneImage.\\31").style.display = "none";  
                     }
                     else if (priorityListCount < 9){
                         priorityListCount++;
@@ -2838,8 +2890,10 @@
                 if(from.textContent == "Non Essential"){
                     if(nonEssListCount == 1){
                         nonEssListCount++;
+                        updatelaterTrackInfo("nonEssSong", 1, songNumOrder);
                         document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "flex";
-                        updatelaterTrackInfo("nonEssSong", 1, songNumOrder)
+                        document.querySelector("p.nonEssentialList.dropzoneHeader.\\31").style.display = "none";
+                        document.querySelector("div.nonEssentialList.dropzoneImage.\\31").style.display = "none";  
                     }
                     else if (nonEssListCount < 9){
                         nonEssListCount++;
@@ -2856,8 +2910,10 @@
                 if(from.textContent == "Eventually"){
                     if(eventuallyListCount == 1){
                         eventuallyListCount++;
+                        updatelaterTrackInfo("eventuallySong", 1, songNumOrder);
                         document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "flex";
-                        updatelaterTrackInfo("eventuallySong", 1, songNumOrder)
+                        document.querySelector("p.eventuallyList.dropzoneHeader.\\31").style.display = "none";
+                        document.querySelector("div.eventuallyList.dropzoneImage.\\31").style.display = "none";  
                     }
                     else if (eventuallyListCount < 9){
                         eventuallyListCount++;
@@ -2885,6 +2941,7 @@
         const listenedLaterSongs = [];
         const listenedLaterDivs = [];
         let listenLaterPause;
+
         
         document.body.addEventListener("click", function(event){
             const from = event.target;

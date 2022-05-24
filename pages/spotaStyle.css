@@ -441,28 +441,64 @@
 
     .laterTabHeaderCont {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
     }
 
     button.laterTabHeader {
       cursor: pointer;
+      float: left;
+      font-size: 24px;
+      letter-spacing: -0.4px;
+      line-height: 31.2px;
+      font-weight: bold;
+      margin-left: 20px;
+      padding: 18px;
+
       border: none;
       background-color: transparent;
       color: white;
-      font-size: 16px;
     }
 
     /*    Drag and Drop     */
     .allDropZoneLists {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
     }
 
     div.dropzone {
       height: 30rem;
-      background-color: red;
-      overflow-x: auto;
+      min-width: 17rem;
+      overflow: hidden;
     }
+    .priorityList.dropzone{background-color: #00A86B;}
+    .nonEssentialList.dropzone{background-color: #003366;}
+    .eventuallyList.dropzone{background-color: #808080;}
+
+    /* Listen Later - Start State Look (Add a Song) */
+    p.dropzoneHeader {
+      float: left;
+      padding: 18px;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: -0.4px;
+      line-height: 31.2px;
+      color: white;
+    }
+
+    .dropzoneImage {
+      position: relative;
+      top: 14%;
+      left: 58%;
+      height: 140px;
+      width: 140px;
+
+      background-image: url('../material/genreListCovers/genreList_listenLater.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: rotate(25deg);
+    }
+
 
     .listenTrackImage{
       background-image: url("../material/song_artCovers/shadowLady_song1.jfif");
@@ -480,16 +516,47 @@
       margin-bottom: 2rem;
     }
 
-    button.SongBtnCont{
+    /*Song Handle Bar Styling*/
+    .songHandleBar {
+      display: flex;
+      align-items: center;
+      height: 4rem;
+      background-color: #1C1C1C;
+    }
+
+    button.SongBtnCont {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 2rem;
+      height: 4rem;
+      width: 100%;
+      background-color: #1C1C1C;
+      border: transparent;
+    }
+
+    /* Later Song Styling */
+    p.listenTrackTitle {color: white;}
+    p.listenTrackArtist {color: #B3B3B3;}
+    p.listenAlbumTitle {color: #B3B3B3;}
+    p.listenDurationTime {color: #B3B3B3;}
+
+    /*Song pause buttons*/
+    button.listenLaterPause {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 4rem;
+      border: none;
+      width: 13%;
+      background-color: #1C1C1C;
     }
 
 
+    
 
   
-    /*Tab 4 - Search for Items */
+    /*            Tab 4 - Search for Items       */
     a.productSectLink {
       font-size: 16px;
       color: #000000;
