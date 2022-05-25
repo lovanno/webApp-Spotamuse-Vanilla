@@ -2073,11 +2073,16 @@
                 const clickedTab = parseInt(from.className.slice(-1))-1;
                 allTabs[clickedTab].style.display = "block";
             }
+
+            /* Hide Announcements Banner */
+            if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}
+
         });
 
 
 
 
+    
 
 
 
@@ -2272,7 +2277,7 @@
             }
         })
 
-        
+
         /*      Allows home library to be available immediately         */
         playPauseToggle = true;
         nowPlayingInfo(musicLibrary [0]);

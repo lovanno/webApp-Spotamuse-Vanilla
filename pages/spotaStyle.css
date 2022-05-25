@@ -4,6 +4,11 @@
 
       margin: 0;
       padding: 0;
+
+      /*Page Debugger
+      background: #000 !important;
+      color: #0f0 !important;
+      outline: solid #f00 1px !important;*/
     }
 
 
@@ -153,12 +158,42 @@
       background-image: url(../material/appIcons/banner1_image.png);
       background-repeat: no-repeat;
       background-size: cover;
-      height: 10rem;
-      width: 100%;
-      margin-left: 20px;
+      height: 8rem;
+      width: 75%;
+      margin-left: 124px;
       margin-right: 20px;
     }
 
+    p.bannerImage.Header {
+      color: white;
+      font-size: 36px;
+      position: relative;
+      top: 17%;
+      left: -19%;
+    }
+
+    button.bannerImage.hideBtn {
+      cursor: pointer;
+      position: relative;
+      top: 2%;
+      left: 36%;
+      height: 32px;
+      width: 9.5rem;
+
+      font-size: 10px;
+      opacity: 0.55;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 23px;
+      text-transform: uppercase;
+      transition: 1000ms;
+    }
+
+    button.bannerImage.hideBtn:hover{
+      opacity: 0.7;
+      transition: 1000ms;
+    }
 
     .homeContent.HeaderCont {
       display: flex;
@@ -170,6 +205,13 @@
     p.homeContentHeader {
       display: flex;
       color: white;
+      margin-left: 5px;
+      margin-bottom: 16px;
+      font-size: 24px;
+    }
+
+    .homeContent.\31 {
+      margin-top: 30px;
     }
 
     button.playlistBtnCont {display: flex;}
@@ -185,10 +227,88 @@
     }
 
 
-    .home.playlistCont {
+    .homeContentContainer.\31{
+      margin-left: 30px;
+    }
+
+    /*These styles are borrowed from the recentSearch albums. Will have to refine both, including the yourLib to be able to share styles*/
+    .homeContentCont.allAlbumCont {
       display: flex;
+      margin-bottom: 5rem;
       gap: 1.5rem;
     }
+
+    .home.playlistCont {
+      display: flex;
+    }
+
+    .homeContentContAlbumCont {
+      background-color: #181818;
+      height: 17.5rem;
+      width: 12.5rem;
+    }
+     .homeContentCont.albumInfo {       /*Recent Search Albums*/
+      cursor: pointer;
+      margin-left: 15px;
+      margin-right: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .homeContentCont.albumInfoCover {
+      margin-top: 1rem;
+      height: 12rem;
+      width: 11rem;
+    }
+
+    button.homeContentCont.albumRemove {
+      position: relative;
+      top: 10%;
+      left: 32%;
+    }
+
+    /*Album Text*/
+    .homeContentCont.textCont{
+      margin-top: 15px;
+    }
+
+    p.homeContentCont.albumInfoName {
+      color: white;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    p.homeContentCont.albumInfoArtist {
+      color: #B3B3B3;
+    }
+
+
+    /*Album Photos*/
+    .homeContentCont.albumInfoCover.\31 {
+      background-image: url(../material/albums/seven/seven_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .homeContentCont.albumInfoCover.\32 {
+      background-image: url(../material/albums/currentsB/currentsB_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .homeContentCont.albumInfoCover.\33 {
+      background-image: url(../material/albums/myDearMelancholy/myDearMelancholy_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .homeContentCont.albumInfoCover.\34 {
+      background-image: url(../material/albums/whereDoesTheDevilHide/whereDoesTheDevilHide_albumCover.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+
+
 
 
     /**        Your Library                                            Tab 2 of Library                                               **/
