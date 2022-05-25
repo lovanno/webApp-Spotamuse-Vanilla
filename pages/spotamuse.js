@@ -2277,17 +2277,19 @@
 
         /*Creates a playlist icon box in the "Your Library" Tab*/
         yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
+        let playlistBoxes = 1;
         function createPlaylistBox(){ 
+            playlistBoxes++;
             const newPlaylistBox = document.createElement("button");
-            newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", 2);
+            newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", playlistBoxes);
             yourLibraryPlaylistCont.appendChild(newPlaylistBox);
 
                 const newPlaylistCover = document.createElement("div");
-                newPlaylistCover.classList.add("yourLibrary", "playlistCover", 2)
+                newPlaylistCover.classList.add("yourLibrary", "playlistCover", playlistBoxes)
                 newPlaylistBox.appendChild(newPlaylistCover);
 
                const updatePlaylistName = document.createElement("div");
-                updatePlaylistName.classList.add("yourLibrary", "playlistName", 2);
+                updatePlaylistName.classList.add("yourLibrary", "playlistName", playlistBoxes);
                 updatePlaylistName.textContent = playlistName.textContent;
                 newPlaylistBox.appendChild(updatePlaylistName);
         }
@@ -2564,7 +2566,6 @@
             infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
 
             switch(playlistInfoFilters[currentInfoFilter]){
-
                 case "Title": 
                     createSortPlaylist('track_title');
                     break;
@@ -2694,8 +2695,12 @@
                 backwardsBtn.style.display = "block";
                 playlistInfoFilterBtn.style.display = "block";
 
-                newPlaylistPrep()
+                newPlaylistPrep();
                 musicSource(window["'" + playlistName.textContent + "'"]);
+               
+                /*update playlistBox art cover w/ first song*/
+                if(playlistBoxes < 10){document.querySelector("div.yourLibrary.playlistCover.\\3" + playlistBoxes).style.backgroundImage = "url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
+                else{document.querySelector("div.yourLibrary.playlistCover.\\3" + spaceTens(playlistBoxes)).style.backgroundImage ="url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
@@ -2943,9 +2948,7 @@ catch{}
 
 
         function stopLaterSongs(){
-            listenedLaterSongs.forEach(playedSongs => {          
-                playedSongs.pause();
-            })
+            listenedLaterSongs.forEach(playedSongs => {playedSongs.pause();})
         }
 
         const listenedLaterSongs = [];
