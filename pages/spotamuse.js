@@ -2095,6 +2095,7 @@
         const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
         const currentSongTime = document.querySelector("p.songProgressSec");
         const currentSongDuration = document.querySelector("p.songProgressSec.total");  
+        const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
         currentSongDuration.textContent = "0:30";
 
 
@@ -2114,19 +2115,26 @@
         }
 
 
+        const songTimeIntervals = [];
         function updateSongTime() {
-            var currentInterval = setInterval(function() {
+            pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path></svg>'
+            let currentInterval = setInterval(function() {
+                songTimeIntervals.push(currentInterval);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
                 const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
 
                 if(songSeconds % 60 < 10){
                     currentSongTime.textContent = "0:0" + songSeconds % 60;
+                    currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
                 }
-                else {currentSongTime.textContent = "0:" + songSeconds % 60;}
-
-                if(songSeconds % 60 == 30 && playPauseToggle !== false){clearInterval(currentInterval);}
-
+                else {
+                    currentSongTime.textContent = "0:" + songSeconds % 60;
+                    currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+                }
+                if(songSeconds % 60 == 30){clearInterval(currentInterval);}
             }, 0);
         }
+
+
 
 
         function updatePlaylistSong(chosenPlaylist){
@@ -2172,8 +2180,8 @@
         chosenPlaylist = musicLibrary;
         document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
             const from = event.target;
-          
-            if(from == skipBackBtn){
+
+            if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
                 if(shuffleMode == true){
                     songOrder = (Math.floor(Math.random() * playlistShow.length));
 
@@ -2195,10 +2203,12 @@
                 lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
             }
 
-            if(from == pauseBtn){
+            if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
                 if(playPauseToggle == false){
                     (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
                     playPauseToggle = true;
+                    songTimeIntervals.forEach(f => clearInterval(f));   /*clears all intervals to avoid timer from running in background*/
+                    pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
                 }
                 else{
                     recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
@@ -2208,7 +2218,7 @@
                 stopLaterSongs();
             }
 
-            if(from == skipForwardBtn){
+            if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
                 if(shuffleMode == true){
                     songOrder = (Math.floor(Math.random() * playlistShow.length));
 
