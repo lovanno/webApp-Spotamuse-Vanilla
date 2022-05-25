@@ -1103,23 +1103,44 @@
 
 
     /*right Container*/
-    .globalSetting.playNowCategory.\33 {
-      margin-right: 20px;
+    .globalSettingCont {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 5rem;
+    }
+    .globalSetting.playNowCategory.\33 {margin-right: 20px;}
+
+    .topContHeader {color: #fff;}
+    .songSkipSettings.\32 {display: flex;}
+
+    .globalSetting.bottomCont {
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
 
-
-    button.songQueueBtn {
+    /*button.songQueueBtn {
       height: 20px;
       width: 20px;
       border-radius: 60%;
       background-color: orange;
-    }
+    }*/
 
     button.songMuteBtn {
-      height: 20px;
-      width: 20px;
-      border-radius: 60%;
-      background-color: orangered;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border: none;
+      height: 32px;
+      width: 32px;
+      margin-right: 8px;
+    }
+
+    .volumeShown.ProgBar.\32{
+      cursor: pointer;
+      width: 100%;
     }
 
 
