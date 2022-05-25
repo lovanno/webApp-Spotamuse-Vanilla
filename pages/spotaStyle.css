@@ -148,7 +148,6 @@
 
 
     /***       (2)  homeSection                                           section2              ***/
-
     .home.BannerImage {
       background-image: url(../material/appIcons/banner1_image.png);
       background-repeat: no-repeat;
@@ -165,38 +164,78 @@
       color: white;
     }
 
-    .home.playlistCont {
-      display: flex;
-      /* justify-content: flex-start; */
-    }
+    .home.playlistCont {display: flex;}
 
     p.homeContentHeader {
       display: flex;
       color: white;
     }
 
-    button.playlistBtnCont {
-      display: flex;
-    }
+    button.playlistBtnCont {display: flex;}
 
     .playlistCover {
+      margin-top: 1rem;
       background-image: url(../material/song_artCovers/bound2_song7.jfif);
       background-repeat: no-repeat;
       background-size: cover;
-      height: 5rem;
-      width: 100%;
+      height: 10.5rem;
+      width: 10.5rem;
+      margin: 0.9rem;
     }
 
+
+    .home.playlistCont {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+
+    /**        Your Library                                            Tab 2 of Library                                               **/
+    .yourLibraryCont.tab2 {
+      display: flex;
+      flex-direction: column;
+      margin-left: 30px;
+      align-items: flex-start;
+    }
+
+    .yourLibrary.playlistCont {
+      display: flex;
+      gap: 1.5rem;
+      margin-left: 30px;
+    }
+
+
+    /*Playlist Button Styles*/
+    button.playlistBtnCont{
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 17.375rem;
+      width: 12.5rem;
+      background-color: #1c1c1c;
+    }
+
+    .yourLibrary.playlistName {
+      margin-left: 0.9rem;
+      color: #fff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .yourLibrary.playlistCover.\30{background-image: url('../material/appIcons/recentlyPlay_icon.jpg');}      /*Recently Played Playlist Cover*/
+    .yourLibrary.playlistCover.\31{background-image: url('../material/appIcons/downloadedFiles_icon.jpg');}   /*Downloaded Playlist Cover*/
 
 
 
 
     /** Tabs **/
     .yourLibrarySect.tab {
+      grid-area: homeSect;
       display: none;
       width: 100%;
       height: 100%;
-      grid-area: homeSect;
+      background-color: #1c1c1c;
       overflow-x: hidden;
     }
 
@@ -213,25 +252,12 @@
       display: flex;
       border-left: solid 50px #474747;
       border-bottom: solid 50px #474747;
-
     }
 
-    .library.newPlaylistCont {
-      background-color: #1C1C1C;
-    }
-
-    .newPlaylistUserName.\31 {
-      color: white;
-    }
-
-    .newPlaylistUserSongs.\31 {
-      color: #B3B3B3;
-    }
-
-    .newPlaylistUserTime.\31 {
-      color: #B3B3B3;
-    }
-
+    .library.newPlaylistCont {background-color: #1C1C1C;}
+    .newPlaylistUserName {color: white;}
+    .newPlaylistUserSongs {color: #B3B3B3;}
+    .newPlaylistUserTime {color: #B3B3B3;}
 
 
     /*Playlist Icons */
@@ -625,8 +651,8 @@
     }
     .recentSearchAlbumCont {
       background-color: #1c1c1c;
-      height: 18.5rem;
-      width: 13rem;
+      height: 17.375rem;
+      width: 12.5rem;
     }
 
     /* Search headers */
