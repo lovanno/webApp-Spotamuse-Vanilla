@@ -372,11 +372,20 @@
       background-color: #474747;
       text-align: left;
       display: flex;
-      border-left: solid 50px #474747;
-      border-bottom: solid 50px #474747;
+      gap: 1.25rem;
+
+      padding-top: 4rem;
+      padding-left: 30px;
+      padding-bottom: 30px;
     }
 
-    .library.newPlaylistCont {background-color: #1C1C1C;}
+    .library.newPlaylistCont {
+      background-image: linear-gradient( 0deg, hsl(0deg 0% 11%) 72%, hsl(0deg 0% 18%) 101%, hsl(0deg 0% 26%) 101%, hsl(0deg 0% 36%) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .newPlaylistUserName {color: white;}
     .newPlaylistUserSongs {color: #B3B3B3;}
     .newPlaylistUserTime {color: #B3B3B3;}
@@ -390,19 +399,27 @@
     }
 
     button.playlistPlayBtn.\31 {
+      cursor: pointer;
       background-color: #1DB954;
       border: none;
       border-radius: 100%;
       height: 4.1rem;
       width: 4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     button.playlistDownloadBtn.\31 {
+      cursor: pointer;
       background-color: #1DB954;
       border: none;
       border-radius: 100%;
       height: 2.2rem;
       width: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
     }
 
     button.playlistSettingsBtn.\31 {
@@ -444,8 +461,8 @@
       background-image: url(../material/song_artCovers/myLove_song11.jfif);
       background-repeat: no-repeat;
       background-size: cover;
-      height: 14rem;
-      width: 20%;
+      height: 12rem;
+      width: 12rem;
     }
 
 
@@ -455,14 +472,34 @@
       justify-content: space-between;
       margin-left: 1rem;
       margin-right: 1rem;
+      width: 90%;
     }
 
     .newPlaylist.colmHeaders {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       color: #B3B3B3;
       font-size: 14px;
-      margin-left: 110px;
+      width: 95%;
+    }
+
+    button.playlistBackwardsBtn {
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+    }
+
+    button.playlistFilterBtn.\31 {
+      background-color: transparent;
+      border: none;
+    }
+
+    .playlistFilterIcon.\31 {
+      cursor: pointer;
+      background-color: transparent;
+      color: #b3b3b3;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      text-decoration-line: underline;
     }
 
     .newPlaylist.orderCont {
@@ -478,9 +515,8 @@
     .newPlaylistSongs {
       cursor: pointer;
       display: flex;
-      /*background-color: tan;*/
+      background-color: inherit;
       width: 100%;
-      background-color: #1C1C1C;
       border: transparent;
       margin-top: 2rem;
       margin-left: 1rem;
@@ -510,11 +546,10 @@
       color: #FFF;
       display: block;
       width: fit-content; 
-      background: #033677;
+      background: transparent;
       position: relative;
-
-
-      left: -32%;     /*-6*/
+      left: -68%;
+      z-index: 1000;
     }
 
     .menuGear{
@@ -541,11 +576,12 @@
     
     ul.level1:hover {display:block;}
        
-    .liHeader1:hover {background-color: red;}
+    .liHeader1:hover {background-color: white;}
 
     .liHeader:hover{ 
-      background: red; 
+      background-color: #1c1c1c; 
       width: 100%;
+      z-index: 1000;
     }
 
     .liHeader{
@@ -575,7 +611,7 @@
       position: absolute;
       top: 0%;
       left: 100%;
-      background-color: #033677;
+      background-color: #000000;
     }
 
 
@@ -960,14 +996,41 @@
       display: flex;
       justify-content: space-around;
       background-color: #1c1c1c;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    button.addSongsPlaylistBtn {
+      cursor: pointer;
+      position: relative;
+      top: 22%;
+      height: 32px;
+      width: 9.5rem;
+      font-size: 10px;
+      opacity: 0.55;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 23px;
+      text-transform: uppercase;
     }
 
 
 
     /*Finished Playlist*/
     button.finishedPlaylistBtn {
-      position: sticky;
-      top: 50%;
+      cursor: pointer;
+      position: relative;
+      top: 22%;
+      height: 32px;
+      width: 9.5rem;
+      font-size: 10px;
+      opacity: 0.55;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 23px;
+      text-transform: uppercase;
     }
 
     .playlistSong.trackInfoCont {

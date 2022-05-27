@@ -2054,10 +2054,9 @@
             return num.toString().replace(/\B(?<!\.\d*)(?=(\d{1})+(?!\d))/g, " ")
         }
 
-        function retrieveProdImage(image){
+        function retrieveElmImg(image){
             const prodImgRetrieve = window.getComputedStyle(image).backgroundImage; 
-            const prodImgUrl = "url(" + prodImgRetrieve + ")";
-            return prodImgUrl
+            return prodImgRetrieve
         }
 
 
@@ -2307,7 +2306,7 @@
         createPlaylistTab.addEventListener("click", function(){
             let newPlaylistName = prompt("Please enter a name for your Playlist");
 
-            if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Your Library" || createdPlaylistsName.includes(newPlaylistName)) {
+            if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Downloaded Files" || createdPlaylistsName.includes(newPlaylistName)) {
                 console.log("Please enter a valid Playlist Name");
             } 
             else {
@@ -2541,6 +2540,7 @@
         backwardsBtn.addEventListener("click", function(){
             backwardsMode = !backwardsMode;
             if(backwardsMode){
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>'
                 const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
                 newPlaylistPrep()
                 musicSource(reverseArr);
@@ -2549,6 +2549,10 @@
                     playlistCreation();
                 }
             }
+            /*This statement never runs. The backwardsMode toggle above does not change*/
+            /*else{
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+            }*/
             openPlaylistTab();
             addNewSongsPlaylist.style.display = "none";
             finishedCreateBtn.style.display = "none";
@@ -2640,6 +2644,10 @@
             const from = event.target;
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+                let recentPlayImg = retrieveElmImg(from.firstElementChild);
+                const playlistImg = playlistName.parentElement.previousElementSibling;
+                playlistImg.style.backgroundImage = "url(\"../" + recentPlayImg.slice(-41);
+
                 playlistName.textContent = "Recently Played";
                 if(recent10){
                     newPlaylistPrep();
@@ -2656,7 +2664,11 @@
             }
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
-                playlistName.textContent = "Your Library";
+                let downloadedPlayImg = retrieveElmImg(from.firstElementChild);
+                const playlistImg = playlistName.parentElement.previousElementSibling;
+                playlistImg.style.backgroundImage = "url(\"../" + downloadedPlayImg.slice(-44);
+
+                playlistName.textContent = "Downloaded Files";
                 backwardsMode = false;      
                 
                 newPlaylistPrep()
@@ -2683,6 +2695,9 @@
                 }
 
                 openPlaylistTab();
+                const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+                const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+                currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             }
 
             if(hasClass(from, "newPlaylistSongs")){
@@ -2709,6 +2724,7 @@
             }
         })
 
+        const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106)
 
         /*Add songs to a new Playlist*/
         const createdPlaylists = [];
@@ -2729,6 +2745,9 @@
             for(let f=1; f<musicLibrary.length; f++){   
                 playlistCreation();
             }
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+            const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+            currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
         })
 
         /*Listens when new playlist creation is finished*/
@@ -2741,7 +2760,7 @@
                 finishedCreateBtn.style.display = "none";
                 backwardsBtn.style.display = "block";
                 playlistInfoFilterBtn.style.display = "block";
-
+                       
                 newPlaylistPrep();
                 musicSource(window["'" + playlistName.textContent + "'"]);
                
@@ -2752,6 +2771,9 @@
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
                 }
+                const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+                const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+                currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             }
         });
 
