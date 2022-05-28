@@ -823,6 +823,7 @@
       gap: 1.5rem;
     }
     .recentSearchAlbumCont {
+      cursor: pointer;
       background-color: #1c1c1c;
       height: 17.375rem;
       width: 12.5rem;
@@ -1079,13 +1080,7 @@
 
 
 
-
-
-
-
-
     /* Tab 5 */
-
     p.newPlaylistHeader {
       color: white;
       text-transform: uppercase;
@@ -1096,6 +1091,10 @@
       color: white;
       font-size: 85px;
       font-weight: bold;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 50%;
     }
 
 

@@ -1131,7 +1131,7 @@
 
         ]
 
-        const albumLibrary = [myDearMelancholy_EP, seven_EP, currentsBSide_EP, whereDoesTheDevilHide_EP];
+        const albumLibrary = [seven_EP, currentsBSide_EP, myDearMelancholy_EP, whereDoesTheDevilHide_EP];
 
 
         const musicLibrary = [
@@ -2671,7 +2671,7 @@
                 playlistName.textContent = "Downloaded Files";
                 backwardsMode = false;      
                 
-                newPlaylistPrep()
+                newPlaylistPrep();
                 musicSource(musicLibrary);
 
                 for(let f=1; f<playlistShow.length; f++){
@@ -2722,7 +2722,52 @@
                     (window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
                 }
             }
-        })
+        });
+
+        /*Listens for EP Albums from both Home tab and Search tab*/
+        document.body.addEventListener("click", function(event){    
+            const from = event.target;
+
+            if(hasClass(from, "homeContentContAlbumCont") || (hasClass(from, "homeContentCont") && hasClass(from, "albumInfoCover"))){
+                epOrderNum = parseInt(from.className.slice(-1)-1);               
+                playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+                const playlistImg = playlistName.parentElement.previousElementSibling;
+                playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+                backwardsMode = false;      
+                
+                newPlaylistPrep();
+                musicSource(albumLibrary[epOrderNum]);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+                
+                openPlaylistTab();
+                addNewSongsPlaylist.style.display = "none";
+                finishedCreateBtn.style.display = "none";
+                
+            }
+            if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
+                epOrderNum = parseInt(from.className.slice(-1)-1);               
+                playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+                const playlistImg = playlistName.parentElement.previousElementSibling;
+                playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+                backwardsMode = false;      
+                
+                newPlaylistPrep();
+                musicSource(albumLibrary[epOrderNum]);
+
+                for(let f=1; f<playlistShow.length; f++){
+                    playlistCreation();
+                }
+                
+                openPlaylistTab();
+                addNewSongsPlaylist.style.display = "none";
+                finishedCreateBtn.style.display = "none";
+            }
+
+
+        });      
 
         const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106)
 
