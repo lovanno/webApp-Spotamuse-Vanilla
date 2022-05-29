@@ -2512,9 +2512,14 @@
 
 
         /*All helper functions for creating a new playlist*/
+        function removePlaylistModifers(){
+            addNewSongsPlaylist.style.display = "none";
+            finishedCreateBtn.style.display = "none";
+        }
         function openPlaylistTab(){
             allTabs.forEach(tabs => tabs.style.display = "none");
             allTabs[4].style.display = "block";
+            removePlaylistModifers();
         }
 
         function playlistCreation(){
@@ -2535,27 +2540,31 @@
 
     
         /*backwards playlist toggle*/
-        let backwardsMode = false;  /*The toggle will reset each time a playlist is opened. This is to avoid writing duplicate code*/
+        let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
+        function resetBackwardsMode(){    
+            backwardsMode = false; 
+            backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+        }
+
         const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
         backwardsBtn.addEventListener("click", function(){
             backwardsMode = !backwardsMode;
+
             if(backwardsMode){
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>'
-                const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
-                newPlaylistPrep()
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
+            }
+            else{
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+            }
+
+            const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
+                newPlaylistPrep();
                 musicSource(reverseArr);
 
                 for(let f=1; f<playlistShow.length; f++){
                     playlistCreation();
                 }
-            }
-            /*This statement never runs. The backwardsMode toggle above does not change*/
-            /*else{
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
-            }*/
             openPlaylistTab();
-            addNewSongsPlaylist.style.display = "none";
-            finishedCreateBtn.style.display = "none";
         })
 
 
@@ -2595,7 +2604,7 @@
         }
 
         function createSortPlaylist(attribute){
-            newPlaylistPrep()
+            newPlaylistPrep();
             musicSource(sortAlpha(playlistShow, attribute));
             for(let f=1; f<playlistShow.length; f++){
                 playlistCreation();
@@ -2626,7 +2635,7 @@
                     break;
 
                 case "Date":
-                    newPlaylistPrep()
+                    newPlaylistPrep();
                     musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
                     for(let f=1; f<playlistShow.length; f++){
                         playlistCreation();
@@ -2644,6 +2653,7 @@
             const from = event.target;
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+                resetBackwardsMode();
                 let recentPlayImg = retrieveElmImg(from.firstElementChild);
                 const playlistImg = playlistName.parentElement.previousElementSibling;
                 playlistImg.style.backgroundImage = "url(\"../" + recentPlayImg.slice(-41);
@@ -2659,8 +2669,6 @@
                     }
                 }
                 openPlaylistTab();
-                addNewSongsPlaylist.style.display = "none";
-                finishedCreateBtn.style.display = "none";
             }
 
             if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
@@ -2669,7 +2677,7 @@
                 playlistImg.style.backgroundImage = "url(\"../" + downloadedPlayImg.slice(-44);
 
                 playlistName.textContent = "Downloaded Files";
-                backwardsMode = false;      
+                resetBackwardsMode();   
                 
                 newPlaylistPrep();
                 musicSource(musicLibrary);
@@ -2679,8 +2687,6 @@
                 }
                 
                 openPlaylistTab();
-                addNewSongsPlaylist.style.display = "none";
-                finishedCreateBtn.style.display = "none";
             }
             
             if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
@@ -2695,13 +2701,13 @@
                 }
 
                 openPlaylistTab();
+                
                 const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
                 const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
                 currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             }
 
             if(hasClass(from, "newPlaylistSongs")){
-                backwardsMode = false;
                 let clickedTrack = parseInt(from.className.slice(17));
                 song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
@@ -2733,8 +2739,8 @@
                 playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
                 const playlistImg = playlistName.parentElement.previousElementSibling;
                 playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-                backwardsMode = false;      
-                
+                resetBackwardsMode();        
+
                 newPlaylistPrep();
                 musicSource(albumLibrary[epOrderNum]);
 
@@ -2743,16 +2749,13 @@
                 }
                 
                 openPlaylistTab();
-                addNewSongsPlaylist.style.display = "none";
-                finishedCreateBtn.style.display = "none";
-                
             }
             if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
                 epOrderNum = parseInt(from.className.slice(-1)-1);               
                 playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
                 const playlistImg = playlistName.parentElement.previousElementSibling;
                 playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-                backwardsMode = false;      
+                resetBackwardsMode();  
                 
                 newPlaylistPrep();
                 musicSource(albumLibrary[epOrderNum]);
@@ -2762,8 +2765,6 @@
                 }
                 
                 openPlaylistTab();
-                addNewSongsPlaylist.style.display = "none";
-                finishedCreateBtn.style.display = "none";
             }
 
 
@@ -2776,6 +2777,7 @@
         const createdPlaylistsName = [];
         const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
         addNewSongsPlaylist.addEventListener("click", function(){
+            resetBackwardsMode();
             playcreateMode = true;
             finishedCreateBtn.style.display = "block";
             addNewSongsPlaylist.style.display = "none";
@@ -2798,9 +2800,8 @@
         /*Listens when new playlist creation is finished*/
         document.body.addEventListener("click", function(event){
             const from = event.target;  
-            backwardsMode = false;
-
             if(hasClass(from, "finishedPlaylistBtn")){
+                resetBackwardsMode();
                 playcreateMode = false;
                 finishedCreateBtn.style.display = "none";
                 backwardsBtn.style.display = "block";
