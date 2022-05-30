@@ -1981,7 +1981,6 @@ const musicLibrary = [
 
 
 
-
     /*!                                                      App Structure
     There are 4 sections with the contentTabs holding 5 individual views
       (1) appSettingsNav                                      section1
@@ -2353,15 +2352,12 @@ const musicLibrary = [
             let downloadedPlayImg = retrieveElmImg(from.firstElementChild);
             const playlistImg = playlistName.parentElement.previousElementSibling;
             playlistImg.style.backgroundImage = "url(\"../" + downloadedPlayImg.slice(-44);
-
             playlistName.textContent = "Downloaded Files";
+
             resetBackwardsMode();   
-                
             newPlaylistPrep();
             musicSource(musicLibrary);
-
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
-                
             openPlaylistTab();
         }
             
@@ -2371,13 +2367,8 @@ const musicLibrary = [
 
             playlistName.textContent = from.lastElementChild.textContent;                
             musicSource(window["'" + playlistName.textContent + "'"]);
-
-            for(let f=1; f<playlistShow.length; f++){
-                playlistCreation();
-            }
-
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}
             openPlaylistTab();
-                
             const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
@@ -2394,10 +2385,8 @@ const musicLibrary = [
             recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
             updateSongTime();
-
             songOrder = clickedTrack-1;
-            nowPlayingInfo(playlistShow[songOrder])
-
+            nowPlayingInfo(playlistShow[songOrder]);
 
             if(playcreateMode == true){
                 /*(window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);  Sets up object references*/
@@ -2407,13 +2396,12 @@ const musicLibrary = [
     });
 
 
-    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106);
-
     /*Add songs to a new Playlist*/
+    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106);
     const createdPlaylists = [];
     const createdPlaylistsName = [];
     const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
-    addNewSongsPlaylist.addEventListener("click", function(){
+    addNewSongsPlaylist.addEventListener("click", function(){       
         resetBackwardsMode();
         playcreateMode = true;
         finishedCreateBtn.style.display = "block";
@@ -2422,7 +2410,6 @@ const musicLibrary = [
         window["'" + playlistName.textContent + "'"] = new Array();
         createdPlaylists.push(window["'" + playlistName.textContent + "'"]);
         createdPlaylistsName.push(playlistName.textContent);
-
         newPlaylistPrep();               /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
         musicSource(musicLibrary);
 
@@ -2737,7 +2724,6 @@ catch{}
             const playlistImg = playlistName.parentElement.previousElementSibling;
             playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
             resetBackwardsMode();        
-
             newPlaylistPrep();
             musicSource(albumLibrary[epOrderNum]);
 
@@ -2749,15 +2735,11 @@ catch{}
             playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
             const playlistImg = playlistName.parentElement.previousElementSibling;
             playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-            resetBackwardsMode();  
-                
+            resetBackwardsMode();        
             newPlaylistPrep();
             musicSource(albumLibrary[epOrderNum]);
 
-            for(let f=1; f<playlistShow.length; f++){
-                playlistCreation();
-            }
-                
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}     
             openPlaylistTab();
         }
 
@@ -2787,7 +2769,6 @@ catch{}
     const recentlyPlayedAudio = [];    
     const recentlyPlayedPlaylist = []    
     let recent10;
-
     let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
     function stopAll() {
@@ -2796,7 +2777,6 @@ catch{}
             songs.currentTime = 0;
         });
     }
-
 
     const songTimeIntervals = [];
     function updateSongTime() {
@@ -2839,21 +2819,16 @@ catch{}
     let shuffleMode = false;
     let lastSongOrder;
     const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
-    shuffleBtn.addEventListener("click", function(){
-        shuffleMode = !shuffleMode;
-    });
+    shuffleBtn.addEventListener("click", function(){shuffleMode = !shuffleMode;});
 
     let repeatCycleMode = false;
     const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
-    repeatCycleBtn.addEventListener("click", function(){
-        repeatCycleMode = !repeatCycleMode;
-    });
-
+    repeatCycleBtn.addEventListener("click", function(){repeatCycleMode = !repeatCycleMode;});
+    
     let chosenPlaylist;
     chosenPlaylist = musicLibrary;
     document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
         const from = event.target;
-
         if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
             if(shuffleMode == true){
                 songOrder = (Math.floor(Math.random() * playlistShow.length));
