@@ -20,10 +20,7 @@
       display: none;
     }
 
-
-
     /*! There are 4 sections with the contentTabs holding 5 individual views
-
       (1) appSettingsNav                                      section1
       (2) librarySidebar                                      section2
       (3) contentTabs                                         section3
@@ -117,7 +114,7 @@
     }
 
 
-  /***        (2) librarySideBar                                                                   section3               ***/
+  /***        (2) librarySideBar                                                                   section2               ***/
     .librarySideBar.headerCont {
       display: flex;
       flex-direction: column;
@@ -167,6 +164,7 @@
 
 
  
+  /***        (3) contentTabs                                                                   section3               ***/
 
     /***        Home (3)                                     tab1               ***/   
     .home.BannerImage {

@@ -1949,7 +1949,6 @@ const musicLibrary = [
         "loudness": "-7",
     },
 ]
-    
     /* Home Library Set up */
     const mp3UrlLibrary = [];
     const albumData = [];   /*Line 2310 - playback test for switching different playlists*/
@@ -1964,11 +1963,7 @@ const musicLibrary = [
         })
     });
     
-
-
-
-
-    /***!          General Functions                     !***/
+    /***     General Functions       ***/
     function hasClass(elem, className) {return elem.classList.contains(className);}
 
     function hasSuperClass(elem, className) {return elem.className == (className);}
@@ -1986,7 +1981,26 @@ const musicLibrary = [
 
 
 
-    /**                             Switch Between Tab Functionality                                                   **/
+
+    /*!                                                      App Structure
+    There are 4 sections with the contentTabs holding 5 individual views
+      (1) appSettingsNav                                      section1
+      (2) librarySidebar                                      section2
+      (3) contentTabs                                         section3
+            Home (3)                                     tab1 
+            Your Library (3)                             tab2                                             
+            Listen Later (3)                             tab3                                             
+            Search (3)                                   tab4                                               
+            Playlist (3)                                 tab5           
+      (4) playingNowSect                                      section4 /*
+
+
+
+/***        (1) appSettingsNav                                                                   section1               ***/
+
+/***        (2) librarySideBar                                                                   section2               ***/
+
+    /**     Switch Between Tab Functionality            **/
     const allTabs = document.querySelectorAll(".tab");
         document.body.addEventListener("click", function(event){
         const from = event.target;
@@ -2004,195 +2018,9 @@ const musicLibrary = [
 
 
 
-    /*                                                              Core Functionality                                                                */
-    /*  Playback HTML Buttons */
-    const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
-    const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
-    const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
-    let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
-
-    /* Current songPlaying HTML Info */
-    const currentSong = document.querySelector("p.songPlayingName.\\31");
-    const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
-    const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
-    const currentSongTime = document.querySelector("p.songProgressSec");
-    const currentSongDuration = document.querySelector("p.songProgressSec.total");  
-    const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
-    currentSongDuration.textContent = "0:30";
-
-
-    /*  Playback Functions Setup    */
-    const recentlyPlayedAudio = [];    
-    const recentlyPlayedPlaylist = []    
-    let recent10;
-
-
-    let playPauseToggle = false;       /*Switch toggle for paused songs*/
-
-    function stopAll() {
-        recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
-            songs.pause();
-            songs.currentTime = 0;
-        });
-    }
-
-
-    const songTimeIntervals = [];
-    function updateSongTime() {
-        pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path></svg>'
-        let currentInterval = setInterval(function() {
-            songTimeIntervals.push(currentInterval);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
-            const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
-
-            if(songSeconds % 60 < 10){
-                currentSongTime.textContent = "0:0" + songSeconds % 60;
-                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
-            }
-            else {
-                currentSongTime.textContent = "0:" + songSeconds % 60;
-                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
-            }
-            if(songSeconds % 60 == 30){clearInterval(currentInterval);}
-        }, 0);
-    }
-
-
-
-
-    function updatePlaylistSong(chosenPlaylist){
-        playButtonToggle = false;
-        song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
-        recentlyPlayedAudio.push(song);
-        recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
-        recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
-
-        stopAll();
-        song.play();
-    }
-
-    function nowPlayingInfo(songData){
-        currentSong.textContent = songData.track_title;
-        currentAlbum.textContent = songData.track_album;
-        currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
-    }
-
-
-
-/**                                               Playback Functions                                                      **/
-    /*    Shuffle Feature   */
-    let shuffleMode = false;
-    let lastSongOrder;
-    const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
-    shuffleBtn.addEventListener("click", function(){
-        shuffleMode = !shuffleMode;
-    });
-
-    let repeatCycleMode = false;
-    const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
-    repeatCycleBtn.addEventListener("click", function(){
-        repeatCycleMode = !repeatCycleMode;
-    });
-
-    let chosenPlaylist;
-    chosenPlaylist = musicLibrary;
-    document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
-        const from = event.target;
-
-        if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
-            if(shuffleMode == true){
-                songOrder = (Math.floor(Math.random() * playlistShow.length));
-
-                if(songOrder == -1 || songOrder == lastSongOrder){
-                    songOrder = Math.floor(Math.random() * playlistShow.length);
-                }
-            }
-            else{
-                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
-            }
-
-            if(repeatCycleMode == true){
-                songOrder = lastSongOrder;
-            }
-            updatePlaylistSong(chosenPlaylist);
-            nowPlayingInfo(chosenPlaylist[songOrder]);
-            updateSongTime();
-            stopLaterSongs();
-            lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
-        }
-
-        if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
-            if(playPauseToggle == false){
-                (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
-                playPauseToggle = true;
-                songTimeIntervals.forEach(f => clearInterval(f));   /*clears all intervals to avoid timer from running in background*/
-                pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
-            }
-            else{
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
-                playPauseToggle = false;
-                updateSongTime();
-            }
-            stopLaterSongs();
-        }
-
-        if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
-            if(shuffleMode == true){
-                songOrder = (Math.floor(Math.random() * playlistShow.length));
-
-                if(songOrder == -1 || songOrder == lastSongOrder){songOrder = Math.floor(Math.random() * playlistShow.length);}
-            }
-            else{(songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; }
-
-            if(repeatCycleMode == true){songOrder = lastSongOrder;}
-            updatePlaylistSong(chosenPlaylist);
-            nowPlayingInfo(chosenPlaylist[songOrder]);
-            updateSongTime();
-            stopLaterSongs();
-            lastSongOrder = songOrder;
-        }
-    })
-
-    /*      Volume Controls             */
-    const muteSong = document.querySelector("button.songMuteBtn");
-    const volumeBar = document.querySelector("div.volumeEmpty.ProgBar.\\31");
-    function muteVolume(){
-        (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 0;
-        document.querySelector("div.volumeShown.ProgBar.\\32").style.width = '0%';
-        muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
-    }
-
-    muteSong.addEventListener("click", function(){
-        if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){muteVolume();}
-        else{
-            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
-            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
-            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
-        }
-    })
-
-    volumeBar.addEventListener("click", function(event){            
-        if(event.offsetX/volumeBar.clientWidth <= 0){   /*sometimes, the offsetX gives a negative number. This prevents that*/
-            muteVolume();   /*volumeBar.clientWidth grabs the progress bar's current width and event.offsetX grabs the exact position of the progress bar's width that was touched*/
-        }
-        else{
-            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = (event.offsetX/volumeBar.clientWidth);
-            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = ((event.offsetX/volumeBar.clientWidth)*100) + '%';
-            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'        
-        }
-    });
-
-
-    /*      Allows home library to be available immediately         */
-    playPauseToggle = true;
-    nowPlayingInfo(musicLibrary [0]);
-    startSong = new Audio(mp3UrlLibrary[0]);
-    recentlyPlayedAudio.push(startSong);
-    recentlyPlayedPlaylist.push(musicLibrary[0]);
-
-
-/**                                               Playlist Creation                                                     **/       
-
-    /*New Playlist Creation - Variables */
+/***        (3) contentTabs                                                                   section3               ***/
+    /*Since most tabs rely on tab 5, Playlists, it will be placed first
+    /***        Search (3)                                     tab5               ***/   
     const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
     const playlistName = document.querySelector("h1.newPlaylistName.\\31");
     const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
@@ -2379,8 +2207,6 @@ const musicLibrary = [
         }
 
 
-
-
     /*Helper function for the createDownloadedPlaylist() function*/
     function updateTrackInfo(trackNum){
         /*Since DOM creation requires a base element, playlistTrackCount starts at 1 so it doesn't recreate the 1st div. */
@@ -2436,38 +2262,8 @@ const musicLibrary = [
         document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
     }
 
-    
-    /*backwards playlist toggle*/
-    let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
-    function resetBackwardsMode(){    
-        backwardsMode = false; 
-        backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
-    }
 
-    const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
-    backwardsBtn.addEventListener("click", function(){
-        backwardsMode = !backwardsMode;
-
-        if(backwardsMode){
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
-        }
-        else{
-            backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
-        }
-
-        const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
-            newPlaylistPrep();
-            musicSource(reverseArr);
-
-            for(let f=1; f<playlistShow.length; f++){
-                playlistCreation();
-            }
-        openPlaylistTab();
-    })
-
-
-
-    /*                Sort Playlists Filters                        */
+    /**         Sort Playlists Filters            **/
     function sortAlpha(list, _attribute){
         if (list !== undefined && list !== null) {
             list.sort((a, b) => {
@@ -2530,8 +2326,10 @@ const musicLibrary = [
                 break;
         }
     })
-    
-    document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
+
+
+    /***        Your Library (3)                                     tab2               ***/   
+    document.body.addEventListener("click", function(event){        /* Opens Playlists */
         const from = event.target;
 
         if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
@@ -2608,43 +2406,8 @@ const musicLibrary = [
         }
     });
 
-    /*Listens for EP Albums from both Home tab and Search tab*/
-    document.body.addEventListener("click", function(event){    
-        const from = event.target;
 
-        if(hasClass(from, "homeContentContAlbumCont") || (hasClass(from, "homeContentCont") && hasClass(from, "albumInfoCover"))){
-            epOrderNum = parseInt(from.className.slice(-1)-1);               
-            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
-            const playlistImg = playlistName.parentElement.previousElementSibling;
-            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-            resetBackwardsMode();        
-
-            newPlaylistPrep();
-            musicSource(albumLibrary[epOrderNum]);
-
-            for(let f=1; f<playlistShow.length; f++){playlistCreation();}    
-            openPlaylistTab();
-        }
-        if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
-            epOrderNum = parseInt(from.className.slice(-1)-1);               
-            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
-            const playlistImg = playlistName.parentElement.previousElementSibling;
-            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-            resetBackwardsMode();  
-                
-            newPlaylistPrep();
-            musicSource(albumLibrary[epOrderNum]);
-
-            for(let f=1; f<playlistShow.length; f++){
-                playlistCreation();
-            }
-                
-            openPlaylistTab();
-        }
-
-    });      
-
-    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106)
+    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106);
 
     /*Add songs to a new Playlist*/
     const createdPlaylists = [];
@@ -2695,8 +2458,7 @@ const musicLibrary = [
 
 
 
-
-    /*                            Listen Later Tab                              */
+    /***        Listen Later (3)                                     tab3               ***/   
     function allowDrop(ev) {ev.preventDefault();}
 
     function drag(ev) {ev.dataTransfer.setData("text", ev.target.className);}
@@ -2923,15 +2685,15 @@ try{
 catch{}     
     });
 
+
     function stopLaterSongs(){
         listenedLaterSongs.forEach(playedSongs => {playedSongs.pause();})
     }
-
     const listenedLaterSongs = [];
     const listenedLaterDivs = [];
     let listenLaterPause;
 
-        
+    /*Play Listen Later Songs*/
     document.body.addEventListener("click", function(event){
         const from = event.target;
         if(hasClass(from, "SongBtnCont")){    
@@ -2961,4 +2723,253 @@ catch{}
             }
         }
 
+    })
+
+
+    /***        Home (3)                                     tab1               ***/   
+    /***        Search (3)                                     tab4               ***/   
+    document.body.addEventListener("click", function(event){           /*Listens for EP Albums from both Home tab and Search tab*/
+        const from = event.target;
+
+        if(hasClass(from, "homeContentContAlbumCont") || (hasClass(from, "homeContentCont") && hasClass(from, "albumInfoCover"))){
+            epOrderNum = parseInt(from.className.slice(-1)-1);               
+            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+            resetBackwardsMode();        
+
+            newPlaylistPrep();
+            musicSource(albumLibrary[epOrderNum]);
+
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}    
+            openPlaylistTab();
+        }
+        if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
+            epOrderNum = parseInt(from.className.slice(-1)-1);               
+            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+            resetBackwardsMode();  
+                
+            newPlaylistPrep();
+            musicSource(albumLibrary[epOrderNum]);
+
+            for(let f=1; f<playlistShow.length; f++){
+                playlistCreation();
+            }
+                
+            openPlaylistTab();
+        }
+
+    });  
+
+
+
+
+/***        (4) playingNowSect                                                                   section4               ***/
+    /*  Playback HTML Buttons */
+    const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
+    const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
+    const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
+    let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
+
+    /* Current songPlaying HTML Info */
+    const currentSong = document.querySelector("p.songPlayingName.\\31");
+    const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
+    const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
+    const currentSongTime = document.querySelector("p.songProgressSec");
+    const currentSongDuration = document.querySelector("p.songProgressSec.total");  
+    const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
+    currentSongDuration.textContent = "0:30";
+
+
+    /*  Playback Functions Setup    */
+    const recentlyPlayedAudio = [];    
+    const recentlyPlayedPlaylist = []    
+    let recent10;
+
+    let playPauseToggle = false;       /*Switch toggle for paused songs*/
+
+    function stopAll() {
+        recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
+            songs.pause();
+            songs.currentTime = 0;
+        });
+    }
+
+
+    const songTimeIntervals = [];
+    function updateSongTime() {
+        pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path></svg>'
+        let currentInterval = setInterval(function() {
+            songTimeIntervals.push(currentInterval);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
+            const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
+
+            if(songSeconds % 60 < 10){
+                currentSongTime.textContent = "0:0" + songSeconds % 60;
+                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+            }
+            else {
+                currentSongTime.textContent = "0:" + songSeconds % 60;
+                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+            }
+            if(songSeconds % 60 == 30){clearInterval(currentInterval);}
+        }, 0);
+    }
+
+    function updatePlaylistSong(chosenPlaylist){
+        playButtonToggle = false;
+        song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
+        recentlyPlayedAudio.push(song);
+        recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
+        recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
+        stopAll();
+        song.play();
+    }
+
+    function nowPlayingInfo(songData){
+        currentSong.textContent = songData.track_title;
+        currentAlbum.textContent = songData.track_album;
+        currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
+    }
+
+    /**                       Playback Functions                                **/
+    /*    Shuffle Feature   */
+    let shuffleMode = false;
+    let lastSongOrder;
+    const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
+    shuffleBtn.addEventListener("click", function(){
+        shuffleMode = !shuffleMode;
+    });
+
+    let repeatCycleMode = false;
+    const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
+    repeatCycleBtn.addEventListener("click", function(){
+        repeatCycleMode = !repeatCycleMode;
+    });
+
+    let chosenPlaylist;
+    chosenPlaylist = musicLibrary;
+    document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
+        const from = event.target;
+
+        if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
+            if(shuffleMode == true){
+                songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                if(songOrder == -1 || songOrder == lastSongOrder){
+                    songOrder = Math.floor(Math.random() * playlistShow.length);
+                }
+            }
+            else{
+                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
+            }
+
+            if(repeatCycleMode == true){
+                songOrder = lastSongOrder;
+            }
+            updatePlaylistSong(chosenPlaylist);
+            nowPlayingInfo(chosenPlaylist[songOrder]);
+            updateSongTime();
+            stopLaterSongs();
+            lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
+        }
+
+        if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
+            if(playPauseToggle == false){
+                (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
+                playPauseToggle = true;
+                songTimeIntervals.forEach(f => clearInterval(f));   /*clears all intervals to avoid timer from running in background*/
+                pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
+            }
+            else{
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
+                playPauseToggle = false;
+                updateSongTime();
+            }
+            stopLaterSongs();
+        }
+
+        if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
+            if(shuffleMode == true){
+                songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                if(songOrder == -1 || songOrder == lastSongOrder){songOrder = Math.floor(Math.random() * playlistShow.length);}
+            }
+            else{(songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; }
+
+            if(repeatCycleMode == true){songOrder = lastSongOrder;}
+            updatePlaylistSong(chosenPlaylist);
+            nowPlayingInfo(chosenPlaylist[songOrder]);
+            updateSongTime();
+            stopLaterSongs();
+            lastSongOrder = songOrder;
+        }
+    })
+
+    /*      Volume Controls             */
+    const muteSong = document.querySelector("button.songMuteBtn");
+    const volumeBar = document.querySelector("div.volumeEmpty.ProgBar.\\31");
+    function muteVolume(){
+        (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 0;
+        document.querySelector("div.volumeShown.ProgBar.\\32").style.width = '0%';
+        muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
+    }
+
+    muteSong.addEventListener("click", function(){
+        if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){muteVolume();}
+        else{
+            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
+            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
+            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
+        }
+    })
+
+    volumeBar.addEventListener("click", function(event){            
+        if(event.offsetX/volumeBar.clientWidth <= 0){   /*sometimes, the offsetX gives a negative number. This prevents that*/
+            muteVolume();   /*volumeBar.clientWidth grabs the progress bar's current width and event.offsetX grabs the exact position of the progress bar's width that was touched*/
+        }
+        else{
+            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = (event.offsetX/volumeBar.clientWidth);
+            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = ((event.offsetX/volumeBar.clientWidth)*100) + '%';
+            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'        
+        }
+    });
+
+
+    /*      Allows home library to be available immediately         */
+    playPauseToggle = true;
+    nowPlayingInfo(musicLibrary [0]);
+    startSong = new Audio(mp3UrlLibrary[0]);
+    recentlyPlayedAudio.push(startSong);
+    recentlyPlayedPlaylist.push(musicLibrary[0]);
+
+    
+    /*backwards playlist toggle*/
+    let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
+    function resetBackwardsMode(){    
+        backwardsMode = false; 
+        backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+    }
+
+    const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
+    backwardsBtn.addEventListener("click", function(){
+        backwardsMode = !backwardsMode;
+
+        if(backwardsMode){
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
+        }
+        else{
+            backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+        }
+
+        const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
+            newPlaylistPrep();
+            musicSource(reverseArr);
+
+            for(let f=1; f<playlistShow.length; f++){
+                playlistCreation();
+            }
+        openPlaylistTab();
     })
