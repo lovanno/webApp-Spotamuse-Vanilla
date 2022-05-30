@@ -1951,329 +1951,299 @@ const musicLibrary = [
 ]
     
     /* Home Library Set up */
-        const mp3UrlLibrary = [];
-        const albumData = [];   /*Line 2310 - playback test for switching different playlists*/
-        musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
+    const mp3UrlLibrary = [];
+    const albumData = [];   /*Line 2310 - playback test for switching different playlists*/
+    musicLibrary.map(songs => mp3UrlLibrary.push(songs.track_mp3Url));
         
-        albumLibrary.map((album) => {
-            album.forEach(songs => {
-                mp3UrlLibrary.push(songs.track_mp3Url);
+    albumLibrary.map((album) => {
+        album.forEach(songs => {
+            mp3UrlLibrary.push(songs.track_mp3Url);
 
-                /*Line 2310 - Test for switching playlists*/
-                albumData.push(songs);
-            })
-        });
+            /*Line 2310 - Test for switching playlists*/
+            albumData.push(songs);
+        })
+    });
     
 
 
 
 
     /***!          General Functions                     !***/
-        function hasClass(elem, className) {            /*allows to access created button elements*/
-            return elem.classList.contains(className);
-        }
+    function hasClass(elem, className) {return elem.classList.contains(className);}
 
-        function hasSuperClass(elem, className) {            /*allows to access created button elements*/
-            return elem.className == (className);
-        }
+    function hasSuperClass(elem, className) {return elem.className == (className);}
  
-        function htmlSlice(element, number){
-            return element.innerHTML.slice(number);
-        }
+    function htmlSlice(element, number){return element.innerHTML.slice(number);}
 
-        function wordTest(str) { 
-            return str.split(" ");
-        }
+    function wordSpace(str) {return str.split(" ");}
  
-        function spaceTens(num){
-            return num.toString().replace(/\B(?<!\.\d*)(?=(\d{1})+(?!\d))/g, " ")
-        }
+    function spaceTens(num){return num.toString().replace(/\B(?<!\.\d*)(?=(\d{1})+(?!\d))/g, " ")}
 
-        function retrieveElmImg(image){
-            const prodImgRetrieve = window.getComputedStyle(image).backgroundImage; 
-            return prodImgRetrieve
-        }
+    function retrieveElmImg(image){
+        const prodImgRetrieve = window.getComputedStyle(image).backgroundImage; 
+        return prodImgRetrieve
+    }
 
 
 
     /**                             Switch Between Tab Functionality                                                   **/
-        const allTabs = document.querySelectorAll(".tab");
-         document.body.addEventListener("click", function(event){
-            const from = event.target;
+    const allTabs = document.querySelectorAll(".tab");
+        document.body.addEventListener("click", function(event){
+        const from = event.target;
 
-            if(hasClass(from, "sideBarHeader")){
-                allTabs.forEach(tabs => tabs.style.display = "none");
+        if(hasClass(from, "sideBarHeader")){
+            allTabs.forEach(tabs => tabs.style.display = "none");
+            const clickedTab = parseInt(from.className.slice(-1))-1;
+            allTabs[clickedTab].style.display = "block";
+        }
 
-                const clickedTab = parseInt(from.className.slice(-1))-1;
-                allTabs[clickedTab].style.display = "block";
-            }
-
-            /* Hide Announcements Banner */
-            if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}
-
-        });
-
-
-
-
-    
+        /* Hide Announcements Banner */
+        if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}
+    });
 
 
 
 
     /*                                                              Core Functionality                                                                */
-        /*  Playback HTML Buttons */
-        const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
-        const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
-        const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
-        let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
+    /*  Playback HTML Buttons */
+    const skipBackBtn = document.querySelector("button.songSkip.Setting.\\31");
+    const pauseBtn = document.querySelector("button.songSkip.Setting.\\32");
+    const skipForwardBtn = document.querySelector("button.songSkip.Setting.\\33");
+    let songOrder = 0;  /*Grabs current playlist and is updated based on what song is playing*/
 
-        /* Current songPlaying HTML Info */
-        const currentSong = document.querySelector("p.songPlayingName.\\31");
-        const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
-        const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
-        const currentSongTime = document.querySelector("p.songProgressSec");
-        const currentSongDuration = document.querySelector("p.songProgressSec.total");  
-        const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
-        currentSongDuration.textContent = "0:30";
-
-
-        /*  Playback Functions Setup    */
-        const recentlyPlayedAudio = [];    
-        const recentlyPlayedPlaylist = []    
-        let recent10;
+    /* Current songPlaying HTML Info */
+    const currentSong = document.querySelector("p.songPlayingName.\\31");
+    const currentAlbum = document.querySelector("p.songPlayingAlbum.\\31");
+    const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
+    const currentSongTime = document.querySelector("p.songProgressSec");
+    const currentSongDuration = document.querySelector("p.songProgressSec.total");  
+    const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
+    currentSongDuration.textContent = "0:30";
 
 
-        let playPauseToggle = false;       /*Switch toggle for paused songs*/
-
-        function stopAll() {
-            recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
-                songs.pause();
-                songs.currentTime = 0;
-            });
-        }
+    /*  Playback Functions Setup    */
+    const recentlyPlayedAudio = [];    
+    const recentlyPlayedPlaylist = []    
+    let recent10;
 
 
-        const songTimeIntervals = [];
-        function updateSongTime() {
-            pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path></svg>'
-            let currentInterval = setInterval(function() {
-                songTimeIntervals.push(currentInterval);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
-                const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
+    let playPauseToggle = false;       /*Switch toggle for paused songs*/
 
-                if(songSeconds % 60 < 10){
-                    currentSongTime.textContent = "0:0" + songSeconds % 60;
-                    currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
-                }
-                else {
-                    currentSongTime.textContent = "0:" + songSeconds % 60;
-                    currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
-                }
-                if(songSeconds % 60 == 30){clearInterval(currentInterval);}
-            }, 0);
-        }
+    function stopAll() {
+        recentlyPlayedAudio.forEach(function(songs) {           /*This array will need to be updated as it expands*/
+            songs.pause();
+            songs.currentTime = 0;
+        });
+    }
 
 
+    const songTimeIntervals = [];
+    function updateSongTime() {
+        pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path></svg>'
+        let currentInterval = setInterval(function() {
+            songTimeIntervals.push(currentInterval);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
+            const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
+
+            if(songSeconds % 60 < 10){
+                currentSongTime.textContent = "0:0" + songSeconds % 60;
+                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+            }
+            else {
+                currentSongTime.textContent = "0:" + songSeconds % 60;
+                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+            }
+            if(songSeconds % 60 == 30){clearInterval(currentInterval);}
+        }, 0);
+    }
 
 
-        function updatePlaylistSong(chosenPlaylist){
-            playButtonToggle = false;
-            song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
-            recentlyPlayedAudio.push(song);
-            recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
-            recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
-
-            stopAll();
-            song.play();
-        }
 
 
-        function nowPlayingInfo(songData){
-            currentSong.textContent = songData.track_title;
-            currentAlbum.textContent = songData.track_album;
-            currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
-        }
+    function updatePlaylistSong(chosenPlaylist){
+        playButtonToggle = false;
+        song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
+        recentlyPlayedAudio.push(song);
+        recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
+        recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
+        stopAll();
+        song.play();
+    }
 
+    function nowPlayingInfo(songData){
+        currentSong.textContent = songData.track_title;
+        currentAlbum.textContent = songData.track_album;
+        currentAlbumCover.style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
+    }
 
 
 
 /**                                               Playback Functions                                                      **/
+    /*    Shuffle Feature   */
+    let shuffleMode = false;
+    let lastSongOrder;
+    const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
+    shuffleBtn.addEventListener("click", function(){
+        shuffleMode = !shuffleMode;
+    });
 
+    let repeatCycleMode = false;
+    const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
+    repeatCycleBtn.addEventListener("click", function(){
+        repeatCycleMode = !repeatCycleMode;
+    });
 
-        /*    Shuffle Feature   */
-        let shuffleMode = false;
-        let lastSongOrder;
-        const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
-        shuffleBtn.addEventListener("click", function(){
-            shuffleMode = !shuffleMode;
-        });
+    let chosenPlaylist;
+    chosenPlaylist = musicLibrary;
+    document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
+        const from = event.target;
 
-        let repeatCycleMode = false;
-        const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
-        repeatCycleBtn.addEventListener("click", function(){
-            repeatCycleMode = !repeatCycleMode;
-        });
+        if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
+            if(shuffleMode == true){
+                songOrder = (Math.floor(Math.random() * playlistShow.length));
 
-        let chosenPlaylist;
-        chosenPlaylist = musicLibrary;
-        document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
-            const from = event.target;
-
-            if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
-                if(shuffleMode == true){
-                    songOrder = (Math.floor(Math.random() * playlistShow.length));
-
-                    if(songOrder == -1 || songOrder == lastSongOrder){
-                        songOrder = Math.floor(Math.random() * playlistShow.length);
-                    }
+                if(songOrder == -1 || songOrder == lastSongOrder){
+                    songOrder = Math.floor(Math.random() * playlistShow.length);
                 }
-                else{
-                    (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
-                }
-
-                if(repeatCycleMode == true){
-                    songOrder = lastSongOrder;
-                }
-                updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder]);
-                updateSongTime();
-                stopLaterSongs();
-                lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
+            }
+            else{
+                (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
             }
 
-            if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
-                if(playPauseToggle == false){
-                    (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
-                    playPauseToggle = true;
-                    songTimeIntervals.forEach(f => clearInterval(f));   /*clears all intervals to avoid timer from running in background*/
-                    pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
-                }
-                else{
-                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
-                    playPauseToggle = false;
-                    updateSongTime();
-                }
-                stopLaterSongs();
+            if(repeatCycleMode == true){
+                songOrder = lastSongOrder;
             }
-
-            if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
-                if(shuffleMode == true){
-                    songOrder = (Math.floor(Math.random() * playlistShow.length));
-
-                    if(songOrder == -1 || songOrder == lastSongOrder){
-                        songOrder = Math.floor(Math.random() * playlistShow.length);
-                    }
-                }
-                else{
-                    (songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; 
-                }
-
-                if(repeatCycleMode == true){
-                    songOrder = lastSongOrder;
-                }
-                updatePlaylistSong(chosenPlaylist);
-                nowPlayingInfo(chosenPlaylist[songOrder]);
-                updateSongTime();
-                stopLaterSongs();
-                lastSongOrder = songOrder;
-            }
-        })
-
-        /*      Volume Controls             */
-        const muteSong = document.querySelector("button.songMuteBtn");
-        const volumeBar = document.querySelector("div.volumeEmpty.ProgBar.\\31");
-        function muteVolume(){
-            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 0;
-            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = '0%';
-            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
+            updatePlaylistSong(chosenPlaylist);
+            nowPlayingInfo(chosenPlaylist[songOrder]);
+            updateSongTime();
+            stopLaterSongs();
+            lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
         }
 
-        muteSong.addEventListener("click", function(){
-            if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){
-               muteVolume();
+        if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
+            if(playPauseToggle == false){
+                (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
+                playPauseToggle = true;
+                songTimeIntervals.forEach(f => clearInterval(f));   /*clears all intervals to avoid timer from running in background*/
+                pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
             }
             else{
-                (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
-                document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
-                muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
+                playPauseToggle = false;
+                updateSongTime();
             }
-        })
+            stopLaterSongs();
+        }
 
-        volumeBar.addEventListener("click", function(event){            
-            if(event.offsetX/volumeBar.clientWidth <= 0){   /*sometimes, the offsetX gives a negative number. This prevents that*/
-                muteVolume();   /*volumeBar.clientWidth grabs the progress bar's current width and event.offsetX grabs the exact position of the progress bar's width that was touched*/
+        if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
+            if(shuffleMode == true){
+                songOrder = (Math.floor(Math.random() * playlistShow.length));
+
+                if(songOrder == -1 || songOrder == lastSongOrder){songOrder = Math.floor(Math.random() * playlistShow.length);}
             }
-            else{
-                (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = (event.offsetX/volumeBar.clientWidth);
-                document.querySelector("div.volumeShown.ProgBar.\\32").style.width = ((event.offsetX/volumeBar.clientWidth)*100) + '%';
-                muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'        
-            }
-        })
+            else{(songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; }
+
+            if(repeatCycleMode == true){songOrder = lastSongOrder;}
+            updatePlaylistSong(chosenPlaylist);
+            nowPlayingInfo(chosenPlaylist[songOrder]);
+            updateSongTime();
+            stopLaterSongs();
+            lastSongOrder = songOrder;
+        }
+    })
+
+    /*      Volume Controls             */
+    const muteSong = document.querySelector("button.songMuteBtn");
+    const volumeBar = document.querySelector("div.volumeEmpty.ProgBar.\\31");
+    function muteVolume(){
+        (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 0;
+        document.querySelector("div.volumeShown.ProgBar.\\32").style.width = '0%';
+        muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
+    }
+
+    muteSong.addEventListener("click", function(){
+        if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){muteVolume();}
+        else{
+            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
+            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
+            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
+        }
+    })
+
+    volumeBar.addEventListener("click", function(event){            
+        if(event.offsetX/volumeBar.clientWidth <= 0){   /*sometimes, the offsetX gives a negative number. This prevents that*/
+            muteVolume();   /*volumeBar.clientWidth grabs the progress bar's current width and event.offsetX grabs the exact position of the progress bar's width that was touched*/
+        }
+        else{
+            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = (event.offsetX/volumeBar.clientWidth);
+            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = ((event.offsetX/volumeBar.clientWidth)*100) + '%';
+            muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'        
+        }
+    });
 
 
-        /*      Allows home library to be available immediately         */
-        playPauseToggle = true;
-        nowPlayingInfo(musicLibrary [0]);
-        startSong = new Audio(mp3UrlLibrary[0]);
-        recentlyPlayedAudio.push(startSong);
-        recentlyPlayedPlaylist.push(musicLibrary[0]);
+    /*      Allows home library to be available immediately         */
+    playPauseToggle = true;
+    nowPlayingInfo(musicLibrary [0]);
+    startSong = new Audio(mp3UrlLibrary[0]);
+    recentlyPlayedAudio.push(startSong);
+    recentlyPlayedPlaylist.push(musicLibrary[0]);
 
 
 /**                                               Playlist Creation                                                     **/       
 
-        /*New Playlist Creation - Variables */
-        const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
-        const playlistName = document.querySelector("h1.newPlaylistName.\\31");
-        const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
-        const playlistRuntime = document.querySelector("div.newPlaylistUserTime.\\31");
-        const finishedCreateBtn = document.querySelector("button.finishedPlaylistBtn");
+    /*New Playlist Creation - Variables */
+    const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
+    const playlistName = document.querySelector("h1.newPlaylistName.\\31");
+    const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
+    const playlistRuntime = document.querySelector("div.newPlaylistUserTime.\\31");
+    const finishedCreateBtn = document.querySelector("button.finishedPlaylistBtn");
         
-        function refreshPlaylist(){
-            playlistTrackCount = 1;
-            const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
-            totalTracksPlaylist.forEach(playlistSongs => {
-                (document.querySelector("button.newPlaylistSongs.\\31") == playlistSongs) ? playlistSongs.style.display ="none" : playlistSongs.remove();
-            })
-        }
-        
-        /*This starts the process of playlist creation*/
-        createPlaylistTab.addEventListener("click", function(){
-            let newPlaylistName = prompt("Please enter a name for your Playlist");
-
-            if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Downloaded Files" || createdPlaylistsName.includes(newPlaylistName)) {
-                console.log("Please enter a valid Playlist Name");
-            } 
-            else {
-                playlistName.textContent = newPlaylistName;
-                createPlaylistBox();
-                refreshPlaylist();
-                backwardsBtn.style.display = "none";
-                playlistInfoFilterBtn.style.display = "none";
-                finishedCreateBtn.style.display = "none";
-                addNewSongsPlaylist.style.display = "block";
-            }
-
+    function refreshPlaylist(){
+        playlistTrackCount = 1;
+        const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
+        totalTracksPlaylist.forEach(playlistSongs => {
+            (document.querySelector("button.newPlaylistSongs.\\31") == playlistSongs) ? playlistSongs.style.display ="none" : playlistSongs.remove();
         })
+    }
+        
+    /*This starts the process of playlist creation*/
+    createPlaylistTab.addEventListener("click", function(){
+        let newPlaylistName = prompt("Please enter a name for your Playlist");
 
-        /*Creates a playlist icon box in the "Your Library" Tab*/
-        yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
-        let playlistBoxes = 1;
-        function createPlaylistBox(){ 
-            playlistBoxes++;
-            const newPlaylistBox = document.createElement("button");
-            newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", playlistBoxes);
-            yourLibraryPlaylistCont.appendChild(newPlaylistBox);
-
-                const newPlaylistCover = document.createElement("div");
-                newPlaylistCover.classList.add("yourLibrary", "playlistCover", playlistBoxes)
-                newPlaylistBox.appendChild(newPlaylistCover);
-
-               const updatePlaylistName = document.createElement("div");
-                updatePlaylistName.classList.add("yourLibrary", "playlistName", playlistBoxes);
-                updatePlaylistName.textContent = playlistName.textContent;
-                newPlaylistBox.appendChild(updatePlaylistName);
+        if (newPlaylistName == null || newPlaylistName == "" || newPlaylistName == "Downloaded Files" || createdPlaylistsName.includes(newPlaylistName)) {
+            console.log("Please enter a valid Playlist Name");
+        } 
+        else {
+            playlistName.textContent = newPlaylistName;
+            createPlaylistBox();
+            refreshPlaylist();
+            backwardsBtn.style.display = "none";
+            playlistInfoFilterBtn.style.display = "none";
+            finishedCreateBtn.style.display = "none";
+            addNewSongsPlaylist.style.display = "block";
         }
+
+    })
+
+    /*Creates a playlist icon box in the "Your Library" Tab*/
+    yourLibraryPlaylistCont = document.querySelector("div.yourLibrary.playlistCont.\\31");
+    let playlistBoxes = 1;
+    function createPlaylistBox(){ 
+        playlistBoxes++;
+        const newPlaylistBox = document.createElement("button");
+        newPlaylistBox.classList.add("yourLibrary", "playlistBtnCont", playlistBoxes);
+        yourLibraryPlaylistCont.appendChild(newPlaylistBox);
+
+            const newPlaylistCover = document.createElement("div");
+            newPlaylistCover.classList.add("yourLibrary", "playlistCover", playlistBoxes)
+            newPlaylistBox.appendChild(newPlaylistCover);
+
+            const updatePlaylistName = document.createElement("div");
+            updatePlaylistName.classList.add("yourLibrary", "playlistName", playlistBoxes);
+            updatePlaylistName.textContent = playlistName.textContent;
+            newPlaylistBox.appendChild(updatePlaylistName);
+    }
 
 
         /*Creates the total playlist track divs but doesn't update it w/ song info*/
@@ -2411,389 +2381,349 @@ const musicLibrary = [
 
 
 
-        /*Helper function for the createDownloadedPlaylist() function*/
-        function updateTrackInfo(trackNum){
-            /*Since DOM creation requires a base element, playlistTrackCount starts at 1 so it doesn't recreate the 1st div. */
-            let trackAdjust = playlistTrackCount;   /*This causes the [1]//2nd song to be skipped. Trackadjust fixes it by going back down the array by 1*/
-            document.querySelector("div.playlistSong.trackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + chosenPlaylist[trackAdjust-1].track_coverUrl + "\")";
-            document.querySelector("p.playlistSong.trackTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_title;
-            document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
-            document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
-            document.querySelector("p.playlistSong.dateAdded.\\3" + trackNum).textContent =  new Date(chosenPlaylist[trackAdjust-1].release_date).toDateString().slice(4);
-            document.querySelector("p.playlistSong.durationTime.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].duration;
-        }
+    /*Helper function for the createDownloadedPlaylist() function*/
+    function updateTrackInfo(trackNum){
+        /*Since DOM creation requires a base element, playlistTrackCount starts at 1 so it doesn't recreate the 1st div. */
+        let trackAdjust = playlistTrackCount;   /*This causes the [1]//2nd song to be skipped. Trackadjust fixes it by going back down the array by 1*/
+        document.querySelector("div.playlistSong.trackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + chosenPlaylist[trackAdjust-1].track_coverUrl + "\")";
+        document.querySelector("p.playlistSong.trackTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_title;
+        document.querySelector("p.playlistSong.trackArtist.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].artist;
+        document.querySelector("p.playlistSong.albumTitle.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].track_album;
+        document.querySelector("p.playlistSong.dateAdded.\\3" + trackNum).textContent =  new Date(chosenPlaylist[trackAdjust-1].release_date).toDateString().slice(4);
+        document.querySelector("p.playlistSong.durationTime.\\3" + trackNum).textContent = chosenPlaylist[trackAdjust-1].duration;
+    }
 
-        /*Updates the playlist content with photos, names, and music */
-        function createDownloadedPlaylist(){
-            document.querySelector("div.playlistSong.trackImage.\\31").style.backgroundImage = "url(\"" + chosenPlaylist[0].track_coverUrl; + "\")";
-            document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
-            document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
-            document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
-            document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4);
-            document.querySelector("p.playlistSong.durationTime.\\31").textContent = chosenPlaylist[0].duration;
+    /*Updates the playlist content with photos, names, and music */
+    function createDownloadedPlaylist(){
+    document.querySelector("div.playlistSong.trackImage.\\31").style.backgroundImage = "url(\"" + chosenPlaylist[0].track_coverUrl; + "\")";
+        document.querySelector("p.playlistSong.trackTitle.\\31").textContent = chosenPlaylist[0].track_title;
+        document.querySelector("p.playlistSong.trackArtist.\\31").textContent = chosenPlaylist[0].artist;
+        document.querySelector("p.playlistSong.albumTitle.\\31").textContent = chosenPlaylist[0].track_album;
+        document.querySelector("p.playlistSong.dateAdded.\\31").textContent = new Date(chosenPlaylist[0].release_date).toDateString().slice(4);
+        document.querySelector("p.playlistSong.durationTime.\\31").textContent = chosenPlaylist[0].duration;
 
-            if(playlistTrackCount < 9){
-                updateTrackInfo(playlistTrackCount);
-            }
-            else if(playlistTrackCount < chosenPlaylist.length+1){
-                updateTrackInfo(spaceTens(playlistTrackCount));
-            }
-        };  
+        if(playlistTrackCount < 9){updateTrackInfo(playlistTrackCount);}
+        else if(playlistTrackCount < chosenPlaylist.length+1){updateTrackInfo(spaceTens(playlistTrackCount));}
+    };  
 
+    let playlistShow = musicLibrary;
+    let playcreateMode = false; /*Allows songs to be added to a playlist*/
 
-        let playlistShow = musicLibrary;
-        let playcreateMode = false; /*Allows songs to be added to a playlist*/
+    /*All helper functions for creating a new playlist*/
+    function removePlaylistModifers(){
+        addNewSongsPlaylist.style.display = "none";
+        finishedCreateBtn.style.display = "none";
+    }
+    function openPlaylistTab(){
+        allTabs.forEach(tabs => tabs.style.display = "none");
+        allTabs[4].style.display = "block";
+        removePlaylistModifers();
+    }
 
+    function playlistCreation(){
+        playlistTrackCount++;
+        createPlaylistTrack();
+        createDownloadedPlaylist();
+    }
 
+    function musicSource(array){
+        playlistShow = array;
+        chosenPlaylist = array;
+    }
 
-        /*All helper functions for creating a new playlist*/
-        function removePlaylistModifers(){
-            addNewSongsPlaylist.style.display = "none";
-            finishedCreateBtn.style.display = "none";
-        }
-        function openPlaylistTab(){
-            allTabs.forEach(tabs => tabs.style.display = "none");
-            allTabs[4].style.display = "block";
-            removePlaylistModifers();
-        }
-
-        function playlistCreation(){
-            playlistTrackCount++;
-            createPlaylistTrack();
-            createDownloadedPlaylist();
-        }
-
-        function musicSource(array){
-            playlistShow = array;
-            chosenPlaylist = array;
-        }
-
-        function newPlaylistPrep(){
-            refreshPlaylist();
-            document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
-        }
+    function newPlaylistPrep(){
+        refreshPlaylist();
+        document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+    }
 
     
-        /*backwards playlist toggle*/
-        let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
-        function resetBackwardsMode(){    
-            backwardsMode = false; 
+    /*backwards playlist toggle*/
+    let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
+    function resetBackwardsMode(){    
+        backwardsMode = false; 
+        backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
+    }
+
+    const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
+    backwardsBtn.addEventListener("click", function(){
+        backwardsMode = !backwardsMode;
+
+        if(backwardsMode){
+                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
+        }
+        else{
             backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
         }
 
-        const backwardsBtn = document.querySelector("button.playlistBackwardsBtn");
-        backwardsBtn.addEventListener("click", function(){
-            backwardsMode = !backwardsMode;
-
-            if(backwardsMode){
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
-            }
-            else{
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
-            }
-
-            const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
-                newPlaylistPrep();
-                musicSource(reverseArr);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-            openPlaylistTab();
-        })
-
-
-
-
-
-
-        /*                                                                      Sort Playlists Filters                                      */
-        function sortAlpha(list, _attribute){
-            if (list !== undefined && list !== null) {
-                list.sort((a, b) => {
-                if (a[_attribute] > b[_attribute]) {
-                    return 1;  
-                }
-                if (a[_attribute] < b[_attribute]) {
-                    return -1; 
-                }
-                    return 0;
-                })
-            }
-            return list
-        }
-
-        function sortByDate(list, _attribute){
-            if (list !== undefined && list !== null) {
-                list.sort((a, b) => {
-                if ((new Date(a[_attribute])) > (new Date(b[_attribute]))) {
-                    return 1;   
-                }
-                if ((new Date(a[_attribute])) < (new Date(b[_attribute]))) {
-                    return -1
-                }
-                    return 0;
-                })
-            }
-            return list
-        }
-
-        function createSortPlaylist(attribute){
+        const reverseArr = [...playlistShow].reverse();     /*Since reverse() rewrites the original array (destructive), I will use spread to get a copy, then reverse*/
             newPlaylistPrep();
-            musicSource(sortAlpha(playlistShow, attribute));
+            musicSource(reverseArr);
+
             for(let f=1; f<playlistShow.length; f++){
                 playlistCreation();
             }
+        openPlaylistTab();
+    })
+
+
+
+    /*                Sort Playlists Filters                        */
+    function sortAlpha(list, _attribute){
+        if (list !== undefined && list !== null) {
+            list.sort((a, b) => {
+            if (a[_attribute] > b[_attribute]) {return 1;}
+            if (a[_attribute] < b[_attribute]) {return -1;}
+                return 0;
+            })
+        }
+        return list
+    }
+
+    function sortByDate(list, _attribute){
+        if (list !== undefined && list !== null) {
+            list.sort((a, b) => {
+            if ((new Date(a[_attribute])) > (new Date(b[_attribute]))) {return 1;}
+            if ((new Date(a[_attribute])) < (new Date(b[_attribute]))) {return -1}
+                return 0;
+            })
+        }
+        return list
+    }
+
+    function createSortPlaylist(attribute){
+        newPlaylistPrep();
+        musicSource(sortAlpha(playlistShow, attribute));
+        for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+        openPlaylistTab();
+    }
+
+    let currentInfoFilter = 0;
+    const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
+    const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
+    const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
+
+    playlistInfoFilterBtn.addEventListener("click", function(){
+        if(currentInfoFilter > playlistInfoFilters.length-2){       /*iterates through playlistInfoFilters on each click*/
+            currentInfoFilter = -1;
+        }
+        currentInfoFilter++;
+        infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
+
+        switch(playlistInfoFilters[currentInfoFilter]){
+            case "Title": 
+                createSortPlaylist('track_title');
+                break;
+                
+            case "Artists":
+                createSortPlaylist('artist');
+                break;
+
+            case "Date":
+                newPlaylistPrep();
+                musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
+                for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+                openPlaylistTab();   
+                break;
+
+            case "Duration":
+                createSortPlaylist('duration');
+                break;
+        }
+    })
+    
+    document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
+        const from = event.target;
+
+        if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+            resetBackwardsMode();
+            let recentPlayImg = retrieveElmImg(from.firstElementChild);
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"../" + recentPlayImg.slice(-41);
+
+            playlistName.textContent = "Recently Played";
+            if(recent10){
+                newPlaylistPrep();
+                let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
+                musicSource(unique);
+
+                for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+            }
             openPlaylistTab();
         }
 
-        let currentInfoFilter = 0;
-        const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
-        const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
-        const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
+        if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
+            let downloadedPlayImg = retrieveElmImg(from.firstElementChild);
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"../" + downloadedPlayImg.slice(-44);
 
-        playlistInfoFilterBtn.addEventListener("click", function(){
-            if(currentInfoFilter > playlistInfoFilters.length-2){       /*iterates through playlistInfoFilters on each click*/
-                currentInfoFilter = -1;
-            }
-
-            currentInfoFilter++;
-            infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
-
-            switch(playlistInfoFilters[currentInfoFilter]){
-                case "Title": 
-                    createSortPlaylist('track_title');
-                    break;
+            playlistName.textContent = "Downloaded Files";
+            resetBackwardsMode();   
                 
-                case "Artists":
-                    createSortPlaylist('artist');
-                    break;
-
-                case "Date":
-                    newPlaylistPrep();
-                    musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
-                    for(let f=1; f<playlistShow.length; f++){
-                        playlistCreation();
-                    }
-                    openPlaylistTab();   
-                    break;
-
-                case "Duration":
-                    createSortPlaylist('duration');
-                    break;
-            }
-        })
-    
-        document.body.addEventListener("click", function(event){    /*Listens when a playlist icon box is clicked and plays music from that playlist*/
-            const from = event.target;
-
-            if(hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
-                resetBackwardsMode();
-                let recentPlayImg = retrieveElmImg(from.firstElementChild);
-                const playlistImg = playlistName.parentElement.previousElementSibling;
-                playlistImg.style.backgroundImage = "url(\"../" + recentPlayImg.slice(-41);
-
-                playlistName.textContent = "Recently Played";
-                if(recent10){
-                    newPlaylistPrep();
-                    let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
-                    musicSource(unique);
-
-                    for(let f=1; f<playlistShow.length; f++){
-                        playlistCreation();
-                    }
-                }
-                openPlaylistTab();
-            }
-
-            if(hasSuperClass(from, "yourLibrary playlistBtnCont 1")){
-                let downloadedPlayImg = retrieveElmImg(from.firstElementChild);
-                const playlistImg = playlistName.parentElement.previousElementSibling;
-                playlistImg.style.backgroundImage = "url(\"../" + downloadedPlayImg.slice(-44);
-
-                playlistName.textContent = "Downloaded Files";
-                resetBackwardsMode();   
-                
-                newPlaylistPrep();
-                musicSource(musicLibrary);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-                
-                openPlaylistTab();
-            }
-            
-            if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
-                refreshPlaylist();
-                document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
-
-                playlistName.textContent = from.lastElementChild.textContent;                
-                musicSource(window["'" + playlistName.textContent + "'"]);
-
-                for(let f=1; f<playlistShow.length; f++){
-                   playlistCreation();
-                }
-
-                openPlaylistTab();
-                
-                const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
-                const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
-                currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
-            }
-
-            if(hasClass(from, "newPlaylistSongs")){
-                let clickedTrack = parseInt(from.className.slice(17));
-                song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
-
-                stopAll();
-                song.play();
-                recentlyPlayedAudio.push(song);
-                recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1])
-                recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
-
-                updateSongTime();
-
-                songOrder = clickedTrack-1;
-                nowPlayingInfo(playlistShow[songOrder])
-
-
-                if(playcreateMode == true){
-                    /*(window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);  Sets up object references*/
-                    (window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
-                }
-            }
-        });
-
-        /*Listens for EP Albums from both Home tab and Search tab*/
-        document.body.addEventListener("click", function(event){    
-            const from = event.target;
-
-            if(hasClass(from, "homeContentContAlbumCont") || (hasClass(from, "homeContentCont") && hasClass(from, "albumInfoCover"))){
-                epOrderNum = parseInt(from.className.slice(-1)-1);               
-                playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
-                const playlistImg = playlistName.parentElement.previousElementSibling;
-                playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-                resetBackwardsMode();        
-
-                newPlaylistPrep();
-                musicSource(albumLibrary[epOrderNum]);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-                
-                openPlaylistTab();
-            }
-            if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
-                epOrderNum = parseInt(from.className.slice(-1)-1);               
-                playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
-                const playlistImg = playlistName.parentElement.previousElementSibling;
-                playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
-                resetBackwardsMode();  
-                
-                newPlaylistPrep();
-                musicSource(albumLibrary[epOrderNum]);
-
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-                
-                openPlaylistTab();
-            }
-
-
-        });      
-
-        const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106)
-
-        /*Add songs to a new Playlist*/
-        const createdPlaylists = [];
-        const createdPlaylistsName = [];
-        const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
-        addNewSongsPlaylist.addEventListener("click", function(){
-            resetBackwardsMode();
-            playcreateMode = true;
-            finishedCreateBtn.style.display = "block";
-            addNewSongsPlaylist.style.display = "none";
-
-            window["'" + playlistName.textContent + "'"] = new Array();
-            createdPlaylists.push(window["'" + playlistName.textContent + "'"]);
-            createdPlaylistsName.push(playlistName.textContent);
-
-            newPlaylistPrep();               /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
+            newPlaylistPrep();
             musicSource(musicLibrary);
 
-            for(let f=1; f<musicLibrary.length; f++){   
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+                
+            openPlaylistTab();
+        }
+            
+        if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+            refreshPlaylist();
+            document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
+
+            playlistName.textContent = from.lastElementChild.textContent;                
+            musicSource(window["'" + playlistName.textContent + "'"]);
+
+            for(let f=1; f<playlistShow.length; f++){
                 playlistCreation();
             }
+
+            openPlaylistTab();
+                
             const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
-        })
+        }
 
-        /*Listens when new playlist creation is finished*/
-        document.body.addEventListener("click", function(event){
-            const from = event.target;  
-            if(hasClass(from, "finishedPlaylistBtn")){
-                resetBackwardsMode();
-                playcreateMode = false;
-                finishedCreateBtn.style.display = "none";
-                backwardsBtn.style.display = "block";
-                playlistInfoFilterBtn.style.display = "block";
+        if(hasClass(from, "newPlaylistSongs")){
+            let clickedTrack = parseInt(from.className.slice(17));
+            song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+
+            stopAll();
+            song.play();
+            recentlyPlayedAudio.push(song);
+            recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1])
+            recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
+
+            updateSongTime();
+
+            songOrder = clickedTrack-1;
+            nowPlayingInfo(playlistShow[songOrder])
+
+
+            if(playcreateMode == true){
+                /*(window["'" + playlistName.textContent + "'"]).push(clickedTrack-1);  Sets up object references*/
+                (window["'" + playlistName.textContent + "'"]).push(musicLibrary[clickedTrack-1]);      /*copies objects*/
+            }
+        }
+    });
+
+    /*Listens for EP Albums from both Home tab and Search tab*/
+    document.body.addEventListener("click", function(event){    
+        const from = event.target;
+
+        if(hasClass(from, "homeContentContAlbumCont") || (hasClass(from, "homeContentCont") && hasClass(from, "albumInfoCover"))){
+            epOrderNum = parseInt(from.className.slice(-1)-1);               
+            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+            resetBackwardsMode();        
+
+            newPlaylistPrep();
+            musicSource(albumLibrary[epOrderNum]);
+
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}    
+            openPlaylistTab();
+        }
+        if(hasClass(from, "recentSearchAlbumCont") || (hasClass(from, "recentSearch") && hasClass(from, "albumInfoCover"))){
+            epOrderNum = parseInt(from.className.slice(-1)-1);               
+            playlistName.textContent = albumLibrary[epOrderNum][1].track_album + albumLibrary[epOrderNum][1].track_subAlbum;
+            const playlistImg = playlistName.parentElement.previousElementSibling;
+            playlistImg.style.backgroundImage = "url(\"" + albumLibrary[epOrderNum][1].track_coverUrl + "\")";
+            resetBackwardsMode();  
+                
+            newPlaylistPrep();
+            musicSource(albumLibrary[epOrderNum]);
+
+            for(let f=1; f<playlistShow.length; f++){
+                playlistCreation();
+            }
+                
+            openPlaylistTab();
+        }
+
+    });      
+
+    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106)
+
+    /*Add songs to a new Playlist*/
+    const createdPlaylists = [];
+    const createdPlaylistsName = [];
+    const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
+    addNewSongsPlaylist.addEventListener("click", function(){
+        resetBackwardsMode();
+        playcreateMode = true;
+        finishedCreateBtn.style.display = "block";
+        addNewSongsPlaylist.style.display = "none";
+
+        window["'" + playlistName.textContent + "'"] = new Array();
+        createdPlaylists.push(window["'" + playlistName.textContent + "'"]);
+        createdPlaylistsName.push(playlistName.textContent);
+
+        newPlaylistPrep();               /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
+        musicSource(musicLibrary);
+
+        for(let f=1; f<musicLibrary.length; f++){playlistCreation();}
+        const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+        const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+        currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
+    })
+
+    /*Listens when new playlist creation is finished*/
+    document.body.addEventListener("click", function(event){
+        const from = event.target;  
+        if(hasClass(from, "finishedPlaylistBtn")){
+            resetBackwardsMode();
+            playcreateMode = false;
+            finishedCreateBtn.style.display = "none";
+            backwardsBtn.style.display = "block";
+            playlistInfoFilterBtn.style.display = "block";
                        
-                newPlaylistPrep();
-                musicSource(window["'" + playlistName.textContent + "'"]);
+            newPlaylistPrep();
+            musicSource(window["'" + playlistName.textContent + "'"]);
                
-                /*update playlistBox art cover w/ first song*/
-                if(playlistBoxes < 10){document.querySelector("div.yourLibrary.playlistCover.\\3" + playlistBoxes).style.backgroundImage = "url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
-                else{document.querySelector("div.yourLibrary.playlistCover.\\3" + spaceTens(playlistBoxes)).style.backgroundImage ="url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
+            /*update playlistBox art cover w/ first song*/
+            if(playlistBoxes < 10){document.querySelector("div.yourLibrary.playlistCover.\\3" + playlistBoxes).style.backgroundImage = "url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
+            else{document.querySelector("div.yourLibrary.playlistCover.\\3" + spaceTens(playlistBoxes)).style.backgroundImage ="url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
 
-                for(let f=1; f<playlistShow.length; f++){
-                    playlistCreation();
-                }
-                const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
-                const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
-                currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
-            }
-        });
-
-
-
-
-        /*                                                                               Listen Later Tab                                             */
-        function allowDrop(ev) {
-            ev.preventDefault();
+            for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+            const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+            currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
         }
+    });
 
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.className);
+
+
+
+    /*                            Listen Later Tab                              */
+    function allowDrop(ev) {ev.preventDefault();}
+
+    function drag(ev) {ev.dataTransfer.setData("text", ev.target.className);}
+
+    /*I rewrote drag to grab the parent element instead. This is what allows the handle bar to work by grabbing all child elements instead of the individual item*/
+    function dragEntire(ev) {ev.dataTransfer.setData("text", (ev.target.parentElement).className);}
+
+    function drop(ev) {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementsByClassName(data)[0]);
+
+        /*Checks each dropzone and sees if "Add a Song" state is on*/
+        if(ev.target.firstElementChild.style.display != "none"){
+            ev.target.firstElementChild.style.display = "none"; /*Makes the "Add a Song" text disappear*/
+            ev.target.firstElementChild.nextElementSibling.style.display = "none"; /*Makes the cover image disappear*/
         }
+    }
 
-        function dragEntire(ev) {       /*I rewrote drag to grab the parent element instead. This is what allows the handle bar to work by grabbing all child elements instead of the individual item*/
-            ev.dataTransfer.setData("text", (ev.target.parentElement).className);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            let data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementsByClassName(data)[0]);
-
-            /*Checks each dropzone and sees if "Add a Song" state is on*/
-            if(ev.target.firstElementChild.style.display != "none"){
-                ev.target.firstElementChild.style.display = "none"; /*Makes the "Add a Song" text disappear*/
-                ev.target.firstElementChild.nextElementSibling.style.display = "none"; /*Makes the cover image disappear*/
-            }
-        }
-
-        /*     Creates a new song element w/ handle bars*/
-        let priorityListCount = 1;
-        let nonEssListCount = 1;
-        let eventuallyListCount = 1;
-        const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
-        const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
-        const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
-        const allDropzones = [priorityZoneDiv, nonEssZoneDiv, eventuallyZoneDiv];
+    /*     Creates a new song element w/ handle bars*/
+    let priorityListCount = 1;
+    let nonEssListCount = 1;
+    let eventuallyListCount = 1;
+    const priorityZoneDiv = document.querySelector("div.priorityList.dropzone");
+    const nonEssZoneDiv = document.querySelector("div.nonEssentialList.dropzone");
+    const eventuallyZoneDiv = document.querySelector("div.eventuallyList.dropzone");
+    const allDropzones = [priorityZoneDiv, nonEssZoneDiv, eventuallyZoneDiv];
 
        
        /*Drag and Drop Song SVG's - these functions are added later to createLaterDNDTrack*/
@@ -2901,138 +2831,134 @@ const musicLibrary = [
                     listenLaterPause.appendChild(pauseBtnSvg);
         }
 
-        function updatelaterTrackInfo(listname, trackNum, playlistSong){
-            document.querySelector("div." + listname + ".listenTrackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + playlistShow[playlistSong].track_coverUrl; + "\")";
-            document.querySelector("p." + listname + ".listenTrackTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_title;
-            document.querySelector("p." + listname + ".listenTrackArtist.\\3" + trackNum).textContent = playlistShow[playlistSong].artist;
-            document.querySelector("p." + listname + ".listenAlbumTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_album;
-            document.querySelector("p." + listname + ".listenDurationTime.\\3" + trackNum).textContent = playlistShow[playlistSong].duration;
-        }
+    function updatelaterTrackInfo(listname, trackNum, playlistSong){
+        document.querySelector("div." + listname + ".listenTrackImage.\\3" + trackNum).style.backgroundImage = "url(\"" + playlistShow[playlistSong].track_coverUrl; + "\")";
+        document.querySelector("p." + listname + ".listenTrackTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_title;
+        document.querySelector("p." + listname + ".listenTrackArtist.\\3" + trackNum).textContent = playlistShow[playlistSong].artist;
+        document.querySelector("p." + listname + ".listenAlbumTitle.\\3" + trackNum).textContent = playlistShow[playlistSong].track_album;
+        document.querySelector("p." + listname + ".listenDurationTime.\\3" + trackNum).textContent = playlistShow[playlistSong].duration;
+    }
 
 
-        /*makes the listen later base songs hidden on launch*/
-        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "none";
-        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "none";
-        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "none";
+    /*makes the listen later base songs hidden on launch*/
+    document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "none";
+    document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "none";
+    document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "none";
     
 
-        /*Adds a song to the Listen Later from any playlist*/
-        const addedLaterOrder = [];
-        document.body.addEventListener("click", function(event){
-            const from = event.target;
+    /*Adds a song to the Listen Later from any playlist*/
+    const addedLaterOrder = [];
+    document.body.addEventListener("click", function(event){
+        const from = event.target;
 
 /*SongNumOrder produces an error because some elements don't have a class (mainly SVG's). Since this element is function scoped, try catch is a good solution*/
 /*It's also a poor declaration because it will attempt to parse every string, leading to NaN's.*/
 try{
-            let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
-            if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
-                songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
-                addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
+        let songNumOrder = parseInt(from.className.slice(-2));  /*slice(-2) works because spaces are allowed and removed by parseInt*/
+        if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
+            songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
+            addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
         
-                if(from.textContent == "Priority"){
-                    if(priorityListCount == 1){
-                        priorityListCount++;
-                        updatelaterTrackInfo("prioritySong", 1, songNumOrder);
-                        document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/   
-                        document.querySelector("p.priorityList.dropzoneHeader.\\31").style.display = "none";  /*Removes "add a song" state from listen later dropzones*/
-                        document.querySelector("div.priorityList.dropzoneImage.\\31").style.display = "none";  
-                    }
-                    else if (priorityListCount < 9){
-                        priorityListCount++;
-                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
-                        updatelaterTrackInfo("prioritySong", priorityListCount, songNumOrder);
-                    }
-                    else{
-                        priorityListCount++;
-                        createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
-                        updatelaterTrackInfo("prioritySong", spaceTens(priorityListCount), songNumOrder);
-                    }
-                    
+            if(from.textContent == "Priority"){
+                if(priorityListCount == 1){
+                    priorityListCount++;
+                    updatelaterTrackInfo("prioritySong", 1, songNumOrder);
+                    document.querySelector(".prioritySong.listenSongCont.\\31").style.display = "flex";   /*displays base song and allows it to be overridden*/   
+                    document.querySelector("p.priorityList.dropzoneHeader.\\31").style.display = "none";  /*Removes "add a song" state from listen later dropzones*/
+                    document.querySelector("div.priorityList.dropzoneImage.\\31").style.display = "none";  
                 }
-
-                if(from.textContent == "Non Essential"){
-                    if(nonEssListCount == 1){
-                        nonEssListCount++;
-                        updatelaterTrackInfo("nonEssSong", 1, songNumOrder);
-                        document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "flex";
-                        document.querySelector("p.nonEssentialList.dropzoneHeader.\\31").style.display = "none";
-                        document.querySelector("div.nonEssentialList.dropzoneImage.\\31").style.display = "none";  
-                    }
-                    else if (nonEssListCount < 9){
-                        nonEssListCount++;
-                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
-                        updatelaterTrackInfo("nonEssSong", nonEssListCount, songNumOrder);
-                    }
-                    else{
-                        nonEssListCount++;
-                        createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
-                        updatelaterTrackInfo("nonEssSong", spaceTens(nonEssListCount), songNumOrder);
-                    }
-                }
-
-                if(from.textContent == "Eventually"){
-                    if(eventuallyListCount == 1){
-                        eventuallyListCount++;
-                        updatelaterTrackInfo("eventuallySong", 1, songNumOrder);
-                        document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "flex";
-                        document.querySelector("p.eventuallyList.dropzoneHeader.\\31").style.display = "none";
-                        document.querySelector("div.eventuallyList.dropzoneImage.\\31").style.display = "none";  
-                    }
-                    else if (eventuallyListCount < 9){
-                        eventuallyListCount++;
-                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
-                        updatelaterTrackInfo("eventuallySong", eventuallyListCount, songNumOrder);
-                    }
-                    else{
-                        eventuallyListCount++;
-                        createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
-                        updatelaterTrackInfo("eventuallySong", spaceTens(eventuallyListCount), songNumOrder);
-                    }
-                }
-
-            }
-}
-catch{}     
-        });
-
-
-
-        function stopLaterSongs(){
-            listenedLaterSongs.forEach(playedSongs => {playedSongs.pause();})
-        }
-
-        const listenedLaterSongs = [];
-        const listenedLaterDivs = [];
-        let listenLaterPause;
-
-        
-        document.body.addEventListener("click", function(event){
-            const from = event.target;
-            if(hasClass(from, "SongBtnCont")){    
-                listenLaterPause = false; 
-                let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
-                songName = "../material/songs_mp3/" + songName + "mp3";
-                laterSong = new Audio(songName);
-
-                listenedLaterDivs.push(from.parentElement);
-                listenedLaterSongs.push(laterSong);
-
-                stopAll();
-                stopLaterSongs();
-                laterSong.play();
-            }
-
-            if(hasClass(from, "listenLaterPause")){
-                /*If a pause button from another song is pressed, the pause button's parent element div will be checked against the last pause button parent div. If they are the same, the function will run. If they aren't, it won't run. */
-                if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
-                    (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
-                    listenLaterPause = true;
+                else if (priorityListCount < 9){
+                    priorityListCount++;
+                    createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                    updatelaterTrackInfo("prioritySong", priorityListCount, songNumOrder);
                 }
                 else{
-                    listenedLaterSongs[listenedLaterSongs.length-1].play();
-                    listenLaterPause = false;
-                    updateSongTime();
+                    priorityListCount++;
+                    createLaterDNDTrack(priorityZoneDiv, "prioritySong", priorityListCount);
+                    updatelaterTrackInfo("prioritySong", spaceTens(priorityListCount), songNumOrder);
+                }          
+            }
+
+            if(from.textContent == "Non Essential"){
+                if(nonEssListCount == 1){
+                    nonEssListCount++;
+                    updatelaterTrackInfo("nonEssSong", 1, songNumOrder);
+                    document.querySelector(".nonEssSong.listenSongCont.\\31").style.display = "flex";
+                    document.querySelector("p.nonEssentialList.dropzoneHeader.\\31").style.display = "none";
+                    document.querySelector("div.nonEssentialList.dropzoneImage.\\31").style.display = "none";  
+                }
+                else if (nonEssListCount < 9){
+                    nonEssListCount++;
+                    createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                    updatelaterTrackInfo("nonEssSong", nonEssListCount, songNumOrder);
+                }
+                else{
+                    nonEssListCount++;
+                    createLaterDNDTrack(nonEssZoneDiv, "nonEssSong", nonEssListCount);
+                    updatelaterTrackInfo("nonEssSong", spaceTens(nonEssListCount), songNumOrder);
                 }
             }
 
-        })
+            if(from.textContent == "Eventually"){
+                if(eventuallyListCount == 1){
+                    eventuallyListCount++;
+                    updatelaterTrackInfo("eventuallySong", 1, songNumOrder);
+                    document.querySelector("div.eventuallySong.listenSongCont.\\31").style.display = "flex";
+                    document.querySelector("p.eventuallyList.dropzoneHeader.\\31").style.display = "none";
+                    document.querySelector("div.eventuallyList.dropzoneImage.\\31").style.display = "none";  
+                }
+                else if (eventuallyListCount < 9){
+                    eventuallyListCount++;
+                    createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                    updatelaterTrackInfo("eventuallySong", eventuallyListCount, songNumOrder);
+                }
+                else{
+                    eventuallyListCount++;
+                    createLaterDNDTrack(eventuallyZoneDiv, "eventuallySong", eventuallyListCount);
+                    updatelaterTrackInfo("eventuallySong", spaceTens(eventuallyListCount), songNumOrder);
+                }
+            }
+        }
+}
+catch{}     
+    });
+
+    function stopLaterSongs(){
+        listenedLaterSongs.forEach(playedSongs => {playedSongs.pause();})
+    }
+
+    const listenedLaterSongs = [];
+    const listenedLaterDivs = [];
+    let listenLaterPause;
+
+        
+    document.body.addEventListener("click", function(event){
+        const from = event.target;
+        if(hasClass(from, "SongBtnCont")){    
+            listenLaterPause = false; 
+            let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
+            songName = "../material/songs_mp3/" + songName + "mp3";
+            laterSong = new Audio(songName);
+
+            listenedLaterDivs.push(from.parentElement);
+            listenedLaterSongs.push(laterSong);
+
+            stopAll();
+            stopLaterSongs();
+            laterSong.play();
+        }
+
+        if(hasClass(from, "listenLaterPause")){
+            /*If a pause button from another song is pressed, the pause button's parent element div will be checked against the last pause button parent div. If they are the same, the function will run. If they aren't, it won't run. */
+            if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
+                (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
+                listenLaterPause = true;
+            }
+            else{
+                listenedLaterSongs[listenedLaterSongs.length-1].play();
+                listenLaterPause = false;
+                updateSongTime();
+            }
+        }
+
+    })
