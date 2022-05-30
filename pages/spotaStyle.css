@@ -1,23 +1,18 @@
     * {
       box-sizing: border-box;
       -moz-box-sizing: border-box;
-
       margin: 0;
       padding: 0;
-
       /*Page Debugger
       background: #000 !important;
       color: #0f0 !important;
       outline: solid #f00 1px !important;*/
     }
 
-
     html, body {
       overflow-x: hidden;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-      /*Locks the body scrollbar so the app doesn't move*/
-      height: 100%;
+      height: 100%;         /*Locks the body scrollbar so the app doesn't move*/
       overflow-y: hidden;
     }
 
@@ -25,41 +20,21 @@
       display: none;
     }
 
-    
 
 
-    /*! There are a total of 21 sections (11 sections in home, and 10 in shop) Every section will be in order except for the footer. It will be placed last
-      * = shared class between pages, ^ = original class attributes in an early class
-                                                                                       
-      For your convenience, here is a list of the sections
-                                                Home Page Grid (1) 
-        (3) reminder                     section3              (4) saleBanner                   section4*                      
-        (5) featOpener                   section5              (6) trendNowProdSect             section6             
-        (7) memberAdv                    section7              (8) denimUpdate                  section8              
-        (9) hmHomeLove                   section9              (10) hmMagazine                  section10                           
-        (11) emptyDivider                section11
-        
-                                                  Shop Page Grid (2)
-        (2) sidebar                      section2
+    /*! There are 4 sections with the contentTabs holding 5 individual views
 
-        (13) menShirtInfo                section13             (14) prodFilters                 section14                           
-        (15) selectedFilters             section15             (16) menProdGrid                 section16                          
-        (17) showAllProd1 (mens)         section17                           
-        (18) wmnShirtInfo                section18 ^13         (19) womenProdGrid               section19 ^16                           
-        (20) showAllProd2 (wmns)         section20 ^17         (21) trendingProd                section21  
-
-                                    (1) navBar                       section1*
-                                    (12) Footer                      section12*                             
-
-        Separate Modules: Cart Modal 1 | Favorites Modal 2    */
-
-
-
+      (1) appSettingsNav                                      section1
+      (2) librarySidebar                                      section2
+      (3) contentTabs                                         section3
+            Home (3)                                     tab1 
+            Your Library (3)                             tab2                                             
+            Listen Later (3)                             tab3                                             
+            Search (3)                                   tab4                                               
+            Playlist (3)                                 tab5           
+      (4) playingNowSect                                      section4                  
     /*
-<!--         Your Library                                            Tab 2 of Library                                               -->
-<!--         Listen Later                                            Tab 3 of Library                                               -->
-<!--         Your Library                                            Tab 4 of Library                                               -->
-<!--         Your Library                                            Tab 5 of Library                                               -->*/
+
 
 
 
