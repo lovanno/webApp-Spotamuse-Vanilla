@@ -2599,6 +2599,7 @@ const musicLibrary = [
 
     /*Adds a song to the Listen Later from any playlist*/
     const addedLaterOrder = [];
+    let laterSongMap = new Object();
     document.body.addEventListener("click", function(event){
         const from = event.target;
 
@@ -2609,7 +2610,8 @@ try{
         if(hasSuperClass(from, ("optionHeader later " + songNumOrder)) && !(addedLaterOrder.includes(playlistShow[songNumOrder-1].track_title))){   
             songNumOrder = songNumOrder-1;  /*adjusted since number 0 is included in array*/
             addedLaterOrder.push(playlistShow[songNumOrder].track_title);       /*This prevents duplicates by adding it to the array and the check above checks if the current song is in that list array*/
-        
+            laterSongMap[playlistShow[songNumOrder].track_title] = playlistShow[songNumOrder].track_mp3Url;
+
             if(from.textContent == "Priority"){
                 if(priorityListCount == 1){
                     priorityListCount++;
@@ -2687,9 +2689,8 @@ catch{}
         const from = event.target;
         if(hasClass(from, "SongBtnCont")){    
             listenLaterPause = false; 
-            let songName = (from.firstElementChild.style.backgroundImage).slice(32, -6);
-            songName = "../material/songs_mp3/" + songName + "mp3";
-            laterSong = new Audio(songName);
+            let songName = (from.firstElementChild.nextElementSibling.firstElementChild.firstElementChild).textContent;
+            laterSong = new Audio(laterSongMap[songName]);
 
             listenedLaterDivs.push(from.parentElement);
             listenedLaterSongs.push(laterSong);
