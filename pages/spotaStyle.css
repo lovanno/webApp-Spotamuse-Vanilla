@@ -637,6 +637,22 @@
       justify-content: space-around;
     }
 
+    .allDropZoneLists {
+      display: flex;
+      width: 80%;
+      flex-wrap: wrap;
+      margin-left: 4.5rem;
+      margin-right: 5rem;
+      gap: 5rem;
+    }
+
+    .dropZoneCont {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-basis: 18%;
+    }
+
     button.laterTabHeader {
       cursor: pointer;
       float: left;
@@ -644,7 +660,6 @@
       letter-spacing: -0.4px;
       line-height: 31.2px;
       font-weight: bold;
-      margin-left: 20px;
       padding: 18px;
 
       border: none;
@@ -653,14 +668,9 @@
     }
 
     /*    Drag and Drop     */
-    .allDropZoneLists {
-      display: flex;
-      justify-content: space-around;
-    }
-
     div.dropzone {
       height: 30rem;
-      min-width: 17rem;
+      min-width: 15rem;
       overflow: hidden;
     }
     .priorityList.dropzone{background-color: #00A86B;}
@@ -711,6 +721,7 @@
 
     /*Song Handle Bar Styling*/
     .songHandleBar {
+      cursor: pointer;
       display: flex;
       align-items: center;
       height: 4rem;
@@ -721,6 +732,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: space-evenly;
       gap: 2rem;
       height: 4rem;
       width: 100%;
@@ -1254,13 +1266,6 @@
       width: 100%;
     }
 
-    /*button.songQueueBtn {
-      height: 20px;
-      width: 20px;
-      border-radius: 60%;
-      background-color: orange;
-    }*/
-
     button.songMuteBtn {
       display: flex;
       align-items: center;
@@ -1289,7 +1294,19 @@
 
 
     /*****                                              Media Queries                                               *****/
-    @media (max-width: 834px) {}
+    @media (max-width: 834px) {
+
+
+    /**!       (3) contentTabs                                                                   section3               !**/
+
+      /**!        Listen Later (3)                                     tab3               !**/   
+      .allDropZoneLists {
+        margin-left: 7vw;
+        margin-right: unset;
+      }
+
+
+    }
 
     @media (max-width: 546px) {}
 
