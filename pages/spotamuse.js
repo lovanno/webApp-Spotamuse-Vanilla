@@ -1964,7 +1964,12 @@ const musicLibrary = [
     });
     
     /***     General Functions       ***/
-    function hasClass(elem, className) {return elem.classList.contains(className);}
+    function hasClass(elem, className) {
+        try{
+            return elem.classList.contains(className);
+        }
+        catch{} /*sometimes, the element won't have a classList. I've tried type checking but I still got errors*/
+    }
 
     function hasSuperClass(elem, className) {return elem.className == (className);}
  
@@ -2004,9 +2009,14 @@ const musicLibrary = [
         document.body.addEventListener("click", function(event){
         const from = event.target;
 
-        if(hasClass(from, "sideBarHeader")){
+      
+        /*If the button text, the button, or the svg is pressed, switch the tab (this order is shown in the if statement below*/
+        if(hasClass(from, "sideBarHeader") || hasClass(from, "librarySideBar") && hasClass(from, "headerBtn") || hasClass(from.parentElement.nextElementSibling, "sideBarHeader")){
+            
+            (hasClass(from.parentElement.nextElementSibling, "sideBarHeader")) ? clickedTab = parseInt((from.parentElement.nextElementSibling).className.slice(-1))-1 : clickedTab = parseInt(from.className.slice(-1))-1
+
+
             allTabs.forEach(tabs => tabs.style.display = "none");
-            const clickedTab = parseInt(from.className.slice(-1))-1;
             allTabs[clickedTab].style.display = "block";
         }
 

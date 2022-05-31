@@ -128,6 +128,23 @@
       flex-direction: column;
     }
 
+    /*Logo*/
+    .appLogoCont {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    p.appLogoName {
+      color: white;
+      font-size: 24px;
+    }
+
+
+
     h1.librarySideBar.mainHeader.\31 {
       margin-top: 20px;
       font-size: 25px;
@@ -1308,6 +1325,27 @@
 
     }
 
-    @media (max-width: 546px) {}
+    @media (max-width: 546px) {
+      .grid.layout {
+        grid-template-columns: 0.25fr repeat(3, 1fr);
+        grid-template-rows: 5.09fr 0.4fr 0.2fr;
+        grid-template-areas:
+        "librarySideBar contentTabs contentTabs contentTabs"
+        "appSettingsNav contentTabs contentTabs contentTabs"
+        "playNowSect playNowSect playNowSect playNowSect";
+      }
+
+      .sideBar.Icon {
+        margin-right: unset;
+      }
+
+      p.sideBarHeader {
+        display: none; 
+      }
+
+      p.appLogoName {
+        display: none; 
+      }
+    }
 
     @media (max-width: 360px) {}
