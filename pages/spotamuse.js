@@ -2165,26 +2165,12 @@ const musicLibrary = [
                                 subNavUL.classList.add("sub-nav-ul");
                                 level1UL.appendChild(subNavUL);
 
-                                    const likeOptionLI = document.createElement("li");
-                                    likeOptionLI.classList.add("liHeader", "optionHeader");
-                                    likeOptionLI.textContent = "Like";
-                                    subNavUL.appendChild(likeOptionLI);
-
-                                    const queueOptionLI = document.createElement("li");
-                                    queueOptionLI.classList.add("liHeader", "optionHeader");
-                                    queueOptionLI.textContent = "Queue";
-                                    subNavUL.appendChild(queueOptionLI);
-
-                                    const addPlayOptionLI = document.createElement("li");
-                                    addPlayOptionLI.classList.add("liHeader", "optionHeader");
-                                    addPlayOptionLI.textContent = "Add to Playlist";
-                                    subNavUL.appendChild(addPlayOptionLI);
-
                                     const listenLaterOptionLI = document.createElement("li");
                                     listenLaterOptionLI.classList.add("liHeader", "optionHeader");
                                     listenLaterOptionLI.textContent = "Listen Later";
                                     subNavUL.appendChild(listenLaterOptionLI);
 
+                                        /*Listen Later Menu is the first option*/
                                         const level2UL = document.createElement("ul");      /*Gets attatched to Listen Later LI because sub menu belongs to it*/
                                         level2UL.classList.add("level2");
                                         listenLaterOptionLI.appendChild(level2UL);
@@ -2203,6 +2189,22 @@ const musicLibrary = [
                                             eventuallyLaterOptionLI.classList.add("optionHeader", "later", playlistTrackCount);
                                             eventuallyLaterOptionLI.textContent = "Eventually";
                                             level2UL.appendChild(eventuallyLaterOptionLI);
+
+
+                                    const likeOptionLI = document.createElement("li");
+                                    likeOptionLI.classList.add("liHeader", "optionHeader");
+                                    likeOptionLI.textContent = "Like";
+                                    subNavUL.appendChild(likeOptionLI);
+
+                                    const queueOptionLI = document.createElement("li");
+                                    queueOptionLI.classList.add("liHeader", "optionHeader");
+                                    queueOptionLI.textContent = "Queue";
+                                    subNavUL.appendChild(queueOptionLI);
+
+                                    const addPlayOptionLI = document.createElement("li");
+                                    addPlayOptionLI.classList.add("liHeader", "optionHeader");
+                                    addPlayOptionLI.textContent = "Add to Playlist";
+                                    subNavUL.appendChild(addPlayOptionLI);
         }
 
 
