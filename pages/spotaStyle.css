@@ -1375,7 +1375,10 @@
 
 
       /*    Discover EP Albums     */
-      .homeContentContainer.\31 {margin-right: 8px;}
+      .homeContentContainer.\31 {
+        margin-left: 15px;
+        margin-right: 8px;
+      }
 
 
       /*Eventually, I'd like to get rid of flex wrap for Spotify's "See All" button when there's more content*/
