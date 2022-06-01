@@ -54,6 +54,8 @@
       grid-area: contentTabs;
       background-color: #1c1c1c;
       padding-top: 4rem;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
     .playingNowSect {
       grid-area: playNowSect;
@@ -70,6 +72,7 @@
       left: 24%;
       height: 3rem;
       width: 72%;
+      z-index: 2000;
     }
     .appSettings.Menu {height: 100%;}
     .appSettings.Container {
@@ -233,7 +236,7 @@
       font-size: 40px;
       position: relative;
       top: 28%;
-      left: -21%;
+      left: -17%;
     }
 
     button.bannerImage.hideBtn {
@@ -1349,10 +1352,53 @@
 
 
     /*****                                              Media Queries                                               *****/
-    @media (max-width: 834px) {
+    @media (max-width: 840px) {
 
 
     /**!       (3) contentTabs                                                                   section3               !**/
+
+      /**!        Home (3)                                     tab1               !**/   
+      .home.BannerImage {margin-left: 20px;}
+
+      button.bannerImage.hideBtn {
+        left: 34%;
+        height: 30px;
+        width: 8rem;
+        font-size: 8px;
+      }
+
+      p.bannerImage.Header {
+        font-size: max(4vw, 30px);
+        top: 10vh;
+        left: 0%;
+      }
+
+
+      /*    Discover EP Albums     */
+      .homeContentContainer.\31 {margin-right: 8px;}
+
+
+      /*Eventually, I'd like to get rid of flex wrap for Spotify's "See All" button when there's more content*/
+      .homeContentCont.allAlbumCont {flex-wrap: wrap;}  
+      .homeContentContAlbumCont {
+        height: 15rem;
+        width: 11rem;
+      }
+
+      .homeContentCont.albumInfoCover {
+        margin-top: 0.8rem;
+        height: 10rem;
+        width: 9.4rem;
+      }
+
+      .homeContentCont.textCont {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+
+    
 
       /**!        Listen Later (3)                                     tab3               !**/   
       .allDropZoneLists {
@@ -1362,6 +1408,7 @@
 
 
     }
+
 
     @media (max-width: 546px) {
       .grid.layout {
@@ -1380,6 +1427,19 @@
       p.appLogoName {
         display: none; 
       }
+
+
+    /**!       (3) contentTabs                                                                   section3               !**/
+
+      /**!        Home (3)                                     tab1               !**/   
+      button.bannerImage.hideBtn {
+        left: 17vw;
+        height: 28px;
+        width: 7.5rem;
+        font-size: 8px;
+      }
+
+
     }
 
     @media (max-width: 360px) {}
