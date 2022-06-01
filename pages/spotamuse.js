@@ -1957,7 +1957,6 @@ const musicLibrary = [
     albumLibrary.map((album) => {
         album.forEach(songs => {
             mp3UrlLibrary.push(songs.track_mp3Url);
-
             /*Line 2310 - Test for switching playlists*/
             albumData.push(songs);
         })
@@ -1965,9 +1964,7 @@ const musicLibrary = [
     
     /***     General Functions       ***/
     function hasClass(elem, className) {
-        try{
-            return elem.classList.contains(className);
-        }
+        try{return elem.classList.contains(className);}
         catch{} /*sometimes, the element won't have a classList. I've tried type checking but I still got errors*/
     }
 
@@ -1998,32 +1995,40 @@ const musicLibrary = [
             Playlist (3)                                 tab5           
       (4) playingNowSect                                      section4 /*
 
-
-
 /***        (1) appSettingsNav                                                                   section1               ***/
+    let settingNav = document.querySelector("div.appSettingsNav");
+    const allTabs = document.querySelectorAll(".tab");
+
+    /*Toggle transparent to black bg navbar on scroll*/
+    allTabs.forEach(tabs => {
+        tabs.addEventListener('scroll', function(event){
+            let from = event.target
+            let tabScroll = from.scrollTop > 0;
+            settingNav.classList.toggle('scrolling-active', tabScroll);
+        })
+    })
+
 
 /***        (2) librarySideBar                                                                   section2               ***/
 
     /**     Switch Between Tab Functionality            **/
-    const allTabs = document.querySelectorAll(".tab");
-        document.body.addEventListener("click", function(event){
+    document.body.addEventListener("click", function(event){
         const from = event.target;
 
-      
         /*If the button text, the button, or the svg is pressed, switch the tab (this order is shown in the if statement below*/
         if(hasClass(from, "sideBarHeader") || hasClass(from, "librarySideBar") && hasClass(from, "headerBtn") || hasClass(from.parentElement.nextElementSibling, "sideBarHeader")){
-            
+
             (hasClass(from.parentElement.nextElementSibling, "sideBarHeader")) ? clickedTab = parseInt((from.parentElement.nextElementSibling).className.slice(-1))-1 : clickedTab = parseInt(from.className.slice(-1))-1
+            allTabs.forEach(tabs => {
+                tabs.scrollTop = 0;
+                tabs.style.display = "none";
+            });
 
-
-            allTabs.forEach(tabs => tabs.style.display = "none");
             allTabs[clickedTab].style.display = "block";
+            settingNav.classList.toggle('scrolling-active', false);
         }
-
-        /* Hide Announcements Banner */
-        if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}
+        if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}      /* Hide Announcements Banner */
     });
-
 
 
 
