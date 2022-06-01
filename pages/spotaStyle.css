@@ -1397,8 +1397,25 @@
         width: 100%;
       }
 
+      /**!        Your Library (3)                                     tab2               !**/   
+      .yourLibraryCont.tab2 {margin-left: 15px;}
+      .yourLibrary.playlistCont {margin-left: 16px;}
 
-    
+      /* Playlist Boxes */
+      button.playlistBtnCont {
+        height: 15rem;
+        width: 11rem;
+      }
+
+      .playlistCover {
+        height: 9rem;
+        width: 9.1rem;
+        margin: 0.85rem;
+        aspect-ratio: 1 / 1;
+      }
+
+
+  
 
       /**!        Listen Later (3)                                     tab3               !**/   
       .allDropZoneLists {
