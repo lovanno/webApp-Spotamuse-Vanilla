@@ -2421,7 +2421,7 @@ const musicLibrary = [
     addNewSongsPlaylist.addEventListener("click", function(){       
         resetBackwardsMode();
         playcreateMode = true;
-        finishedCreateBtn.style.display = "block";
+        finishedCreateBtn.style.display = "initial";
         addNewSongsPlaylist.style.display = "none";
 
         window["'" + playlistName.textContent + "'"] = new Array();

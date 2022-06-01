@@ -505,7 +505,7 @@
       background-color: #1DB954;
       border: none;
       border-radius: 100%;
-      height: 2.2rem;
+      height: 2rem;
       width: 2rem;
       display: flex;
       align-items: center;
@@ -560,8 +560,10 @@
     .newPlaylistControlCont.\31 {
       display: flex;
       justify-content: space-between;
-      margin-left: 1rem;
+      margin-left: 2rem;
       margin-right: 1rem;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
       width: 90%;
     }
 
@@ -634,6 +636,7 @@
       width: fit-content; 
       background: transparent;
       position: relative;
+      top: 0.4rem;
       left: -68%;
       z-index: 1000;
     }
@@ -1083,7 +1086,8 @@
 
 
 
-    /***        Search (3)                                     tab5               ***/   
+    /***        Playlist (3)                                     tab5               ***/   
+    .library.newPlaylistTextCont.\31 {width: 65%;}
     .trackImage {
       background-repeat: no-repeat;
       background-size: cover;
@@ -1122,6 +1126,9 @@
       top: 22%;
       height: 32px;
       width: 9.5rem;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+
       font-size: 10px;
       opacity: 0.55;
       border: none;
@@ -1130,37 +1137,21 @@
       border-radius: 23px;
       text-transform: uppercase;
     }
-
-    .playlistSong.trackInfoCont {
-      text-align: left;
-    }
+    .playlistSong.trackInfoCont {text-align: left;}
 
     p.playlistSong.trackOrder {
       color: #B3B3B3;
       font-weight: bold;
     }
 
-    p.playlistSong.trackTitle {
-      color: white;
-    }
-
-    p.playlistSong.trackArtist {
-      color: #B3B3B3;
-    }
-
-    p.playlistSong.albumTitle {
-      color: #B3B3B3;
-    }
-
+    p.playlistSong.trackTitle {color: white;}
+    p.playlistSong.trackArtist {color: #B3B3B3;}
+    p.playlistSong.albumTitle {color: #B3B3B3;}
     p.playlistSong.dateAdded {
       color: #B3B3B3;
       min-width: 16rem;
     }
-
-
-    p.playlistSong.durationTime {
-      color: #B3B3B3;
-    }
+    p.playlistSong.durationTime {color: #B3B3B3;}
 
     p.newPlaylistHeader {
       color: white;
@@ -1175,7 +1166,6 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      width: 50%;
     }
 
 
@@ -1221,13 +1211,8 @@
 
 
     /*Left Container */
-    .songInfo.playNowCategory.\31 {
-      margin-left: 20px;
-    }
-
-    .songInfo.Name.\31 {
-      text-align: left;
-    }
+    .songInfo.playNowCategory.\31 {margin-left: 20px;}
+    .songInfo.Name.\31 {text-align: left;}
 
     .songInfo.Container {
       display: flex;
@@ -1236,17 +1221,9 @@
       gap: 20px;
     }
 
-    h3.songInfoHeader.\31 {
-      color: white;
-    }
-
-    p.songInfoArtist.\31 {
-      color: white;
-    }
-
-    p.songInfoTrack.\31 {
-      color: white;
-    }
+    h3.songInfoHeader.\31 {color: white;}
+    p.songInfoArtist.\31 {color: white;}
+    p.songInfoTrack.\31 {color: white;}
 
 
 
@@ -1376,7 +1353,6 @@
     /*****                                              Media Queries                                               *****/
     @media (max-width: 840px) {
 
-
     /**!       (3) contentTabs                                                                   section3               !**/
       /**!        Home (3)                                     tab1               !**/   
 
@@ -1459,6 +1435,8 @@
       .searchProdCont.\31 {left: 31%;}
       input.searchProductInput.\31 {width: 292px;}
      
+
+      /*Recent Search EP Albums*/
       .recentSearchAlbumCont {
         height: 15rem;
         width: 11rem;
@@ -1470,6 +1448,7 @@
         width: 9.1rem;
       } 
 
+      /* Genre Blocks */
       p.recentSearchHeader {font-size: 20px;}
       button.recentSearch.seeAll.\31 {font-size: 10px;}
       .topGenre.genreBlock {width: 21.5rem;}
@@ -1479,8 +1458,38 @@
       }
       .browseAll.empty.genreBlock.\32 1 {height: 2.5rem;}
 
-    }
 
+
+      /**!        Playlist (3)                                     tab5               !**/
+
+      /*Playlist Name / Image*/
+      .library.newPlaylistTextCont.\31 {width: 52%;}
+      .library.newPlaylistImage {
+        height: 10rem;
+        width: 10rem;
+      }
+      h1.newPlaylistName.\31 {font-size: 58px;}
+
+      /*Playlist Songs*/
+      .newPlaylist.colmHeaders {width: 75vw;}
+      .newPlaylist.orderCont.\31 {margin-left: 1.5rem;}
+      .newPlaylist.albumCont.\31 {margin-left: 8rem;}
+      .newPlaylist.dateAddedCont {display: none;}
+      .playlistSongs.dateAddedCont {display: none;}
+
+      .addNewSongsPlaylistCont {    /*Add new songs option */
+        margin-top: 3rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+      }
+
+      .song-nav {     /*Song Options Gear*/
+        top: -1.5rem;
+        left: -37vw;
+      }
+
+    }
 
     @media (max-width: 546px) {
       .grid.layout {
@@ -1527,6 +1536,53 @@
       input.searchProductInput.\31 {
         width: 200px;
         padding: 6px 20px;
+      }
+
+
+      /**!        Playlist (3)                                     tab5               !**/
+      /*Playlist Name / Image*/
+      .library.newPlaylistInfo {  
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+      }
+      .library.newPlaylistTextCont.\31 {width: 97%;}   
+      .library.newPlaylistImage {
+        height: 10rem;
+        width: 10rem;
+      }
+      h1.newPlaylistName.\31 {font-size: 58px;}
+
+      /*Playlist Control Cont*/
+      .newPlaylistControlCont.\31 {
+        margin-left: 1.5rem;
+        width: 85%;
+      } 
+      .playlistControlLeftCont.\31 {gap: 0.4rem;}
+
+      button.playlistPlayBtn.\31 {
+        height: 3rem;
+        width: 3rem;
+      }
+      button.playlistDownloadBtn.\31 {display: none;}
+      
+      
+      /* Playlist Songs*/
+      .newPlaylist.colmHeaders {
+        justify-content: space-between;
+        width: 70vw;
+      }
+
+      .newPlaylist.orderCont.\31 {margin-left: 3.5rem;}
+      .newPlaylist.albumCont.\31 {display: none}
+      .playlistSongs.albumCont {display: none;}
+
+      .addNewSongsPlaylistCont {    /*Add new songs option */
+        margin-top: 1rem;
+      }
+
+      .song-nav {  /*Song Options Gear*/
+        top: 1.3rem;
+        left: -74.25vw;
       }
 
     }
