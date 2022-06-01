@@ -32,7 +32,6 @@
       (4) playingNowSect                                      section4                  
     /*
 
-
     /*         Page Grid Layout          */
     .grid.layout {
       position: relative;
@@ -41,7 +40,7 @@
       grid-template-columns: 0.75fr repeat(3, 1fr);
       grid-template-rows: 0.4fr 5.09fr 0.2fr;
       grid-template-areas:
-        "librarySideBar appSettingsNav appSettingsNav appSettingsNav"
+        "librarySideBar contentTabs contentTabs contentTabs"
         "librarySideBar contentTabs contentTabs contentTabs"
         "playNowSect playNowSect playNowSect playNowSect";
       height: 100vh;        /*Makes one page applications fit on different device sizes*/
@@ -49,11 +48,12 @@
     }
 
     /*    Grid Areas    */
-    .appSettingsNav {grid-area: appSettingsNav;}
+    /*.appSettingsNav {grid-area: appSettingsNav;}*/
     .librarySideBar {grid-area: librarySideBar;}
     .homeSection.tab {
       grid-area: contentTabs;
       background-color: #1c1c1c;
+      padding-top: 4rem;
     }
     .playingNowSect {
       grid-area: playNowSect;
@@ -61,12 +61,20 @@
       height: 7.625rem;
     }
 
+
+    .appSettingsNav {
+    /* grid-area: appSettingsNav; */
+    position: absolute;
+    left: 20%;
+    width: 80%;
+    height: 3rem;
+  }
+
     
 
 
   /***        (1) appSettingsNav                                                                   section1               ***/
     .appSettings.Menu {
-      background-color: black;
       height: 100%;
     }
 
@@ -190,18 +198,18 @@
       background-image: url(../material/appIcons/banner1_image.png);
       background-repeat: no-repeat;
       background-size: cover;
-      height: 8rem;
-      width: 75%;
-      margin-left: 124px;
+      height: 13rem;
+      width: 90%;
+      margin-left: 39px;
       margin-right: 20px;
     }
 
     p.bannerImage.Header {
       color: white;
-      font-size: 36px;
+      font-size: 40px;
       position: relative;
-      top: 17%;
-      left: -19%;
+      top: 28%;
+      left: -21%;
     }
 
     button.bannerImage.hideBtn {
@@ -386,11 +394,17 @@
       height: 100%;
       background-color: #1c1c1c;
       overflow-x: hidden;
+      padding-top: 4rem;
     }
+
+    .yourLibrarySect.tab.\34 {padding-top: unset;}
+
+    .yourLibrarySect.tab.\35 {padding-top: unset;}
 
     .searchCont.tab4 {
       background-color: #121212;
       height: fit-content;
+      padding-top: 4rem;
     }
 
     .library.newPlaylistInfo {
@@ -1329,10 +1343,6 @@
       .grid.layout {
         grid-template-columns: 0.25fr repeat(3, 1fr);
         grid-template-rows: 5.09fr 0.4fr 0.2fr;
-        grid-template-areas:
-        "librarySideBar contentTabs contentTabs contentTabs"
-        "appSettingsNav contentTabs contentTabs contentTabs"
-        "playNowSect playNowSect playNowSect playNowSect";
       }
 
       .sideBar.Icon {
