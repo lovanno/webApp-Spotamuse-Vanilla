@@ -1996,8 +1996,11 @@ const musicLibrary = [
       (4) playingNowSect                                      section4 /*
 
 /***        (1) appSettingsNav                                                                   section1               ***/
-    let settingNav = document.querySelector("div.appSettingsNav");
+    const settingNav = document.querySelector("div.appSettingsNav");
     const allTabs = document.querySelectorAll(".tab");
+    allTabs.forEach(tabs => tabs.style.display = "none");
+    document.querySelector("div.homeSection.tab.\\31 ").style.display = "block";
+    
 
     /*Toggle transparent to black bg navbar on scroll*/
     allTabs.forEach(tabs => {
@@ -2007,6 +2010,40 @@ const musicLibrary = [
             settingNav.classList.toggle('scrolling-active', tabScroll);
         })
     })
+
+    const userSettingsMenu = document.querySelector("div.userSettings");
+    userSettingsMenu.style.display = "none";    /* userSettingsMenu style can't be found at run time so I have to manually set it*/
+
+    document.body.addEventListener("click", function(event){
+        const from = event.target;
+
+        if(hasSuperClass(from, "settings mainBtnHeader 1") || hasSuperClass(from.parentElement,"settings mainBtnHeader 1")){
+            (userSettingsMenu.style.display == "none") ? userSettingsMenu.style.display = "flex" : userSettingsMenu.style.display = "none";
+        }
+        if(hasClass(from, "appNavTabBtn") || hasClass(from.parentElement, "appNavTabBtn") || hasClass(from.parentElement.parentElement, "appNavTabBtn")){
+            allTabs.forEach(tabs => 
+                {if(tabs.style.display == "block"){
+                    clickedTab = parseInt((tabs).className.slice(-1))-1;
+                }
+            });
+            allTabs[clickedTab].style.display = "none";
+
+            let arrowDirection = parseInt(from.classList.value.slice(-1));      /*checks if a tab is backwards(1) or forwards(2)*/
+            (arrowDirection == 1)? clickedTab-- : clickedTab++
+
+            if(clickedTab == allTabs.length-1 && arrowDirection == 2){     /*Only goes up to tab 4. It's unlikely someone would want to create a playlist on the spot*/
+                clickedTab = 0;    
+            }
+            else if(clickedTab == -1 && arrowDirection == 1){
+                clickedTab = 3;
+            }
+
+            allTabs[clickedTab].style.display = "block";
+        }
+    });
+
+
+
 
 
 /***        (2) librarySideBar                                                                   section2               ***/

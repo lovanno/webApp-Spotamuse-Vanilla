@@ -117,6 +117,15 @@
       background-color: #000000b3;
     }
 
+    path.appNavTabBtn1:hover{
+      opacity: 1.0;
+      transition: 800ms;
+    }
+    path.appNavTabBtn2:hover{
+      opacity: 1.0;
+      transition: 800ms;
+    }
+
     /* App Settings Button */
     href.settings.mainBtnHeader.\31 {
       cursor: pointer;
@@ -141,28 +150,25 @@
     }
 
     .userSettings {
-      display: flex;
+      cursor: pointer;
+      display: none;
       flex-direction: column;
+      align-items: flex-start;
+
+      position: absolute;
+      top: 87%;
+      width: 13rem;
+      margin-right: 4.25rem;
+      padding-left: 1rem;
+      background-color: #282828;
     }
 
     button.setting {
-      border: none;
+      height: 2.5rem;
       padding: 0.25rem;
+      border: none;
       color: white;
       background-color: transparent;
-    }
-
-    .userSettings {
-      display: absolute;
-      position: absolute;
-      display: none;
-    }
-
-    button.logOutBtn {
-      width: 60%;
-      border: none;
-      border-radius: 40%;
-      padding: 0.5rem;
     }
 
 
@@ -1353,6 +1359,13 @@
     /*****                                              Media Queries                                               *****/
     @media (max-width: 840px) {
 
+      /**!        (1) appSettingsNav                                                                   section1               !**/
+      .userSettings {
+        width: 8.5rem;
+        margin-right: 5rem;
+      }
+
+
     /**!       (3) contentTabs                                                                   section3               !**/
       /**!        Home (3)                                     tab1               !**/   
 
@@ -1622,6 +1635,9 @@
           "playNowSect playNowSect playNowSect playNowSect"
           "librarySideBar librarySideBar librarySideBar librarySideBar";
       }
+
+    /**!        (1) appSettingsNav                                                                   section1               !**/
+      .userSettings {margin-right: -6rem;}
 
     /**!        (2) librarySideBar                                                                   section2               !**/
       .sideBarHeader {          /* Moves logo to the top of the page */
