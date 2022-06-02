@@ -1489,25 +1489,32 @@
         left: -37vw;
       }
 
+
+    /**!        (4) playingNowSect                                                                   section4               !**/
+      .playingNowSectCont {
+        align-items: center;
+        justify-content: flex-end;
+        height: auto;
+        width: 100%;
+        margin-left: unset;
+      }
+
+      .songPlaying.playNowCategory.\32 {margin-right: 4rem;}
+      .globalSettingCont {
+        gap: 0.3rem;
+        margin-top: 1.5rem;
+      }
+
     }
 
     @media (max-width: 546px) {
       .grid.layout {
         grid-template-columns: 0.25fr repeat(3, 1fr);
-        grid-template-rows: 5.09fr 0.4fr 0.2fr;
+        grid-template-rows: 5.09fr 0.4fr 1.2fr;
       }
-
-      .sideBar.Icon {
-        margin-right: unset;
-      }
-
-      p.sideBarHeader {
-        display: none; 
-      }
-
-      p.appLogoName {
-        display: none; 
-      }
+      .sideBar.Icon {margin-right: unset;}
+      p.sideBarHeader {display: none; }
+      p.appLogoName {display: none; }
 
 
     /**!       (3) contentTabs                                                                   section3               !**/
@@ -1584,6 +1591,25 @@
         top: 1.3rem;
         left: -74.25vw;
       }
+
+      /**!        (4) playingNowSect                                                                   section4               !**/
+      .songPlaying.playNowCategory.\32 {margin-right: 2rem;}
+      .playingNowSect {height: 100%;}   /*Controls fit new grid-row length*/
+
+      .songPlayingCont {
+        flex-direction: row-reverse;  /*Moves song info on left side*/
+        gap: 1em;
+        margin-top: 2rem;
+      }
+
+      /*Song Details Container*/
+      .songPlayingImageCont {gap: 0.1rem;}
+      .songPlayingAlbum.Image.\31 {
+        height: 4rem;
+        width: 4rem;
+      }
+      p.songPlayingAlbum.\31 {display: none;}
+
 
     }
 
