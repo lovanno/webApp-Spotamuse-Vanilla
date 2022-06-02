@@ -1613,4 +1613,54 @@
 
     }
 
-    @media (max-width: 360px) {}
+    @media (max-width: 360px) {
+      .grid.layout {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 5.09fr 0.4fr 0.2fr;
+        grid-template-areas:
+          "contentTabs contentTabs contentTabs contentTabs"
+          "librarySideBar librarySideBar librarySideBar librarySideBar"
+          "playNowSect playNowSect playNowSect playNowSect";
+      }
+
+    /**!        (2) librarySideBar                                                                   section2               !**/
+      .sideBarHeader {          /* Moves logo to the top of the page */
+        position: absolute;
+        top: 1%;
+        left: 46%;
+      }
+      .appLogoCont {
+        margin-top: unset; 
+        margin-bottom: unset;
+      }
+
+      
+      .librarySideBarContent {
+        flex-direction: unset;
+        justify-content: space-evenly;
+      }
+
+      button.librarySideBar.headerBtn {
+        margin-left: unset;
+        margin-right: unset;
+      }
+      button.librarySideBar.headerBtn.\35 {display: none;}    /*Removes the "Create Playlist" feat*/
+
+
+    /**!       (3) contentTabs                                                                   section3               !**/
+       /**!        Home (3)                                     tab1               !**/   
+      .appSettingsNav {
+        left: -5%;
+        width: 107%;
+      }
+      .appNavTabCont {display: none;}
+
+
+      /**!        Playlist (3)                                     tab5               !**/
+      .searchProdCont.\31 {
+        top: 8.5%;
+        left: 6vw;
+      }
+
+
+    }
