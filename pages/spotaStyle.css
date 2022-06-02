@@ -1656,11 +1656,60 @@
       .appNavTabCont {display: none;}
 
 
-    /**!        Playlist (3)                                     tab5               !**/
+      /* Home Banner */
+      button.bannerImage.hideBtn {display: none;}
+      p.bannerImage.Header {
+        font-size: 36px;
+        top: 12vh;
+      }
+
+
+      /**!        Your Library (3)                                     tab2               !**/   
+      .yourLibrary.playlistCont {margin-left: unset;}
+
+
+      /**!        Listen Later (3)                                     tab3               !**/   
+      .allDropZoneLists {width: 87%;}
+      div.dropzone {height: 25rem;}
+
+      /**!        Search (3)                                     tab4               !**/   
       .searchProdCont.\31 {
         top: 8.5%;
         left: 6vw;
       }
+      .searchCont.tab4 {padding-top: 6rem;}
+      .albumBlocksCont.\31 {margin-left: 15px;}
+      button.recentSearch.seeAll.\31 {
+        padding: unset;
+        margin-right: 1.4rem;
+      }
+
+      .topGenre.genreBlock {
+        height: 9rem;
+        width: 13rem;
+      }
+
+
+
+
+
+    /**!        Playlist (3)                                     tab5               !**/
+      .newPlaylist.orderCont.\31 {margin-left: 3rem;}
+      .newPlaylist.colmHeaders {width: 87%;}
+
+      h1.newPlaylistName.\31 {font-size: 48px;}
+
+      .newPlaylistControlCont.\31 {
+        margin-left: 1rem;
+        width: 86%;
+      }
+
+       .song-nav {
+        top: 1.9rem;
+        left: -89.5vw;
+      }
+
+      .addNewSongsPlaylistCont {margin-bottom: 2rem;}
 
 
     /**!        (4) playingNowSect                                                                   section4               !**/
