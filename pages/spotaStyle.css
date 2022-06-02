@@ -1616,11 +1616,11 @@
     @media (max-width: 360px) {
       .grid.layout {
         grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: 5.09fr 0.4fr 0.2fr;
+        grid-template-rows: 5.09fr 0.8fr 0.5fr;
         grid-template-areas:
           "contentTabs contentTabs contentTabs contentTabs"
-          "librarySideBar librarySideBar librarySideBar librarySideBar"
-          "playNowSect playNowSect playNowSect playNowSect";
+          "playNowSect playNowSect playNowSect playNowSect"
+          "librarySideBar librarySideBar librarySideBar librarySideBar";
       }
 
     /**!        (2) librarySideBar                                                                   section2               !**/
@@ -1656,10 +1656,37 @@
       .appNavTabCont {display: none;}
 
 
-      /**!        Playlist (3)                                     tab5               !**/
+    /**!        Playlist (3)                                     tab5               !**/
       .searchProdCont.\31 {
         top: 8.5%;
         left: 6vw;
+      }
+
+
+    /**!        (4) playingNowSect                                                                   section4               !**/
+
+    /* Song Playing Controls */
+      .songPlaying.playNowCategory.\32 {
+        width: 100%;
+        margin-right: unset;
+      } 
+      .songPlayingCont {justify-content: center;}
+
+      /*Song Progress Bar */
+      .songPlaying.ProgressCont {width: 68%;}
+      .songProgressCont {
+        width: 100%;
+      }
+
+      /* Song Info */
+      .songPlayingAlbum.Image.\31 {
+        display: none;
+      }
+
+      p.songPlayingName.\31 {
+        position: absolute;
+        top: 78%;
+        left: 6%;
       }
 
 
