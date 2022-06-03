@@ -2438,8 +2438,10 @@ const musicLibrary = [
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
         }
 
-        if(hasClass(from, "newPlaylistSongs")){
-            let clickedTrack = parseInt(from.className.slice(17));
+        /*If any part of the Song Button is pressed, it will be played*/
+        if(hasClass(from, "newPlaylistSongs") || hasClass(from, "playlistSong") &&  hasClass(from, "orderCont") || hasClass(from, "playlistSongs") && hasClass(from, "albumCont") 
+            || hasClass(from, "playlistSongs") && hasClass(from, "dateAddedCont") || hasClass(from, "playlistSongs") && hasClass(from, "durationCont")){
+            let clickedTrack = parseInt(from.className.slice(-1));
             song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
 
             stopAll();
