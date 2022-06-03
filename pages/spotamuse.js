@@ -2030,7 +2030,7 @@ const musicLibrary = [
                 document.querySelector("p.sideBarHeader.\\3" + resetTabs).style.color = "#B3B3B3";
                 document.querySelector("path.sideBarIcon" + resetTabs).style.fill = "inherit";
             });
-            
+
             allTabs[clickedTab].style.display = "none";     
             let arrowDirection = parseInt(from.classList.value.slice(-1));      /*checks if a tab is backwards(1) or forwards(2)*/
             (arrowDirection == 1)? clickedTab-- : clickedTab++
@@ -2884,11 +2884,24 @@ catch{}
     let shuffleMode = false;
     let lastSongOrder;
     const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
-    shuffleBtn.addEventListener("click", function(){shuffleMode = !shuffleMode;});
+    shuffleBtn.addEventListener("click", function(){
+        shuffleMode = !shuffleMode;
+        if(shuffleMode == true){
+            document.querySelector("path.songShuffleplayBackIcon1").style.fill = "#fff";
+            document.querySelector("path.songShuffleplayBackIcon2").style.fill = "#fff";
+        }
+        else{
+            document.querySelector("path.songShuffleplayBackIcon1").style.fill = "#6a6a6a";
+            document.querySelector("path.songShuffleplayBackIcon2").style.fill = "#6a6a6a";
+        }
+    });
 
     let repeatCycleMode = false;
     const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
-    repeatCycleBtn.addEventListener("click", function(){repeatCycleMode = !repeatCycleMode;});
+    repeatCycleBtn.addEventListener("click", function(){
+        repeatCycleMode = !repeatCycleMode;
+        (repeatCycleMode == true)? document.querySelector("path.songRepeatplayBackIcon1").style.fill = "#fff" : document.querySelector("path.songRepeatplayBackIcon1").style.fill = "#6a6a6a"
+    });
     
     let chosenPlaylist;
     chosenPlaylist = musicLibrary;

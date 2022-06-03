@@ -1006,6 +1006,7 @@
     }
 
     .topGenre.genreBlock {
+      cursor: pointer;
       gap: 1.0rem;
       height: 10rem;
       width: 28rem;
@@ -1014,6 +1015,7 @@
     }
 
     .browseAll.genreBlock {
+      cursor: pointer;
       height: 12rem;
       width: 12rem;
       border-radius: 8px;
