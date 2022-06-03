@@ -164,13 +164,13 @@
     }
 
     button.setting {
+      cursor: pointer;
       height: 2.5rem;
       padding: 0.25rem;
       border: none;
       color: white;
       background-color: transparent;
     }
-
 
   /***        (2) librarySideBar                                                                   section2               ***/
     .librarySideBar.headerCont {
@@ -281,7 +281,7 @@
     }
 
     button.bannerImage.hideBtn:hover{
-      opacity: 0.7;
+      opacity: 0.8;
       transition: 1000ms;
     }
 
@@ -684,7 +684,8 @@
 
     ul.sub-nav-ul > li > ul {display: none;}
     ul.sub-nav-ul li:hover > ul {
-      background-color: purple; 
+      background-color: #c6c6c6; 
+      color: black;
       display: block; 
       position: absolute;
       top: 0%;
@@ -766,6 +767,7 @@
 
     /* Listen Later - Start State Look (Add a Song) */
     p.dropzoneHeader {
+      cursor: pointer;
       float: left;
       padding: 18px;
       font-size: 20px;
@@ -776,6 +778,7 @@
     }
 
     .dropzoneImage {
+      cursor: pointer;
       position: relative;
       top: 14%;
       left: 58%;

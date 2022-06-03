@@ -1964,11 +1964,16 @@ const musicLibrary = [
     
     /***     General Functions       ***/
     function hasClass(elem, className) {
-        try{return elem.classList.contains(className);}
-        catch{} /*sometimes, the element won't have a classList. I've tried type checking but I still got errors*/
+        if(elem == null){return false}
+        if(elem.tagName == "path" || elem.tagName == "path" || elem.tagName == null){return false}
+        return elem.classList.contains(className);
     }
 
-    function hasSuperClass(elem, className) {return elem.className == (className);}
+    function hasSuperClass(elem, className) {
+        if(elem == null){return false}
+        if(elem.tagName == "path" || elem.tagName == "path" || elem.tagName == null){return false}
+        return elem.className == (className);
+    }
  
     function htmlSlice(element, number){return element.innerHTML.slice(number);}
 
@@ -2020,7 +2025,7 @@ const musicLibrary = [
         if(hasSuperClass(from, "settings mainBtnHeader 1") || hasSuperClass(from.parentElement,"settings mainBtnHeader 1")){
             (userSettingsMenu.style.display == "none") ? userSettingsMenu.style.display = "flex" : userSettingsMenu.style.display = "none";
         }
-        if(hasClass(from, "appNavTabBtn") || hasClass(from.parentElement, "appNavTabBtn") || hasClass(from.parentElement.parentElement, "appNavTabBtn")){
+        if(hasClass(from, "appNavTabBtn") || hasClass(from.parentElement, "appNavTabBtn")){
             resetTabs = 0;
             allTabs.forEach(tabs => {
                 resetTabs++;
@@ -2058,7 +2063,7 @@ const musicLibrary = [
         const from = event.target;
 
         /*If the button text, the button, or the svg is pressed, switch the tab (this order is shown in the if statement below*/
-        if(hasClass(from, "sideBarHeader") || hasClass(from, "librarySideBar") && hasClass(from, "headerBtn") || hasClass(from.parentElement.nextElementSibling, "sideBarHeader")){
+        if(hasClass(from, "sideBarHeader") || hasClass(from, "librarySideBar") && hasClass(from, "headerBtn")){
             resetTabs = 0;
             (hasClass(from.parentElement.nextElementSibling, "sideBarHeader")) ? clickedTab = parseInt((from.parentElement.nextElementSibling).className.slice(-1))-1 : clickedTab = parseInt(from.className.slice(-1))-1
             allTabs.forEach(tabs => {
@@ -2762,6 +2767,10 @@ catch{}
             stopAll();
             stopLaterSongs();
             laterSong.play();
+            listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
+                laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
+            });
+            from.nextElementSibling.firstElementChild.outerHTML = '<svg role="img" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet" width="16" height="16" viewBox="0 0 24 24"><path fill="#fff" d="M8 7h3v10H8zm5 0h3v10h-3z"/></svg>';
         }
 
         if(hasClass(from, "listenLaterPause")){
@@ -2769,14 +2778,15 @@ catch{}
             if(listenLaterPause == false && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
                 (listenedLaterSongs[listenedLaterSongs.length-1]).pause();
                 listenLaterPause = true;
+                from.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
             }
             else{
                 listenedLaterSongs[listenedLaterSongs.length-1].play();
                 listenLaterPause = false;
                 updateSongTime();
+                from.firstElementChild.outerHTML = '<svg role="img" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet" width="16" height="16" viewBox="0 0 24 24"><path fill="#fff" d="M8 7h3v10H8zm5 0h3v10h-3z"/></svg>';
             }
         }
-
     })
 
 
@@ -2871,6 +2881,7 @@ catch{}
         recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
         recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
+        song.volume = appVolume;
         stopAll();
         song.play();
     }
@@ -2986,7 +2997,9 @@ catch{}
     /*      Volume Controls             */
     const muteSong = document.querySelector("button.songMuteBtn");
     const volumeBar = document.querySelector("div.volumeEmpty.ProgBar.\\31");
+    let appVolume = 1.0;
     function muteVolume(){
+        appVolume = 0;
         (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 0;
         document.querySelector("div.volumeShown.ProgBar.\\32").style.width = '0%';
         muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
@@ -2995,6 +3008,7 @@ catch{}
     muteSong.addEventListener("click", function(){
         if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){muteVolume();}
         else{
+            appVolume = 1.0;
             (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
             document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
             muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
@@ -3006,6 +3020,7 @@ catch{}
             muteVolume();   /*volumeBar.clientWidth grabs the progress bar's current width and event.offsetX grabs the exact position of the progress bar's width that was touched*/
         }
         else{
+            appVolume = (event.offsetX/volumeBar.clientWidth);
             (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = (event.offsetX/volumeBar.clientWidth);
             document.querySelector("div.volumeShown.ProgBar.\\32").style.width = ((event.offsetX/volumeBar.clientWidth)*100) + '%';
             muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'        
