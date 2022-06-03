@@ -1255,13 +1255,15 @@
     }
 
 
-    .ProgBar.\31 {      
+    .ProgBar.\31 {  
+      cursor: pointer;    
       height: 4px;
       width: 100%;
       background-color: grey;
     }
 
     .ProgBar.\32 {
+      cursor: pointer;    
       height: 4px;
       width: 0%;
       background-color: #fff;;

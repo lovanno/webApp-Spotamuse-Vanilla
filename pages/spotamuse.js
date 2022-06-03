@@ -2826,7 +2826,7 @@ catch{}
     const currentAlbumCover = document.querySelector("div.songPlayingAlbum.Image.\\31");
     const currentSongTime = document.querySelector("p.songProgressSec");
     const currentSongDuration = document.querySelector("p.songProgressSec.total");  
-    const currrentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
+    const currentSongProgress = document.querySelector("div.songShown.ProgBar.\\32")
     currentSongDuration.textContent = "0:30";
 
 
@@ -2852,11 +2852,11 @@ catch{}
 
             if(songSeconds % 60 < 10){
                 currentSongTime.textContent = "0:0" + songSeconds % 60;
-                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+                currentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
             }
             else {
                 currentSongTime.textContent = "0:" + songSeconds % 60;
-                currrentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
+                currentSongProgress.style.width = ((songSeconds % 60)/30)*100 + '%';
             }
             if(songSeconds % 60 == 30){clearInterval(currentInterval);}
         }, 0);
@@ -2907,6 +2907,8 @@ catch{}
     chosenPlaylist = musicLibrary;
     document.body.addEventListener("click", function(event){    /*Initially, A body listener function was used but changed since a listener would be created EVERYTIME the function was called.*/
         const from = event.target;
+
+        /* Playback Last Song */
         if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
             if(shuffleMode == true){
                 songOrder = (Math.floor(Math.random() * playlistShow.length));
@@ -2929,6 +2931,7 @@ catch{}
             lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
         }
 
+        /* Pause Current Song */
         if(from == pauseBtn || from == pauseBtn.firstElementChild || from == pauseBtn.firstElementChild.firstElementChild){
             if(playPauseToggle == false){
                 (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).pause();
@@ -2944,6 +2947,7 @@ catch{}
             stopLaterSongs();
         }
 
+        /* Play Next Song */
         if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
             if(shuffleMode == true){
                 songOrder = (Math.floor(Math.random() * playlistShow.length));
@@ -2958,6 +2962,22 @@ catch{}
             updateSongTime();
             stopLaterSongs();
             lastSongOrder = songOrder;
+        }
+       
+        /* Modify Song Time w/ Touch */
+        if(hasSuperClass(from, (currentSongProgress.className)) || hasSuperClass(from, (currentSongProgress.parentElement.className) || hasSuperClass(from, "songProgressSecCont"))){
+            let newSongTime = event.offsetX/(currentSongProgress.parentElement.clientWidth) * 30;
+            recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime = newSongTime;
+
+            newSongTime = Math.floor(newSongTime)
+            if(newSongTime % 60 < 10){
+                currentSongTime.textContent = "0:0" + newSongTime;
+                currentSongProgress.style.width = (newSongTime/30)*100 + '%';
+            }
+            else {
+                currentSongTime.textContent = "0:" + newSongTime;
+                currentSongProgress.style.width = (newSongTime/30)*100 + '%';
+            }
         }
     })
 
