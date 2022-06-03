@@ -2780,7 +2780,7 @@ catch{}
                 listenLaterPause = true;
                 from.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
             }
-            else{
+            else if (listenLaterPause == true && (listenedLaterDivs[listenedLaterDivs.length-1] == from.parentElement)){
                 listenedLaterSongs[listenedLaterSongs.length-1].play();
                 listenLaterPause = false;
                 updateSongTime();
