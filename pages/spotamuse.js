@@ -2021,24 +2021,29 @@ const musicLibrary = [
             (userSettingsMenu.style.display == "none") ? userSettingsMenu.style.display = "flex" : userSettingsMenu.style.display = "none";
         }
         if(hasClass(from, "appNavTabBtn") || hasClass(from.parentElement, "appNavTabBtn") || hasClass(from.parentElement.parentElement, "appNavTabBtn")){
-            allTabs.forEach(tabs => 
-                {if(tabs.style.display == "block"){
-                    clickedTab = parseInt((tabs).className.slice(-1))-1;
-                }
-            });
-            allTabs[clickedTab].style.display = "none";
+            resetTabs = 0;
+            allTabs.forEach(tabs => {
+                resetTabs++;
+                if(tabs.style.display == "block"){clickedTab = parseInt((tabs).className.slice(-1))-1;}
 
+                /*Resets all tab icons colors just in case different tab order is pressed*/
+                document.querySelector("p.sideBarHeader.\\3" + resetTabs).style.color = "#B3B3B3";
+                document.querySelector("path.sideBarIcon" + resetTabs).style.fill = "inherit";
+            });
+            
+            allTabs[clickedTab].style.display = "none";     
             let arrowDirection = parseInt(from.classList.value.slice(-1));      /*checks if a tab is backwards(1) or forwards(2)*/
             (arrowDirection == 1)? clickedTab-- : clickedTab++
 
-            if(clickedTab == allTabs.length-1 && arrowDirection == 2){     /*Only goes up to tab 4. It's unlikely someone would want to create a playlist on the spot*/
+            if(clickedTab == allTabs.length-1 && arrowDirection == 2){     /*AllTabs.length only goes up to tab 4. It's unlikely someone would want to create a playlist on the spot*/
                 clickedTab = 0;    
             }
             else if(clickedTab == -1 && arrowDirection == 1){
                 clickedTab = 3;
             }
-
-            allTabs[clickedTab].style.display = "block";
+            allTabs[clickedTab].style.display = "block";    /*Display new tab display + color*/
+            document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
+            document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff";
         }
     });
 
@@ -2054,15 +2059,20 @@ const musicLibrary = [
 
         /*If the button text, the button, or the svg is pressed, switch the tab (this order is shown in the if statement below*/
         if(hasClass(from, "sideBarHeader") || hasClass(from, "librarySideBar") && hasClass(from, "headerBtn") || hasClass(from.parentElement.nextElementSibling, "sideBarHeader")){
-
+            resetTabs = 0;
             (hasClass(from.parentElement.nextElementSibling, "sideBarHeader")) ? clickedTab = parseInt((from.parentElement.nextElementSibling).className.slice(-1))-1 : clickedTab = parseInt(from.className.slice(-1))-1
             allTabs.forEach(tabs => {
+                resetTabs++;
                 tabs.scrollTop = 0;
                 tabs.style.display = "none";
+                document.querySelector("p.sideBarHeader.\\3" + resetTabs).style.color = "#B3B3B3";
+                document.querySelector("path.sideBarIcon" + resetTabs).style.fill = "inherit";
             });
 
-            allTabs[clickedTab].style.display = "block";
             settingNav.classList.toggle('scrolling-active', false);
+            allTabs[clickedTab].style.display = "block";
+            document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
+            document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff"
         }
         if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}      /* Hide Announcements Banner */
     });
