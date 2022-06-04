@@ -1989,8 +1989,9 @@ const musicLibrary = [
 
 
     /*!                                                      App Structure
-    There are 4 sections with the contentTabs holding 5 individual views
-      (1) appSettingsNav                                      section1
+
+    There are 4 total sections but contentTabs holds 5 individual views (tabs)
+      (1) appSettingsNav                                      section1      //Not Apart of Grid
       (2) librarySidebar                                      section2
       (3) contentTabs                                         section3
             Home (3)                                     tab1 
@@ -2788,6 +2789,9 @@ catch{}
                 laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
             });
             from.nextElementSibling.firstElementChild.outerHTML = '<svg role="img" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet" width="16" height="16" viewBox="0 0 24 24"><path fill="#fff" d="M8 7h3v10H8zm5 0h3v10h-3z"/></svg>';
+
+            pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
+            playPauseToggle = true;
         }
 
         if(hasClass(from, "listenLaterPause")){
@@ -2802,6 +2806,10 @@ catch{}
                 listenLaterPause = false;
                 updateSongTime();
                 from.firstElementChild.outerHTML = '<svg role="img" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet" width="16" height="16" viewBox="0 0 24 24"><path fill="#fff" d="M8 7h3v10H8zm5 0h3v10h-3z"/></svg>';
+
+                pauseBtn.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>';
+                stopAll();
+                playPauseToggle = true;
             }
         }
     })
@@ -2958,6 +2966,9 @@ catch{}
             nowPlayingInfo(chosenPlaylist[songOrder]);
             updateSongTime();
             stopLaterSongs();
+            listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
+                laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
+            });
             lastSongOrder = songOrder;      /*Since this variable will eventually get stuck in a loop, I have to play random songs. This variable last helps avoid a song playing twice in a row*/
         }
 
@@ -2975,6 +2986,9 @@ catch{}
                 updateSongTime();
             }
             stopLaterSongs();
+            listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
+                laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
+            });
         }
 
         /* Play Next Song */
@@ -2991,6 +3005,9 @@ catch{}
             nowPlayingInfo(chosenPlaylist[songOrder]);
             updateSongTime();
             stopLaterSongs();
+            listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
+                laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
+            });
             lastSongOrder = songOrder;
         }
        
