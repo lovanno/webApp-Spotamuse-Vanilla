@@ -8,20 +8,21 @@
       color: #0f0 !important;
       outline: solid #f00 1px !important;*/
     }
-
     html, body {
-      overflow-x: hidden;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       height: 100%;         /*Locks the body scrollbar so the app doesn't move*/
+      overflow-x: hidden;
       overflow-y: hidden;
     }
 
-    ::-webkit-scrollbar { /*if a section tab needs to scroll, hide the scrollbar*/
-      display: none;
-    }
+    /*if a section tab needs to scroll, hide the scrollbar*/
+    ::-webkit-scrollbar { display: none;}
 
-    /*! There are 4 sections with the contentTabs holding 5 individual views
-      (1) appSettingsNav                                      section1
+
+    /*! There are 4 total sections but contentTabs holds 5 individual views (tabs) 
+    There are 3 Media Queries: 840px, 546px, 360px. 
+    To search Media queries copy the following (incl'ding spaces) + section  **!        
+      (1) appSettingsNav                                      section1    //Not Apart of Grid
       (2) librarySidebar                                      section2
       (3) contentTabs                                         section3
             Home (3)                                     tab1 
@@ -29,14 +30,13 @@
             Listen Later (3)                             tab3                                             
             Search (3)                                   tab4                                               
             Playlist (3)                                 tab5           
-      (4) playingNowSect                                      section4                  
-    /*
+      (4) playingNowSect                                      section4/*
+
 
     /*         Page Grid Layout          */
     .grid.layout {
       position: relative;
       display: grid;
-      text-align: center;
       grid-template-columns: 0.75fr repeat(3, 1fr);
       grid-template-rows: 0.4fr 5.09fr 0.2fr;
       grid-template-areas:
@@ -45,24 +45,23 @@
         "playNowSect playNowSect playNowSect playNowSect";
       height: 100vh;        /*Makes one page applications fit on different device sizes*/
       width: 100vw;
+      text-align: center;
     }
 
     /*    Grid Areas    */
     .librarySideBar {grid-area: librarySideBar;}
     .homeSection.tab {
       grid-area: contentTabs;
-      background-color: #1c1c1c;
-      padding-top: 4rem;
-      overflow-y: scroll;
       overflow-x: hidden;
+      overflow-y: scroll;
+      padding-top: 4rem;
+      background-color: #1c1c1c;
     }
     .playingNowSect {
       grid-area: playNowSect;
-      background-color: #181818;
       height: 7.625rem;
+      background-color: #181818;
     }
-
-    
 
 
   /***        (1) appSettingsNav                                                                   section1               ***/
@@ -74,11 +73,10 @@
       z-index: 2000;
     }
 
-    .scrolling-active{ 
+    .scrolling-active{      /*appSettingsNav background on scroll*/
       background-color: black;
       box-shadow: 0 3px 1rem rgba(0,0,0,.1);
       z-index: 2000;
-
       transition: 800ms;
     }
 
@@ -138,8 +136,8 @@
       border-radius: 23px;
       border: none;
       font-size: 10px;
-      background-color: black;
       color: white;
+      background-color: black;
     }
 
     a.settings.mainBtnHeader.\31 {
@@ -149,6 +147,7 @@
       margin-right: 10px;
     }
 
+    /* Setting Options Menu */
     .userSettings {
       cursor: pointer;
       display: none;
@@ -197,18 +196,12 @@
     }
 
     p.appLogoName {
-      color: white;
       font-size: 24px;
-    }
-
-
-
-    h1.librarySideBar.mainHeader.\31 {
-      margin-top: 20px;
-      font-size: 25px;
       color: white;
     }
 
+
+    /* Sidebar Button Headers */
     button.librarySideBar.headerBtn {
       cursor: pointer;
       display: flex;
@@ -220,13 +213,11 @@
 
       font-size: 14px;
       text-align: left;
-      background-color: transparent;
       color: #B3B3B3;
+      background-color: transparent;
     }
-    button.songSkip.Setting.\32 {background-color: #fff;}
 
     .sideBar.Icon{margin-right: 15px;}
-
     .sideBar.Icon.\35 {
       display: flex;
       justify-content: center;
@@ -235,15 +226,26 @@
       height: 24px;
       width: 24px;
       border-radius: 2px;
-      background-color: #b3b3b3;
       color: #000;
+      background-color: #b3b3b3;
     }
-
 
  
   /***        (3) contentTabs                                                                   section3               ***/
+    .yourLibrarySect.tab {
+      grid-area: contentTabs;
+      display: none;
+      width: 100%;
+      height: 100%;
+      
+      overflow-x: hidden;
+      background-color: #1c1c1c;
+      padding-top: 4rem;
+    }
 
     /***        Home (3)                                     tab1               ***/   
+
+    /*Home Page Banner*/
     .home.BannerImage {
       background-image: url(../material/appIcons/banner1_image.png);
       background-repeat: no-repeat;
@@ -255,11 +257,11 @@
     }
 
     p.bannerImage.Header {
-      color: white;
-      font-size: 40px;
       position: relative;
       top: 28%;
       left: -17%;
+      font-size: 40px;
+      color: white;
     }
 
     button.bannerImage.hideBtn {
@@ -270,13 +272,14 @@
       height: 32px;
       width: 9.5rem;
 
-      font-size: 10px;
-      opacity: 0.55;
       border: none;
-      background-color: #333;
-      color: white;
       border-radius: 23px;
+      font-size: 10px;
       text-transform: uppercase;
+      
+      color: white;
+      background-color: #333;
+      opacity: 0.55;
       transition: 1000ms;
     }
 
@@ -285,51 +288,29 @@
       transition: 1000ms;
     }
 
+
+    /*Home Page Content*/
+    .homeContent.\31 {margin-top: 30px;}
+    .homeContentContainer.\31{margin-left: 30px;}
+
+    /* Home Content Header Row 1 - "Discover"*/
     .homeContent.HeaderCont {
       display: flex;
       color: white;
     }
-
-    .home.playlistCont {display: flex;}
-
     p.homeContentHeader {
       display: flex;
-      color: white;
+      font-size: 24px;
       margin-left: 5px;
       margin-bottom: 16px;
-      font-size: 24px;
+      color: white;
     }
 
-    .homeContent.\31 {
-      margin-top: 30px;
-    }
-
-    button.playlistBtnCont {display: flex;}
-
-    .playlistCover {
-      margin-top: 1rem;
-      background-image: url(../material/song_artCovers/bound2_song7.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 10.5rem;
-      width: 10.5rem;
-      margin: 0.9rem;
-    }
-
-
-    .homeContentContainer.\31{
-      margin-left: 30px;
-    }
-
-    /*These styles are borrowed from the recentSearch albums. Will have to refine both, including the yourLib to be able to share styles*/
+    /*Home Album EP Div's*/
     .homeContentCont.allAlbumCont {
       display: flex;
       margin-bottom: 5rem;
       gap: 1.5rem;
-    }
-
-    .home.playlistCont {
-      display: flex;
     }
 
     .homeContentContAlbumCont {
@@ -337,7 +318,15 @@
       height: 17.5rem;
       width: 12.5rem;
     }
-     .homeContentCont.albumInfo {       /*Recent Search Albums*/
+
+    /* Unused Remove Button
+    button.homeContentCont.albumRemove {
+      position: relative;
+      top: 10%;
+      left: 32%;
+    }*/
+
+    .homeContentCont.albumInfo {       /*Recent Search Albums*/
       cursor: pointer;
       margin-left: 15px;
       margin-right: 15px;
@@ -352,27 +341,15 @@
       width: 11rem;
     }
 
-    button.homeContentCont.albumRemove {
-      position: relative;
-      top: 10%;
-      left: 32%;
-    }
-
     /*Album Text*/
-    .homeContentCont.textCont{
-      margin-top: 15px;
-    }
-
+    .homeContentCont.textCont{margin-top: 15px;}
     p.homeContentCont.albumInfoName {
       color: white;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
-    p.homeContentCont.albumInfoArtist {
-      color: #B3B3B3;
-    }
+    p.homeContentCont.albumInfoArtist {color: #B3B3B3;}
 
 
     /*Album Photos*/
@@ -403,10 +380,11 @@
     .yourLibraryCont.tab2 {
       display: flex;
       flex-direction: column;
-      margin-left: 30px;
       align-items: flex-start;
+      margin-left: 30px;
     }
 
+    /* Playlist Icon Boxes */
     .yourLibrary.playlistCont {
       display: flex;
       flex-wrap: wrap;
@@ -414,9 +392,7 @@
       margin-left: 30px;
     }
 
-
-    /*Playlist Button Styles*/
-    button.playlistBtnCont{
+    button.playlistBtnCont{ /*Playlist Button Styles*/
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -424,6 +400,18 @@
       width: 12.5rem;
       background-color: #1c1c1c;
     }
+
+    .playlistCover {
+      margin-top: 1rem;
+      background-image: url(../material/song_artCovers/bound2_song7.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 10.5rem;
+      width: 10.5rem;
+      margin: 0.9rem;
+    }
+    .yourLibrary.playlistCover.\30{background-image: url('../material/appIcons/recentlyPlay_icon.jpg');}      /*Recently Played Playlist Cover*/
+    .yourLibrary.playlistCover.\31{background-image: url('../material/appIcons/downloadedFiles_icon.jpg');}   /*Downloaded Playlist Cover*/
 
     .yourLibrary.playlistName {
       margin-left: 0.9rem;
@@ -433,315 +421,27 @@
       white-space: nowrap;
     }
 
-    .yourLibrary.playlistCover.\30{background-image: url('../material/appIcons/recentlyPlay_icon.jpg');}      /*Recently Played Playlist Cover*/
-    .yourLibrary.playlistCover.\31{background-image: url('../material/appIcons/downloadedFiles_icon.jpg');}   /*Downloaded Playlist Cover*/
-
-
-    .yourLibrarySect.tab {
-      grid-area: contentTabs;
-      display: none;
-      width: 100%;
-      height: 100%;
-      background-color: #1c1c1c;
-      overflow-x: hidden;
-      padding-top: 4rem;
-    }
-
-    .yourLibrarySect.tab.\34 {
-      padding-top: unset;
-      background-color: #121212;
-    }
-
-    .yourLibrarySect.tab.\35 {padding-top: unset;}
-
-    .searchCont.tab4 {
-      background-color: #121212;
-      height: fit-content;
-      padding-top: 4rem;
-    }
-
-    .library.newPlaylistInfo {
-      background-color: #474747;
-      text-align: left;
-      display: flex;
-      gap: 1.25rem;
-
-      padding-top: 4rem;
-      padding-left: 30px;
-      padding-bottom: 30px;
-    }
-
-    .library.newPlaylistCont {
-      background-image: linear-gradient( 0deg, hsl(0deg 0% 11%) 72%, hsl(0deg 0% 18%) 101%, hsl(0deg 0% 26%) 101%, hsl(0deg 0% 36%) 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      max-height: 19rem;
-      overflow-y: scroll;
-      overflow-x: hidden;
-    }
-
-    .newPlaylistUserName {color: white;}
-    .newPlaylistUserSongs {color: #B3B3B3;}
-    .newPlaylistUserTime {color: #B3B3B3;}
-
-
-    /*Playlist Icons */
-    .playlistControlLeftCont.\31 {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    button.playlistPlayBtn.\31 {
-      cursor: pointer;
-      background-color: #1DB954;
-      border: none;
-      border-radius: 100%;
-      height: 4.1rem;
-      width: 4rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    button.playlistDownloadBtn.\31 {
-      cursor: pointer;
-      background-color: #1DB954;
-      border: none;
-      border-radius: 100%;
-      height: 2rem;
-      width: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-    }
-
-    button.playlistSettingsBtn.\31 {
-      border: none;
-      background-color: transparent;
-    }
-
-    button.playlistSearchBtn.\31 {
-      background-color: transparent;
-      border: none;
-    }
-
-    button.playlistFilterSongBtn.\31 {
-      background-color: transparent;
-      border: none;
-    }
-
-    .playlistControlRightCont.\31 {
-      display: flex;
-      align-content: center;
-    }
-
-
-    p.findSongsPlaylistHeader {
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-
-
-    /* Top Container */
-    .newPlaylistUserCont {
-      display: flex;
-      gap: 7px;
-    }
-
-    .library.newPlaylistImage {
-      background-image: url(../material/song_artCovers/myLove_song11.jfif);
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 12rem;
-      width: 12rem;
-    }
-
-
-    /* bottom container */
-    .newPlaylistControlCont.\31 {
-      display: flex;
-      justify-content: space-between;
-      margin-left: 2rem;
-      margin-right: 1rem;
-      margin-bottom: 1.5rem;
-      margin-top: 1rem;
-      width: 90%;
-    }
-
-    .newPlaylist.colmHeaders {
-      display: flex;
-      justify-content: space-around;
-      color: #B3B3B3;
-      font-size: 14px;
-      width: 95%;
-    }
-
-    button.playlistBackwardsBtn {
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-    }
-
-    button.playlistFilterBtn.\31 {
-      background-color: transparent;
-      border: none;
-    }
-
-    .playlistFilterIcon.\31 {
-      cursor: pointer;
-      background-color: transparent;
-      color: #b3b3b3;
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      text-decoration-line: underline;
-    }
-
-    .newPlaylist.orderCont {
-      display: flex;
-    }
-
-
-    /* Song Div */
-    .newPlaylistSongs {
-      cursor: pointer;
-      display: flex;
-      background-color: inherit;
-      width: 100%;
-      border: transparent;
-      margin-top: 2rem;
-      margin-left: 1rem;
-      margin-right: 2rem;
-      align-items: center;
-      justify-content: space-around;
-    }
-
-    .playlistSong.orderCont {
-      display: flex;
-      align-items: center;
-      min-width: 15rem;
-      /* background-color: red; */
-      gap: 1rem;
-    }
-
-    .playlistSongs.albumCont {
-      align-items: flex-start;
-      width: 10rem;
-      text-align: left;
-    }
-
-  
-    /*Song Setting Options: Like, Listen Later, etc*/
-    .song-nav {
-      letter-spacing: .2em;
-      color: #FFF;
-      display: block;
-      width: fit-content; 
-      background: transparent;
-      position: relative;
-      top: 0.4rem;
-      left: -68%;
-      z-index: 1000;
-    }
-
-    .menuGear{
-      background-image: url("../material/appIcons/icon_settingsGear.svg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 16px;
-      width: 16px;
-    }
-
-    li.optionHeader{
-      list-style: none;
-      line-height: 2.0rem;
-      cursor: pointer;
-      width: 100%;
-      padding: 10px 10px 10px 10px;
-    }
-
-
-   /*ul.song-nav-ul > li > ul {display: none;}
-    ul.song-nav-ul li:hover > ul {display: block;}    /*Settings Hover*/
-
-    li.liHeader1 + ul {display: none;}
-    li.liHeader1:hover + ul {display: block;}
-    
-    ul.level1:hover {display:block;}
-
-    .liHeader1:hover {background-color: white;}
-
-    .liHeader:hover{ 
-      background-color: #1c1c1c; 
-      width: 100%;
-      z-index: 1000;
-      position: relative;
-      font-size: 0.7rem;
-    }
-
-    ul.sub-nav-ul > li > ul {display: none;}
-    ul.sub-nav-ul li:hover > ul {
-      background-color: #c6c6c6; 
-      color: black;
-      display: block; 
-      position: absolute;
-      top: 0%;
-      left: 100%;
-
-        
-      border-top: 2px solid #666;
-      padding: 5px 15px 5px 15px;
-      margin-left: 1px;
-      z-index: 2000;
-    }
-
-    ul.sub-nav-ul li > ul:hover {
-      display: block;
-    }
-
-    ul.level2:hover{
-      display: block;
-    }
-
-    .sub-nav-ul{
-      position: absolute;
-      top: 0%;
-      left: 100%;
-      background-color: #000000;
-    }
-
-
 
     /***        Listen Later (3)                                     tab3               ***/   
-    .yourLibrarySect.tab.\33 {
-      background-color: #1c1c1c;
-    }
+    .yourLibrarySect.tab.\33 {background-color: #1c1c1c;}
 
-    .laterTabHeaderCont {
+    .allDropZoneLists {     /*Container for all dropzones*/
       display: flex;
-      justify-content: space-around;
-    }
-
-    .allDropZoneLists {
-      display: flex;
-      width: 80%;
       flex-wrap: wrap;
+      gap: 5rem;
+      width: 80%;
       margin-left: 4.5rem;
       margin-right: 5rem;
-      gap: 5rem;
     }
 
-    .dropZoneCont {
+    .dropZoneCont {       /*Individual Dropzone Div */
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       flex-basis: 18%;
     }
 
-    button.laterTabHeader {
+    button.laterTabHeader {   /*Listen Later Headers*/
       cursor: pointer;
       float: left;
       font-size: 24px;
@@ -751,8 +451,8 @@
       padding: 18px;
 
       border: none;
-      background-color: transparent;
       color: white;
+      background-color: transparent;
     }
 
     /*    Drag and Drop     */
@@ -769,40 +469,32 @@
     p.dropzoneHeader {
       cursor: pointer;
       float: left;
-      padding: 18px;
+
       font-size: 20px;
       font-weight: bold;
       letter-spacing: -0.4px;
       line-height: 31.2px;
+      padding: 18px;
       color: white;
     }
 
     .dropzoneImage {
       cursor: pointer;
       position: relative;
-      top: 14%;
-      left: 58%;
-      height: 140px;
-      width: 140px;
-
       background-image: url('../material/genreListCovers/genreList_listenLater.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       transform: rotate(25deg);
+
+      top: 14%;
+      left: 58%;
+      height: 140px;
+      width: 140px;
     }
 
 
-    .listenTrackImage{
-      background-image: url("../material/song_artCovers/shadowLady_song1.jfif");
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 3rem;
-      width: 3rem;
-    }
-
-
-    /*  Song Containers */
+    /*Listen Later Songs Containers*/
     .listenSongCont {
       display: flex;
       align-items: center;
@@ -824,13 +516,22 @@
       align-items: center;
       justify-content: space-evenly;
       gap: 2rem;
+
       height: 4rem;
       width: 100%;
-      background-color: #1C1C1C;
       border: transparent;
+      background-color: #1C1C1C;
     }
 
-    /* Later Song Styling */
+    .listenTrackImage{
+      background-image: url("../material/song_artCovers/shadowLady_song1.jfif");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 3rem;
+      width: 3rem;
+    }
+
+    /* Later Song Text Styling */
     p.listenTrackTitle {color: white;}
     p.listenTrackArtist {color: #B3B3B3;}
     p.listenAlbumTitle {color: #B3B3B3;}
@@ -846,17 +547,21 @@
       width: 13%;
       background-color: #1C1C1C;
     }
-
-
     
 
     /***        Search (3)                                     tab4               ***/   
-    a.productSectLink {
-      font-size: 16px;
-      color: #000000;
-      text-decoration: none;
+    .yourLibrarySect.tab.\34 {      /*Recent Search Tab 4*/
+      padding-top: unset;
+      background-color: #121212;
     }
 
+    .searchCont.tab4 {
+      background-color: #121212;
+      height: fit-content;
+      padding-top: 4rem;
+    }
+
+    /*Search Songs Container Div */
     .searchProdCont.\31 {
       position: absolute;
       top: 2%;
@@ -864,55 +569,58 @@
       z-index: 2000;
     }
 
-    li.searchProductLink.\31 {list-style-type: none;}
+    li.searchProductLink.\31 {list-style-type: none;}   /*Removes Indent*/
 
+    /* Search White Box Input*/
     input.searchProductInput.\31 {
+      display: inline-block;
+      width: 365px;
+
       border: none;
       border-bottom: 1px solid black;
       border-radius: 300px;
-      display: inline-block;
       font-size: 13px;
       line-height: 26px;
       padding: 6px 48px;
-      width: 365px;
     }
-
     input.searchProductInput.\31::placeholder {
       font-size: 13px;
       color: #A7A7A7;
     }
-
-    input.searchProductInput.\31:focus {
-      outline: none;
-    }
-
-    button.recentSearch.seeAll.\31{
-      cursor: pointer;
-      color: #a7a7a7;
-      display: inline-block;    
-      line-height: 27px;
-      padding: 14px 32px;
-      text-align: center;
-      border: none;
-      font-size: 13px;
-      background-color: transparent;
-      text-transform: uppercase;
-    }
-
-    .recentSearch.textCont {
-      text-align: left;
-      line-height: 1.2rem;
-      margin-top: 0.7rem;
-    }
-  
-
-    .albumBlocksCont.\31 {
-      margin-left: 30px;
-    }
-    .recentSearchHeadersCont {      /*Recent Search Div Area */
+    input.searchProductInput.\31:focus {outline: none;}
+    
+    /*Recent Search Headers Div Area */
+    .albumBlocksCont.\31 {margin-left: 30px;}
+    .recentSearchHeadersCont {      
       display: flex;
       justify-content: space-between;
     }
+
+    /* Search headers */
+    p.recentSearchHeader {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.96px;
+      line-height: 3.75rem;
+      color: white;
+    }
+
+    button.recentSearch.seeAll.\31{   /*See All Button*/
+      cursor: pointer;
+      display: inline-block;   
+
+      font-size: 13px;
+      line-height: 27px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 14px 32px;
+
+      border: none;
+      color: #a7a7a7;
+      background-color: transparent;
+    }
+
+    /* Recent Search EP Albums */
     .recentSearch.allAlbumCont {
       display: flex;
       gap: 1.5rem;
@@ -924,17 +632,15 @@
       width: 12.5rem;
     }
 
-    /* Search headers */
-    p.recentSearchHeader {
-      font-size: 24px;
-      color: white;
-      font-weight: 700;
-      letter-spacing: -0.96px;
-      line-height: 3.75rem;
-    }
+    /* Unused Remove Album Btn
+    button.recentSearch.albumRemove {
+      position: relative;
+      top: 10%;
+      left: 32%;
+    }*/
 
-    .recentSearch.albumInfo {       /*Recent Search Albums*/
-      margin-left: 15px;
+    .recentSearch.albumInfo {       /*Individual Album Box Conts */
+      margin-left: 12px;
       margin-right: 15px;
     }
 
@@ -944,12 +650,11 @@
       width: 11rem;
     }
 
-    button.recentSearch.albumRemove {
-      position: relative;
-      top: 10%;
-      left: 32%;
+    .recentSearch.textCont {
+      margin-top: 0.7rem;
+      text-align: left;
+      line-height: 1.2rem;
     }
-
     /*Album Text*/
     p.recentSearch.albumInfoName {
       color: white;
@@ -958,11 +663,8 @@
       white-space: nowrap;
     }
 
-    p.recentSearch.albumInfoArtist {
-      color: #B3B3B3;
-    }
-
-
+    p.recentSearch.albumInfoArtist {color: #B3B3B3;}
+    
     /*Album Photos*/
     .recentSearch.albumInfoCover.\31 {
       background-image: url(../material/albums/seven/seven_albumCover.jfif);
@@ -985,7 +687,8 @@
       background-size: cover;
     }
 
-    /*            Genres Block Section          */
+
+    /*                    Genres Block Section          */
     /* Genre Block Colors: 
     amber, lavender, hotPink, scarlet, jade, navy, azure, thistle, tawnyBrown, greenPear, skyBlue, teal, gray*/
     .amber {background-color: #DD571C;}
@@ -1002,6 +705,8 @@
     .teal {background-color: #008080;}
     .gray {background-color: #808080;}
 
+
+    /* Top Genre Blocks */
     .genreBlockCont {
       display: flex;
       gap: 1.4rem;
@@ -1017,6 +722,7 @@
       overflow: hidden;
     }
 
+    /*Bottom Genre Blocks*/
     .browseAll.genreBlock {
       cursor: pointer;
       height: 12rem;
@@ -1026,8 +732,8 @@
     }
     .browseAll.genreBlockCont.\32 {
       display: flex;
-      height: 0.2rem;
       flex-wrap: wrap;
+      height: 0.2rem;
     }
 
     p.topGenre.genreBlockHeader {
@@ -1038,27 +744,27 @@
 
     p.genreBlockHeader {
       float: left;
-      padding: 18px;
       font-size: 24px;
-      font-weight: bold;
-      text-align: left;
       letter-spacing: -0.4px;
       line-height: 31.2px;
+      font-weight: bold;
+      text-align: left;
+      padding: 18px;
       color: white;
     }
 
     /*genreBlock Images*/
     .genreBlockImage {
       position: relative;
-      top: 28%;
-      left: 77%;
-      height: 125px;
-      width: 125px;
-
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       transform: rotate(25deg);
+
+      top: 28%;
+      left: 77%;
+      height: 125px;
+      width: 125px;
     }
 
     .browseAll.genreBlockImage {
@@ -1067,6 +773,7 @@
       height: 100px;
       width: 100px;
     }
+    .browseAll.empty.genreBlock.\32 1{ height: 4rem;}
 
     /*top block images*/
     .topGenre.genreBlockImage.\31 {background-image: url('../material/genreListCovers/genreList_hipHop.jpg');}
@@ -1098,14 +805,294 @@
 
 
     /***        Playlist (3)                                     tab5               ***/   
-    .library.newPlaylistTextCont.\31 {width: 65%;}
-    .trackImage {
+    .yourLibrarySect.tab.\35 {padding-top: unset;}  /*Create Playlist Tab 5*/
+
+    /*Playlist Top Section (Name + Box Icon) */
+    .library.newPlaylistInfo {
+      display: flex;
+      gap: 1.25rem;
+
+      text-align: left;
+      background-color: #474747;
+      padding-top: 4rem;
+      padding-left: 30px;
+      padding-bottom: 30px;
+    }
+
+    /*Playlist Image*/
+    .library.newPlaylistImage { 
+      background-image: url(../material/song_artCovers/myLove_song11.jfif);
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 12rem;
+      width: 12rem;
+    }
+
+    .library.newPlaylistTextCont.\31 {width: 65%;}  /*Playlist's Name*/
+    p.newPlaylistHeader {
+      color: white;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    h1.newPlaylistName.\31 {
+      font-size: 85px;
+      font-weight: bold;
+      color: white;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+
+    .newPlaylistUserCont {    /*Playlist User's Name + Total Song Count */
+      display: flex;
+      gap: 7px;
+    }
+    .newPlaylistUserName {color: white;}  
+    .newPlaylistUserSongs {color: #B3B3B3;}
+    .newPlaylistUserTime {color: #B3B3B3;}
+
+
+    /*        Playlist Bottom Cont (All Playlist Songs)        */
+    .library.newPlaylistCont {
+      background-image: linear-gradient( 0deg, hsl(0deg 0% 11%) 72%, hsl(0deg 0% 18%) 101%, hsl(0deg 0% 26%) 101%, hsl(0deg 0% 36%) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      max-height: 19rem;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .newPlaylistControlCont.\31 {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      margin-top: 1rem;
+      margin-left: 2rem;
+      margin-right: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+
+    /*Playlist Icons (Middle of Page, Bottom Cont)*/
+    .playlistControlLeftCont.\31 {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    button.playlistPlayBtn.\31 {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border: none;
+      border-radius: 100%;
+      height: 4.1rem;
+      width: 4rem;
+      background-color: #1DB954;
+    }
+
+    button.playlistDownloadBtn.\31 {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      border: none;
+      border-radius: 100%;
+      height: 2rem;
+      width: 2rem;
+      background-color: #1DB954;
+    }
+
+    button.playlistSettingsBtn.\31 {
+      border: none;
+      background-color: transparent;
+    }
+
+    .playlistControlRightCont.\31 {
+      display: flex;
+      align-content: center;
+    }
+
+    button.playlistBackwardsBtn {
+      cursor: pointer;
+      border: none;
+      background-color: transparent;
+    }
+
+    /* Unused 
+    button.playlistSearchBtn.\31 {
+      background-color: transparent;
+      border: none;
+    }
+    button.playlistFilterSongBtn.\31 {
+      background-color: transparent;
+      border: none;
+    }*/
+
+
+
+    /*         Bottom Container (Playlist Songs)          */
+    
+    /* Song Categories Headers */
+    .newPlaylist.colmHeaders {
+      display: flex;
+      justify-content: space-around;
+      width: 95%;
+      font-size: 14px;
+      color: #B3B3B3;
+    }
+
+    .newPlaylist.orderCont {display: flex;}
+
+    
+    button.playlistFilterBtn.\31 {    /*Filter Cont: Filter playlists by title, name, date, or duration*/ 
+      border: none;
+      background-color: transparent;
+    }
+    .playlistFilterIcon.\31 {
+      cursor: pointer;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      text-decoration-line: underline;
+      color: #b3b3b3;
+      background-color: transparent;
+    }
+
+
+    /*            Song Button Div's                     */
+    .newPlaylistSongs {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      width: 100%;
+      border: transparent;
+      background-color: inherit;
+      margin-top: 2rem;
+      margin-left: 1rem;
+      margin-right: 2rem;
+    }
+
+    .playlistSong.orderCont {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 15rem;
+    }
+
+
+    /* Playlist Song Info*/
+    .trackImage {           /* Song Image*/
       background-repeat: no-repeat;
       background-size: cover;
       height: 3rem;
       width: 3rem;
     }
+    p.playlistSong.trackTitle {color: white;}
+    p.playlistSong.trackArtist {color: #B3B3B3;}
 
+    .playlistSong.trackInfoCont {text-align: left;} /*Song Title/Artist Text Cont*/
+    p.playlistSong.trackOrder {
+      color: #B3B3B3;
+      font-weight: bold;
+    }
+
+    .playlistSongs.albumCont {  /*Song Album Text Cont*/
+      align-items: flex-start;
+      width: 10rem;
+      text-align: left;
+    }
+    p.playlistSong.albumTitle {color: #B3B3B3;} 
+
+
+    p.playlistSong.dateAdded {  /*Song Date Published Text */
+      color: #B3B3B3;
+      min-width: 16rem;
+    }
+    p.playlistSong.durationTime {color: #B3B3B3;} /*Song Total Duration Text */
+
+    
+
+  
+    /*      Song Setting Options: Like, Listen Later, etc     */
+    .song-nav {
+      display: block;
+      position: relative;
+      top: 0.4rem;
+      left: -68%;
+      width: fit-content; 
+   
+      color: #FFF;
+      background: transparent;
+      letter-spacing: .2em;
+      z-index: 1000;
+    }
+
+    .menuGear{
+      background-image: url("../material/appIcons/icon_settingsGear.svg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 16px;
+      width: 16px;
+    }
+
+    li.optionHeader{
+      cursor: pointer;
+      width: 100%;
+      list-style: none;
+      line-height: 2.0rem;
+      padding: 10px 10px 10px 10px;
+    }
+
+
+    /*  Settings Hover  */
+    .sub-nav-ul{
+      position: absolute;
+      top: 0%;
+      left: 100%;
+      background-color: #000000;
+    }
+
+    li.liHeader1 + ul {display: none;}    /*hide the ul.level1 menu unless setting gear icon is hovered*/ 
+    li.liHeader1:hover + ul {display: block;}
+    ul.level1:hover {display:block;}  /*If ul.level1 is opened and hovered, keep it open. 
+    Without this, the menu will disappear after the settings gear area is gone*/
+
+    .liHeader1:hover {background-color: white;}
+    .liHeader:hover{      /*Move the song options menu to the right of setting gear icon*/
+      position: relative;
+      width: 100%;
+      font-size: 0.7rem;
+      background-color: #1c1c1c; 
+      z-index: 1000;
+    }
+
+    ul.sub-nav-ul > li > ul {display: none;}  /*Hide 2nd nested menu: Listen Later Options*/
+    ul.sub-nav-ul li:hover > ul { /*If Listen Later Header in the 1st Menu is hovered, show Listen Later Options*/
+      display: block;
+      position: absolute;
+      top: 0%;
+      left: 100%;
+
+      color: black;
+      background-color: #c6c6c6; 
+      border-top: 2px solid #666;
+      padding: 5px 15px 5px 15px;
+      margin-left: 1px;
+      z-index: 2000;
+    }
+    ul.sub-nav-ul li > ul:hover {display: block;} /*Keep Listen Later options opened if ul.level2 menu is hovered*/
+
+
+
+
+    /*      New Playlist Creation Mode Options        */
     .addNewSongsPlaylistCont {
       display: flex;
       justify-content: space-around;
@@ -1113,25 +1100,30 @@
       margin-top: 0.2rem;
     }
 
-    button.addSongsPlaylistBtn {
+    p.findSongsPlaylistHeader {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+
+    button.addSongsPlaylistBtn {  /*Add Songs Playlist Btn*/
       cursor: pointer;
       position: relative;
       top: 22%;
       height: 32px;
       width: 9.5rem;
-      font-size: 10px;
-      opacity: 0.55;
+
+      border-radius: 23px;
       border: none;
+      font-size: 10px;
+      text-transform: uppercase;
+      
+      opacity: 0.55;
       background-color: #333;
       color: white;
-      border-radius: 23px;
-      text-transform: uppercase;
     }
 
-
-
-    /*Finished Playlist*/
-    button.finishedPlaylistBtn {
+    button.finishedPlaylistBtn {  /*Finished Playlist Btn*/
       cursor: pointer;
       position: relative;
       top: 22%;
@@ -1141,43 +1133,15 @@
       margin-bottom: 2rem;
 
       font-size: 10px;
-      opacity: 0.55;
-      border: none;
-      background-color: #333;
-      color: white;
+      text-transform: uppercase;
       border-radius: 23px;
-      text-transform: uppercase;
-    }
-    .playlistSong.trackInfoCont {text-align: left;}
+      border: none;
 
-    p.playlistSong.trackOrder {
-      color: #B3B3B3;
-      font-weight: bold;
-    }
-
-    p.playlistSong.trackTitle {color: white;}
-    p.playlistSong.trackArtist {color: #B3B3B3;}
-    p.playlistSong.albumTitle {color: #B3B3B3;}
-    p.playlistSong.dateAdded {
-      color: #B3B3B3;
-      min-width: 16rem;
-    }
-    p.playlistSong.durationTime {color: #B3B3B3;}
-
-    p.newPlaylistHeader {
+      opacity: 0.55;
       color: white;
-      text-transform: uppercase;
-      font-size: 12px;
+      background-color: #333;
     }
 
-    h1.newPlaylistName.\31 {
-      color: white;
-      font-size: 85px;
-      font-weight: bold;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
 
 
     /***        (4) playingNowSect                                                                   section4               ***/
@@ -1189,25 +1153,39 @@
       width: 60%;
     }
 
-    /*Song Playing Now Controls + Image */
+    /* Unused Lyrics Section
+    .songInfo.Container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .songInfo.Name.\31 {text-align: left;}
+    h3.songInfoHeader.\31 {color: white;}
+    p.songInfoArtist.\31 {color: white;}
+    p.songInfoTrack.\31 {color: white;}*/
+
+
+
+    /*Song Playing Now Controls*/
+    .songInfo.playNowCategory.\31 {margin-left: 20px;}
     .songPlayingCont {
+      margin-top: 1rem;
       display: flex;
       align-items: flex-end;
       gap: 2rem;
-      margin-top: 1rem;
     }
-
-    .songPlayingImageCont {
+    .songPlaying.ProgressCont {
       display: flex;
-      flex-wrap: nowrap;
+      flex-direction: column;
       align-items: center;
+      width: 50%;
+    }
+    .songSkipSettings.\31 {   /*Song Controls Cont*/
+      display: flex;
       gap: 1rem;
     }
 
-    p.songPlayingName.\31 {color: #fff;}
-    p.songPlayingAlbum.\31 {color: #6a6a6a;}
-    p.songProgressSec { color: #6a6a6a;}
-  
     button.songSkip {
       cursor: pointer;
       display: flex;
@@ -1215,49 +1193,46 @@
       align-items: center;
       height: 30px;
       width: 30px;
-      background-color: transparent;
       border: none;
+      background-color: transparent;
+    }
+    .playBackIcon {
+      cursor: pointer;
+      color: black;
+    }
+
+    button.songSkip.Setting.\32 {   /*Play Button */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      width: 32px;
+
+      border: none;
+      border-radius: 100%;
+      background-color: #fff;
+    }
+    svg.playBtnIcon {
+      height: 34px;
+      width: 26px;
     }
 
 
 
-    /*Left Container */
-    .songInfo.playNowCategory.\31 {margin-left: 20px;}
-    .songInfo.Name.\31 {text-align: left;}
-
-    .songInfo.Container {
+    /* Song Time Duration Bar */
+    .songProgressCont {
+      margin-top: 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 20px;
+      width: 100%;
     }
 
-    h3.songInfoHeader.\31 {color: white;}
-    p.songInfoArtist.\31 {color: white;}
-    p.songInfoTrack.\31 {color: white;}
-
-
-
-
-
-    /*Middle Container */
-    .songPlayingAlbum.Image.\31 {
-      background-image: url("../material/song_artCovers/myLove_song11.jfif");
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 5.5rem;
-      width: 5.5rem;
-
-    }
-
-    .songPlaying.ProgressCont {
+    .songProgressSecCont {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      width: 50%;
+      gap: 0.3rem;
     }
-
-
     .ProgBar.\31 {  
       cursor: pointer;    
       height: 4px;
@@ -1272,64 +1247,41 @@
       background-color: #fff;;
     }
 
-    /*Song Duration Cont */
-    .songProgressCont {
-      margin-top: 15px;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
 
-    .songProgressSecCont {
+
+    /*Current Song Playing Info*/
+    .songPlayingImageCont {
       display: flex;
-      justify-content: space-between;
+      flex-wrap: nowrap;
       align-items: center;
-      gap: 0.3rem;
-    }
-
-    .playBackIcon {
-      cursor: pointer;
-      color: black;
-    }
-
-    .songSkipSettings.\31 {
-      display: flex;
       gap: 1rem;
     }
-
-
-    /*Play Button */
-    button.songSkip.Setting.\32 {
-      height: 32px;
-      width: 32px;
-      border: none;
-      border-radius: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #fff;
+    .songPlayingAlbum.Image.\31 {
+      background-image: url("../material/song_artCovers/myLove_song11.jfif");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 5.5rem;
+      width: 5.5rem;
     }
+    p.songPlayingName.\31 {color: #fff;}
+    p.songPlayingAlbum.\31 {color: #6a6a6a;}
+    p.songProgressSec { color: #6a6a6a;}
+      
 
-
-    svg.playBtnIcon {
-      height: 34px;
-      width: 26px;
-    }
-
-
-
-    /*right Container*/
+    /* Global Setting Cont (Shuffle, Repeat Volume Controls) */
+    .globalSetting.playNowCategory.\33 {margin-right: 20px;}
     .globalSettingCont {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 5rem;
     }
-    .globalSetting.playNowCategory.\33 {margin-right: 20px;}
 
-    .topContHeader {color: #fff;}
+    .topContHeader {color: #fff;}   /*"Global" Header Text*/
     .songSkipSettings.\32 {display: flex;}
 
+
+    /*Song Volume Cont*/
     .globalSetting.bottomCont {
       display: flex;
       align-items: center;
@@ -1340,10 +1292,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: transparent;
-      border: none;
+
       height: 32px;
       width: 32px;
+      border: none;
+      background-color: transparent;
       margin-right: 8px;
     }
 
@@ -1360,9 +1313,6 @@
 
 
 
-
-
-
     /*****                                              Media Queries                                               *****/
     @media (max-width: 840px) {
 
@@ -1371,7 +1321,6 @@
         width: 8.5rem;
         margin-right: 5rem;
       }
-
 
     /**!       (3) contentTabs                                                                   section3               !**/
       /**!        Home (3)                                     tab1               !**/   
@@ -1391,9 +1340,9 @@
         font-size: 8px;
       }
       p.bannerImage.Header {
-        font-size: max(4vw, 30px);
         top: 10vh;
         left: 0%;
+        font-size: max(4vw, 30px);
       }
 
 
@@ -1402,7 +1351,6 @@
         margin-left: 15px;
         margin-right: 8px;
       }
-
 
       /*Eventually, I'd like to get rid of flex wrap for Spotify's "See All" button when there's more content*/
       .homeContentCont.allAlbumCont {flex-wrap: wrap;}  
@@ -1441,8 +1389,6 @@
       }
 
 
-  
-
       /**!        Listen Later (3)                                     tab3               !**/   
       .allDropZoneLists {
         margin-left: 7vw;
@@ -1455,7 +1401,6 @@
       .searchProdCont.\31 {left: 31%;}
       input.searchProductInput.\31 {width: 292px;}
      
-
       /*Recent Search EP Albums*/
       .recentSearchAlbumCont {
         height: 15rem;
@@ -1477,7 +1422,6 @@
         width: 10rem;
       }
       .browseAll.empty.genreBlock.\32 1 {height: 2.5rem;}
-
 
 
       /**!        Playlist (3)                                     tab5               !**/
@@ -1555,7 +1499,6 @@
         width: 7.5rem;
         font-size: 8px;
       }
-
 
 
       /**!        Search (3)                                     tab4               !**/   
@@ -1713,9 +1656,6 @@
       }
 
 
-
-
-
     /**!        Playlist (3)                                     tab5               !**/
       .newPlaylist.orderCont.\31 {margin-left: 3rem;}
       .newPlaylist.colmHeaders {width: 87%;}
@@ -1751,15 +1691,12 @@
       }
 
       /* Song Info */
-      .songPlayingAlbum.Image.\31 {
-        display: none;
-      }
+      .songPlayingAlbum.Image.\31 {display: none;}
 
       p.songPlayingName.\31 {
         position: absolute;
         top: 78%;
         left: 6%;
       }
-
 
     }

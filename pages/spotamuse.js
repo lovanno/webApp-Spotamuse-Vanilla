@@ -2446,8 +2446,25 @@ const musicLibrary = [
         /*If any part of the Song Button is pressed, it will be played*/
         if(hasClass(from, "newPlaylistSongs") || hasClass(from, "playlistSong") &&  hasClass(from, "orderCont") || hasClass(from, "playlistSongs") && hasClass(from, "albumCont") 
             || hasClass(from, "playlistSongs") && hasClass(from, "dateAddedCont") || hasClass(from, "playlistSongs") && hasClass(from, "durationCont")){
-            let clickedTrack = parseInt(from.className.slice(-1));
+
+            let clickedTrack = parseInt(from.className.slice(-2));   /*slice(-2) limits total range from 0-99*/
             song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+            
+            /*A perm solution would be the following: 
+            for(let i=1; i<100; i++){   
+                /*if(isNaN(parseInt(from.className.slice(Math.abs(i) * -1)))){ 
+                    clickedTrack = parseInt(from.className.slice(Math.abs(i-1) * -1));
+                    break;
+                }*/
+
+                /*Test for large Numbers 
+                let testLargeSong = "playlistSong 202010";
+                if(isNaN(parseInt(testLargeSong.slice(Math.abs(i) * -1)))){
+                    console.log(parseInt(testLargeSong.slice(Math.abs(i-1) * -1)));     /*solution passed
+                    break;
+                }
+            }*/
+            
 
             stopAll();
             song.play();
