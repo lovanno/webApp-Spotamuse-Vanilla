@@ -2087,7 +2087,7 @@ const musicLibrary = [
 
 /***        (3) contentTabs                                                                   section3               ***/
     /*Since most tabs rely on tab 5, Playlists, it will be placed first
-    /***        Search (3)                                     tab5               ***/   
+    /***         Playlist (3)                                     tab5               ***/   
     const createPlaylistTab = document.querySelector("button.librarySideBar.headerBtn.\\35");
     const playlistName = document.querySelector("h1.newPlaylistName.\\31");
     const playlistTotalSongs = document.querySelector("div.newPlaylistUserSongs.\\31");
@@ -2118,7 +2118,6 @@ const musicLibrary = [
             finishedCreateBtn.style.display = "none";
             addNewSongsPlaylist.style.display = "block";
         }
-
     })
 
     /*Creates a playlist icon box in the "Your Library" Tab*/

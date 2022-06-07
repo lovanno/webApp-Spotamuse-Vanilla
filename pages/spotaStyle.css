@@ -527,8 +527,8 @@
       background-image: url("../material/song_artCovers/shadowLady_song1.jfif");
       background-repeat: no-repeat;
       background-size: cover;
-      height: 3rem;
-      width: 3rem;
+      min-height: 3rem;
+      min-width: 3rem;
     }
 
     /* Later Song Text Styling */
@@ -536,6 +536,13 @@
     p.listenTrackArtist {color: #B3B3B3;}
     p.listenAlbumTitle {color: #B3B3B3;}
     p.listenDurationTime {color: #B3B3B3;}
+
+    .listenTrackInfoCont {
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      white-space: nowrap;
+      max-width: 15ch;
+    }
 
     /*Song pause buttons*/
     button.listenLaterPause {
