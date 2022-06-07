@@ -2304,6 +2304,13 @@ const musicLibrary = [
     let playcreateMode = false; /*Allows songs to be added to a playlist*/
 
     /*All helper functions for creating a new playlist*/
+    let unsortedPlaylist;
+    function removePlaySortFilters(playlist){
+        currentInfoFilter = 0;
+        infoFilterText.textContent = "Sort";
+        unsortedPlaylist = playlist;
+    }
+
     function removePlaylistModifers(){
         addNewSongsPlaylist.style.display = "none";
         finishedCreateBtn.style.display = "none";
@@ -2356,13 +2363,13 @@ const musicLibrary = [
 
     function createSortPlaylist(attribute){
         newPlaylistPrep();
-        musicSource(sortAlpha(playlistShow, attribute));
+        musicSource(sortAlpha(playlistShow.slice(), attribute));
         for(let f=1; f<playlistShow.length; f++){playlistCreation();}
         openPlaylistTab();
     }
 
     let currentInfoFilter = 0;
-    const playlistInfoFilters = ["Title", "Artists", "Date", "Duration"];
+    const playlistInfoFilters = ["Sort", "Title", "Artists", "Date", "Duration"];
     const playlistInfoFilterBtn = document.querySelector("button.playlistFilterBtn.\\31");
     const infoFilterText = document.querySelector("div.playlistFilterIcon.\\31");
 
@@ -2374,6 +2381,13 @@ const musicLibrary = [
         infoFilterText.textContent = playlistInfoFilters[currentInfoFilter];
 
         switch(playlistInfoFilters[currentInfoFilter]){
+            case "Sort": 
+                newPlaylistPrep();
+                musicSource(unsortedPlaylist);
+                for(let f=1; f<unsortedPlaylist.length; f++){playlistCreation();}
+                openPlaylistTab();
+                break;
+
             case "Title": 
                 createSortPlaylist('track_title');
                 break;
@@ -2384,7 +2398,7 @@ const musicLibrary = [
 
             case "Date":
                 newPlaylistPrep();
-                musicSource(sortByDate(playlistShow, 'release_date'));      /*had to use sortByDate to filter dates*/
+                musicSource(sortByDate(playlistShow.slice(), 'release_date'));      /*had to use sortByDate to filter dates*/
                 for(let f=1; f<playlistShow.length; f++){playlistCreation();}
                 openPlaylistTab();   
                 break;
@@ -2411,8 +2425,8 @@ const musicLibrary = [
                 newPlaylistPrep();
                 let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
                 musicSource(unique);
-
                 for(let f=1; f<playlistShow.length; f++){playlistCreation();}
+                removePlaySortFilters(unique);
             }
             openPlaylistTab();
         }
@@ -2428,6 +2442,7 @@ const musicLibrary = [
             musicSource(musicLibrary);
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
             openPlaylistTab();
+            removePlaySortFilters(musicLibrary);
         }
             
         if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
@@ -2441,6 +2456,7 @@ const musicLibrary = [
             const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
+            removePlaySortFilters(window["'" + playlistName.textContent + "'"]);
         }
 
         /*If any part of the Song Button is pressed, it will be played*/
@@ -2827,6 +2843,7 @@ catch{}
             resetBackwardsMode();        
             newPlaylistPrep();
             musicSource(albumLibrary[epOrderNum]);
+            removePlaySortFilters(albumLibrary[epOrderNum]);
 
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}    
             openPlaylistTab();
@@ -2839,6 +2856,7 @@ catch{}
             resetBackwardsMode();        
             newPlaylistPrep();
             musicSource(albumLibrary[epOrderNum]);
+            removePlaySortFilters(albumLibrary[epOrderNum]);
 
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}     
             openPlaylistTab();
