@@ -2419,7 +2419,6 @@ const musicLibrary = [
             let recentPlayImg = retrieveElmImg(from.firstElementChild);
             const playlistImg = playlistName.parentElement.previousElementSibling;
             playlistImg.style.backgroundImage = "url(\"../" + recentPlayImg.slice(-41);
-
             playlistName.textContent = "Recently Played";
             if(recent10){
                 newPlaylistPrep();
@@ -2428,6 +2427,7 @@ const musicLibrary = [
                 for(let f=1; f<playlistShow.length; f++){playlistCreation();}
                 removePlaySortFilters(unique);
             }
+            else{newPlaylistPrep();}
             openPlaylistTab();
         }
 
@@ -2482,6 +2482,7 @@ const musicLibrary = [
             }*/
             
 
+            song.volume = appVolume;
             stopAll();
             song.play();
             recentlyPlayedAudio.push(song);
@@ -3056,12 +3057,16 @@ catch{}
         muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M13.86 5.47a.75.75 0 00-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 008.8 6.53L10.269 8l-1.47 1.47a.75.75 0 101.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 001.06-1.06L12.39 8l1.47-1.47a.75.75 0 000-1.06z"></path><path fill="#6a6a6a" d="M10.116 1.5A.75.75 0 008.991.85l-6.925 4a3.642 3.642 0 00-1.33 4.967 3.639 3.639 0 001.33 1.332l6.925 4a.75.75 0 001.125-.649v-1.906a4.73 4.73 0 01-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 01-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path></svg>'
     }
 
+    let previousVolume;
     muteSong.addEventListener("click", function(){
-        if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){muteVolume();}
+        if((recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume > 0){
+            previousVolume = appVolume; /*Stores the current volume before muting the app. If the user unmutes with the mute button, they'll return to their previous volume*/
+            muteVolume();
+        }
         else{
-            appVolume = 1.0;
-            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = 1.0;
-            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = "100%";
+            appVolume = previousVolume;
+            (recentlyPlayedAudio[recentlyPlayedAudio.length-1]).volume = previousVolume;
+            document.querySelector("div.volumeShown.ProgBar.\\32").style.width = (previousVolume/1.0)*100 + "%";
             muteSong.firstElementChild.firstElementChild.outerHTML = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>'
         }
     })
