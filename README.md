@@ -88,10 +88,6 @@ This pushed me to develop the application without an API and embed the music lib
 
 >function sortAlpha(list, _attribute){ list.sort((a, b) => {  if (a[_attribute] > b[_attribute])
 
-
-
-&nbsp;
-
 &nbsp;
 
 # Current Bugs & Problems 😎 
