@@ -2095,6 +2095,8 @@ const musicLibrary = [
     const finishedCreateBtn = document.querySelector("button.finishedPlaylistBtn");
         
     function refreshPlaylist(){
+        songOrder = 0;          /*Playlists have different lengths. If songOrder doesn't reset to 0 when opening new playlists, 
+                                a song number that doesn't exist will be called and throw an error*/
         playlistTrackCount = 1;
         const totalTracksPlaylist = document.querySelectorAll("button.newPlaylistSongs");
         totalTracksPlaylist.forEach(playlistSongs => {
@@ -2921,7 +2923,7 @@ catch{}
         playButtonToggle = false;
         song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
         recentlyPlayedAudio.push(song);
-        recentlyPlayedPlaylist.push(chosenPlaylist[songOrder])
+        recentlyPlayedPlaylist.push(chosenPlaylist[songOrder]);
         recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
         song.volume = appVolume;
