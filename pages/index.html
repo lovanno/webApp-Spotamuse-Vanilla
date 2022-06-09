@@ -3,81 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spota Lite</title>
+    <link rel="icon" type="svg/x-icon" href="../material/appIcons/spotamuseIcon.svg">
+    <title>Spotamuse</title>
 </head>
 
 <link rel="stylesheet" type="text/css" href="../pages/spotaStyle.css">
  
 <body>
+    <!-- There are 4 total sections but contentTabs holds 5 individual views (tabs)
+      (1) appSettingsNav                                      section1 //Not Apart of Grid
+      (2) librarySidebar                                      section2
+      (3) contentTabs                                         section3
+            Home (3)                                     tab1 
+            Your Library (3)                             tab2                                             
+            Listen Later (3)                             tab3                                             
+            Search (3)                                   tab4                                               
+            Playlist (3)                                 tab5           
+      (4) playingNowSect                                      section4     --->
 
-<div class= "grid layout">         
-     
-<!--        (1) appSettingsNav                             Section1               -->
+
+<div class= "grid layout">  
+
+<!--        (1) appSettingsNav                                                                   section1               -->
     <div class = "appSettingsNav">
         <div class = "appSettings Menu">
-            <div class = "project Logo">
-                <svg viewBox="0 0 1134 340" class="spotify-logo--text"><title>Spotify</title><path fill="currentColor" d="M8 171c0 92 76 168 168 168s168-76 168-168S268 4 176 4 8 79 8 171zm230 78c-39-24-89-30-147-17-14 2-16-18-4-20 64-15 118-8 162 19 11 7 0 24-11 18zm17-45c-45-28-114-36-167-20-17 5-23-21-7-25 61-18 136-9 188 23 14 9 0 31-14 22zM80 133c-17 6-28-23-9-30 59-18 159-15 221 22 17 9 1 37-17 27-54-32-144-35-195-19zm379 91c-17 0-33-6-47-20-1 0-1 1-1 1l-16 19c-1 1-1 2 0 3 18 16 40 24 64 24 34 0 55-19 55-47 0-24-15-37-50-46-29-7-34-12-34-22s10-16 23-16 25 5 39 15c0 0 1 1 2 1s1-1 1-1l14-20c1-1 1-1 0-2-16-13-35-20-56-20-31 0-53 19-53 46 0 29 20 38 52 46 28 6 32 12 32 22 0 11-10 17-25 17zm95-77v-13c0-1-1-2-2-2h-26c-1 0-2 1-2 2v147c0 1 1 2 2 2h26c1 0 2-1 2-2v-46c10 11 21 16 36 16 27 0 54-21 54-61s-27-60-54-60c-15 0-26 5-36 17zm30 78c-18 0-31-15-31-35s13-34 31-34 30 14 30 34-12 35-30 35zm68-34c0 34 27 60 62 60s62-27 62-61-26-60-61-60-63 27-63 61zm30-1c0-20 13-34 32-34s33 15 33 35-13 34-32 34-33-15-33-35zm140-58v-29c0-1 0-2-1-2h-26c-1 0-2 1-2 2v29h-13c-1 0-2 1-2 2v22c0 1 1 2 2 2h13v58c0 23 11 35 34 35 9 0 18-2 25-6 1 0 1-1 1-2v-21c0-1 0-2-1-2h-2c-5 3-11 4-16 4-8 0-12-4-12-12v-54h30c1 0 2-1 2-2v-22c0-1-1-2-2-2h-30zm129-3c0-11 4-15 13-15 5 0 10 0 15 2h1s1-1 1-2V93c0-1 0-2-1-2-5-2-12-3-22-3-24 0-36 14-36 39v5h-13c-1 0-2 1-2 2v22c0 1 1 2 2 2h13v89c0 1 1 2 2 2h26c1 0 1-1 1-2v-89h25l37 89c-4 9-8 11-14 11-5 0-10-1-15-4h-1l-1 1-9 19c0 1 0 3 1 3 9 5 17 7 27 7 19 0 30-9 39-33l45-116v-2c0-1-1-1-2-1h-27c-1 0-1 1-1 2l-28 78-30-78c0-1-1-2-2-2h-44v-3zm-83 3c-1 0-2 1-2 2v113c0 1 1 2 2 2h26c1 0 1-1 1-2V134c0-1 0-2-1-2h-26zm-6-33c0 10 9 19 19 19s18-9 18-19-8-18-18-18-19 8-19 18zm245 69c10 0 19-8 19-18s-9-18-19-18-18 8-18 18 8 18 18 18zm0-34c9 0 17 7 17 16s-8 16-17 16-16-7-16-16 7-16 16-16zm4 18c3-1 5-3 5-6 0-4-4-6-8-6h-8v19h4v-6h4l4 6h5zm-3-9c2 0 4 1 4 3s-2 3-4 3h-4v-6h4z"></path></svg>
-                <h1 class = "titleTest">Spotify</h1>
-                <path fill="currentColor" d="M8 171c0 92 76 168 168 168s168-76 168-168S268 4 176 4 8 79 8 171zm230 78c-39-24-89-30-147-17-14 2-16-18-4-20 64-15 118-8 162 19 11 7 0 24-11 18zm17-45c-45-28-114-36-167-20-17 5-23-21-7-25 61-18 136-9 188 23 14 9 0 31-14 22zM80 133c-17 6-28-23-9-30 59-18 159-15 221 22 17 9 1 37-17 27-54-32-144-35-195-19zm379 91c-17 0-33-6-47-20-1 0-1 1-1 1l-16 19c-1 1-1 2 0 3 18 16 40 24 64 24 34 0 55-19 55-47 0-24-15-37-50-46-29-7-34-12-34-22s10-16 23-16 25 5 39 15c0 0 1 1 2 1s1-1 1-1l14-20c1-1 1-1 0-2-16-13-35-20-56-20-31 0-53 19-53 46 0 29 20 38 52 46 28 6 32 12 32 22 0 11-10 17-25 17zm95-77v-13c0-1-1-2-2-2h-26c-1 0-2 1-2 2v147c0 1 1 2 2 2h26c1 0 2-1 2-2v-46c10 11 21 16 36 16 27 0 54-21 54-61s-27-60-54-60c-15 0-26 5-36 17zm30 78c-18 0-31-15-31-35s13-34 31-34 30 14 30 34-12 35-30 35zm68-34c0 34 27 60 62 60s62-27 62-61-26-60-61-60-63 27-63 61zm30-1c0-20 13-34 32-34s33 15 33 35-13 34-32 34-33-15-33-35zm140-58v-29c0-1 0-2-1-2h-26c-1 0-2 1-2 2v29h-13c-1 0-2 1-2 2v22c0 1 1 2 2 2h13v58c0 23 11 35 34 35 9 0 18-2 25-6 1 0 1-1 1-2v-21c0-1 0-2-1-2h-2c-5 3-11 4-16 4-8 0-12-4-12-12v-54h30c1 0 2-1 2-2v-22c0-1-1-2-2-2h-30zm129-3c0-11 4-15 13-15 5 0 10 0 15 2h1s1-1 1-2V93c0-1 0-2-1-2-5-2-12-3-22-3-24 0-36 14-36 39v5h-13c-1 0-2 1-2 2v22c0 1 1 2 2 2h13v89c0 1 1 2 2 2h26c1 0 1-1 1-2v-89h25l37 89c-4 9-8 11-14 11-5 0-10-1-15-4h-1l-1 1-9 19c0 1 0 3 1 3 9 5 17 7 27 7 19 0 30-9 39-33l45-116v-2c0-1-1-1-2-1h-27c-1 0-1 1-1 2l-28 78-30-78c0-1-1-2-2-2h-44v-3zm-83 3c-1 0-2 1-2 2v113c0 1 1 2 2 2h26c1 0 1-1 1-2V134c0-1 0-2-1-2h-26zm-6-33c0 10 9 19 19 19s18-9 18-19-8-18-18-18-19 8-19 18zm245 69c10 0 19-8 19-18s-9-18-19-18-18 8-18 18 8 18 18 18zm0-34c9 0 17 7 17 16s-8 16-17 16-16-7-16-16 7-16 16-16zm4 18c3-1 5-3 5-6 0-4-4-6-8-6h-8v19h4v-6h4l4 6h5zm-3-9c2 0 4 1 4 3s-2 3-4 3h-4v-6h4z"></path>
-            </div>
-            
-
             <div class = "appSettings Container">
-                <href class = "settings mainBtnHeader 1"><a class = "settings mainBtnHeader 1">Settings</a>
+                <div class = "appNavTabCont">
+                    <button class = "appNavTabBtn 1"><svg class = "appNavTabBtn1" role="img" height="22" width="22" viewBox="0 0 24 24"><path class = "appNavTabBtn1" fill="#fff" opacity="0.55" d="M15.957 2.793a1 1 0 010 1.414L8.164 12l7.793 7.793a1 1 0 11-1.414 1.414L5.336 12l9.207-9.207a1 1 0 011.414 0z"></path></svg></button>
+                    <button class = "appNavTabBtn 2"><svg class = "appNavTabBtn2" role="img" height="22" width="22" viewBox="0 0 24 24"><path class = "appNavTabBtn2" fill="#fff" opacity="0.55" d="M8.043 2.793a1 1 0 000 1.414L15.836 12l-7.793 7.793a1 1 0 101.414 1.414L18.664 12 9.457 2.793a1 1 0 00-1.414 0z"></path></svg></button>
+                </div>
+
+                <href class = "settings mainBtnHeader 1">
+                    <a class = "settings mainBtnHeader 1">Settings</a>
+                    <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#fff" d="M14 6l-6 6-6-6h12z"></path></svg>
                     <div class = "userSettings">
                         <button class = "account setting 1">Account</button>
                         <button class = "support setting 2">Support</button>
-                        <button class = "explicit setting 3">Explicit Content</button>
-                        <button class = "audio setting 4">Audio Quality</button>
-                        <button class = "local setting 5">Local Files</button>
-
-                        <button class = "logOutBtn">Log Out</button>
+                        <button class = "audio setting 3">Audio Quality</button>
+                        <button class = "local setting 4">Local Files</button>
+                        <button class = "logout setting 5">Log Out</button>
                     </div>
                 </href>
             </div>
-
         </div>
     </div>
 
 
 
+<!--        (2) librarySidebar                                                                   section2               -->
+    <div class = "librarySideBar">
+        <div class = "librarySideBar headerCont">
 
-<!--      (2) homeSection                                  Section2               -->
-    <div class = "homeSection tab 1"> <!-- Tab 1 of Library-->
+            <div class = "sideBarHeader">
+                <div class = "appLogoCont">
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="48" height="48" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m14 2l-3 1.5v16.44C7 19.5 4 17.46 4 15c0-2.25 2.5-4.15 6-4.78V8.19c-5.14.69-9 3.47-9 6.81c0 3.56 4.36 6.5 10 6.94h.09L14 20.5V2m1 6.19v2.03c1.15.21 2.18.55 3.06 1L16.5 12l6.5 1.5l-.5-4.5l-2 1C19 9.12 17.12 8.47 15 8.19Z"/></svg>
+                    <p class = "appLogoName">Spotamuse</p>
+                </div> 
+            </div>
+
+            <div class = "librarySideBarContent">
+                <button class = "librarySideBar headerBtn 1">
+                    <div class = "sideBar Icon 1"><svg role="img" class = "sideBarIcon1" height="24" width="24"><path class = "sideBarIcon1" fill="#fff" d="M12.5 3.247a1 1 0 00-1 0L4 7.577V20h4.5v-6a1 1 0 011-1h5a1 1 0 011 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 013 0l7.5 4.33a2 2 0 011 1.732V21a1 1 0 01-1 1h-6.5a1 1 0 01-1-1v-6h-3v6a1 1 0 01-1 1H3a1 1 0 01-1-1V7.577a2 2 0 011-1.732l7.5-4.33z"></path></svg></div>
+                    <p class = "sideBarHeader 1" style="color: rgb(255, 255, 255);">Home</p>
+                </button>
+
+                <button class = "librarySideBar headerBtn 2">
+                    <div class = "sideBar Icon 2"><svg role="img" class = "sideBarIcon2" height="24" width="24"><path class = "sideBarIcon2" d="M14.5 2.134a1 1 0 011 0l6 3.464a1 1 0 01.5.866V21a1 1 0 01-1 1h-6a1 1 0 01-1-1V3a1 1 0 01.5-.866zM16 4.732V20h4V7.041l-4-2.309zM3 22a1 1 0 01-1-1V3a1 1 0 012 0v18a1 1 0 01-1 1zm6 0a1 1 0 01-1-1V3a1 1 0 012 0v18a1 1 0 01-1 1z"></path></svg></div>
+                    <p class = "sideBarHeader 2">Your Library</p>
+                </button>
+
+                <button class = "librarySideBar headerBtn 3">
+                    <div class = "sideBar Icon 1"><svg role="img" class = "sideBarIcon3" height="24" width="24"><path class = "sideBarIcon3" d ="M 12 2.25 a 9.75 9.75 90 1 0 0 19.5 a 9.75 9.75 90 0 0 0 -19.5 z M 0 12 a 12 12 90 1 1 24 0 A 12 12 90 0 1 0 12 z M 12 4.875 a 1.125 1.125 90 0 1 1.125 1.125 v 4.875 H 16.5 a 1.125 1.125 90 0 1 0 2.25 H 10.875 V 6 A 1.125 1.125 90 0 1 12 4.875 z"></path></svg></div>
+                    <p class = "sideBarHeader 3">Listen Later</p>
+                </button>
+
+                <button class = "librarySideBar headerBtn 4">
+                    <div class = "sideBar Icon 4"><svg role="img" class = "sideBarIcon4" height="24" width="24"><path class = "sideBarIcon4" d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 101.414-1.414l-4.344-4.344a9.157 9.157 0 002.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"></path></svg></div>
+                    <p class = "sideBarHeader 4">Search</p>
+                </button>
+
+                 <button class = "librarySideBar headerBtn 5">
+                    <div class = "sideBar Icon 5"><svg role="img" class = "sideBarIcon5" height="12" width="12"><path class = "sideBarIcon5" d="M 11.4428 6.0028 a 0.5628 0.5628 90 0 1 -0.5628 0.5628 H 6.5655 v 4.3145 a 0.5628 0.5628 90 0 1 -1.1255 0 V 6.5655 H 1.1255 a 0.5628 0.5628 90 0 1 0 -1.1255 h 4.3145 V 1.1255 a 0.5628 0.5628 90 0 1 1.1255 0 v 4.3145 h 4.3145 a 0.5628 0.5628 90 0 1 0.5628 0.5628 z"></path></svg></div>
+                    <p class = "sideBarHeader 5">Create Playlist</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+<!--        (3) contentTabs                                                                      section3               -->
+    <!--    Home (3)                                     tab1   -->
+    <div class = "homeSection tab 1"> 
 
         <div class = "homeSectionCont tab1">
-            <div class = "home BannerImage"></div>
+            <div class = "home BannerImage">
+                <button class ="bannerImage hideBtn">Hide Announcements</button>
+                <p class ="bannerImage Header">Exhilarating Concerts</p>
+            </div>
 
             <div class = "homeContent 1">
-                <div class = "homeContentCont 1">
+                <div class = "homeContentContainer 1">
 
                     <div class = "homeContent HeaderCont">
                         <div class = "homeContent Icon 1"></div>
-                        <p class = "homeContentHeader 1">Recently Played</p>
+                        <p class = "homeContentHeader 1">Discover</p>
                     </div>
 
-                    <!--- <div class = "musicPlaylistCont 1">
-                        <button class = "homeCont1 musicList 1">
-                            <div class ="homeImage1 musicList 1"></div>
-                            <div class ="homeName1 musicList 1">Night Club</div>
-                        </button>
-                    </div>      _-->
+                    <div class = "homeContentCont allAlbumCont">
+                        <div class = "homeContentContAlbumCont 1">
+                            <!-- <button class = "recentSearch albumRemove 1">X</button> --->
+                            <div class = "homeContentCont albumInfo 1">
+                                <div class = "homeContentCont albumInfoCover 1"></div>
+                                <div class = "homeContentCont textCont 1">
+                                    <p class = "homeContentCont albumInfoName 1">7 EP</p>
+                                    <p class = "homeContentCont albumInfoArtist 1">Lil Nas X</p>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class = "home playlistCont 1">
-                        <button class = "home playlistBtnCont 1">
-                            <div class ="home playlistCover 1"></div>
-                            <div class ="home playlistName 1">Night Club</div>
-                        </button>
+                        <div class = "homeContentContAlbumCont 2">
+                            <!-- <button class = "recentSearch albumRemove 2">X</button> --->
+                            <div class = "homeContentCont albumInfo 2">
+                                <div class = "homeContentCont albumInfoCover 2"></div>
+                                <div class = "homeContentCont textCont 2">
+                                    <p class = "homeContentCont albumInfoName 2">Currents B-Sides & Remixes</p>
+                                    <p class = "homeContentCont albumInfoArtist 2">Tame Impala</p>
+                                </div>
+                            </div>
+                        </div>
 
-                        <button class = "home playlistBtnCont 1">
-                            <div class ="home playlistCover 1"></div>
-                            <div class ="home playlistName 1">Night Club</div>
-                        </button>
+                        <div class = "homeContentContAlbumCont 3">
+                            <!-- <button class = "recentSearch albumRemove 3">X</button> --->
+                            <div class = "homeContentCont albumInfo 3">
+                                <div class = "homeContentCont albumInfoCover 3"></div>
+                                <div class = "homeContentCont textCont 3">
+                                    <p class = "homeContentCont albumInfoName 3">My Dear Melancholy,</p>
+                                    <p class = "homeContentCont albumInfoArtist 3">The Weeknd</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class = "homeContentContAlbumCont 4">
+                            <!-- <button class = "recentSearch albumRemove 4">X</button> -->
+                            <div class = "homeContentCont albumInfo 4">
+                                <div class = "homeContentCont albumInfoCover 4"></div>
+                                <div class = "homeContentCont textCont 4">
+                                    <p class = "homeContentCont albumInfoName 4">Where Does The Devil Hide</p>
+                                    <p class = "homeContentCont albumInfoArtist 4">Zella Day</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    
 
                 </div>
             </div>
 
+            <!---
 
             <div class = "homeContent 2">
                 <div class = "homeContentCont 2">
@@ -105,22 +189,15 @@
                     <div class = "homeContent Icon 4"></div>
                     <p class = "homeContentHeader 4">Most Played Albums</p>
                 </div>
-            </div>
-        </div>
-
-<!---
-        <iframe src="https://open.spotify.com/embed/playlist/0KPY4Dg9lcRalQMmxzamXI?utm_source=generator&theme=0" 
-        width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>   --->
-
+            </div> --->
+        </div> 
     </div>
 
 
-
-
-<!--         Your Library                                            Tab 2 of Library                                               -->
+    <!--    Your Library (3)                             tab2   -->
     <div class = "yourLibrarySect tab 2">
         <div class = "yourLibraryCont tab2">
-            <h2 class = "header 4">Your Playlists</h2>
+            <p class = "yourLibraryCont recentSearchHeader tab2">Your Playlists</p>
 
             <div class = "yourLibrary playlistCont 1">
                 <button class = "yourLibrary playlistBtnCont 0">
@@ -133,100 +210,101 @@
                     <div class ="yourLibrary playlistName 1">Downloaded Files</div>
                 </button>
             </div>
-
-
-
         </div>
     </div>
 
-
-
-<!--         Listen Later                                            Tab 3 of Library                                               -->
+    <!--    Listen Later (3)                             tab3   -->
     <div class = "yourLibrarySect tab 3">
         <div class = "listenLaterCont tab3">
 
-            <div class = "laterTabHeaderCont">
-                <button class = "laterTabHeader 1">Priority</button>
-                <button class = "laterTabHeader 2">Non-Essential</button>
-                <button class = "laterTabHeader 3">Eventually</button>
-            </div>
-
-         
             <div class = "allDropZoneLists">
-                <div class="priorityList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <p>Add a Song</p>
+                <div class = "dropZoneCont 1">
+                    <button class = "laterTabHeader 1">Priority</button>
+                    <div class="priorityList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <p class="priorityList dropzoneHeader 1">Add a Song</p>
+                        <div class="priorityList dropzoneImage 1"></div>
 
+                        <div class="prioritySong listenSongCont 1">
+                            <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="18" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"><g fill="#fff" fill-rule="evenodd" clip-rule="evenodd"><path d="M19 10C19 12.2091 17.2091 14 15 14C12.7909 14 11 12.2091 11 10C11 7.79086 12.7909 6 15 6C17.2091 6 19 7.79086 19 10ZM15 28C17.2091 28 19 26.2091 19 24C19 21.7909 17.2091 20 15 20C12.7909 20 11 21.7909 11 24C11 26.2091 12.7909 28 15 28ZM15 42C17.2091 42 19 40.2091 19 38C19 35.7909 17.2091 34 15 34C12.7909 34 11 35.7909 11 38C11 40.2091 12.7909 42 15 42Z"></path><path d="M37 10C37 12.2091 35.2091 14 33 14C30.7909 14 29 12.2091 29 10C29 7.79086 30.7909 6 33 6C35.2091 6 37 7.79086 37 10ZM33 28C35.2091 28 37 26.2091 37 24C37 21.7909 35.2091 20 33 20C30.7909 20 29 21.7909 29 24C29 26.2091 30.7909 28 33 28ZM33 42C35.2091 42 37 40.2091 37 38C37 35.7909 35.2091 34 33 34C30.7909 34 29 35.7909 29 38C29 40.2091 30.7909 42 33 42Z"></path></g></svg></div>
 
-                    <div class="prioritySong listenSongCont 1">
-                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
-                        <button class = "prioritySong SongBtnCont 1">
-                            <div class = "prioritySong listenTrackImage 1"></div>
-                            <div class = "prioritySong listenOrderCont 1">
-                                <div class = "prioritySong listenTrackInfoCont 1">
-                                    <p class = "prioritySong listenTrackTitle 1">Suit & Tie</p>
-                                    <p class = "prioritySong listenTrackArtist 1">Justin Timber</p>
+                            <button class = "prioritySong SongBtnCont 1">
+                                <div class = "prioritySong listenTrackImage 1"></div>
+                                <div class = "prioritySong listenOrderCont 1">
+                                    <div class = "prioritySong listenTrackInfoCont 1">
+                                        <p class = "prioritySong listenTrackTitle 1">Suit & Tie</p>
+                                        <p class = "prioritySong listenTrackArtist 1">Justin Timber</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class = "prioritySong listenDurationCont 1">
-                                <p class = "prioritySong listenAlbumTitle 1">20/20</p>
-                                <p class = "prioritySong listenDurationTime 1">0:00</p>
-                            </div>
-                        </button>     
-                        <button class="prioritySong listenLaterPause 1">Pause</button>
+                                <div class = "prioritySong listenDurationCont 1">
+                                    <p class = "prioritySong listenAlbumTitle 1">20/20</p>
+                                    <p class = "prioritySong listenDurationTime 1">0:00</p>
+                                </div>
+                            </button>     
+                            <button class="prioritySong listenLaterPause 1"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg></button>
+                        </div>
                     </div>
                 </div>
 
+                <div class = "dropZoneCont 2">
+                    <button class = "laterTabHeader 2">Non-Essential</button>
+                    <div class="nonEssentialList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <p class="nonEssentialList dropzoneHeader 1">Add a Song</p>
+                        <div class="nonEssentialList dropzoneImage 1"></div>
 
-                <div class="nonEssentialList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <p>Add a Song</p>
+                        <div class="nonEssSong listenSongCont 1">
+                            <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="18" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"><g fill="#fff" fill-rule="evenodd" clip-rule="evenodd"><path d="M19 10C19 12.2091 17.2091 14 15 14C12.7909 14 11 12.2091 11 10C11 7.79086 12.7909 6 15 6C17.2091 6 19 7.79086 19 10ZM15 28C17.2091 28 19 26.2091 19 24C19 21.7909 17.2091 20 15 20C12.7909 20 11 21.7909 11 24C11 26.2091 12.7909 28 15 28ZM15 42C17.2091 42 19 40.2091 19 38C19 35.7909 17.2091 34 15 34C12.7909 34 11 35.7909 11 38C11 40.2091 12.7909 42 15 42Z"></path><path d="M37 10C37 12.2091 35.2091 14 33 14C30.7909 14 29 12.2091 29 10C29 7.79086 30.7909 6 33 6C35.2091 6 37 7.79086 37 10ZM33 28C35.2091 28 37 26.2091 37 24C37 21.7909 35.2091 20 33 20C30.7909 20 29 21.7909 29 24C29 26.2091 30.7909 28 33 28ZM33 42C35.2091 42 37 40.2091 37 38C37 35.7909 35.2091 34 33 34C30.7909 34 29 35.7909 29 38C29 40.2091 30.7909 42 33 42Z"></path></g></svg></div>
 
-                    <div class="nonEssSong listenSongCont 1">
-                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
-                        <button class = "nonEssSong SongBtnCont 1">
-                            <div class = "nonEssSong listenTrackImage 1"></div>
-                            <div class = "nonEssSong listenOrderCont 1">
-                                <div class = "nonEssSong listenTrackInfoCont 1">
-                                    <p class = "nonEssSong listenTrackTitle 1">Title</p>
-                                    <p class = "nonEssSong listenTrackArtist 1">Artist</p>
+                            <button class = "nonEssSong SongBtnCont 1">
+                                <div class = "nonEssSong listenTrackImage 1"></div>
+                                <div class = "nonEssSong listenOrderCont 1">
+                                    <div class = "nonEssSong listenTrackInfoCont 1">
+                                        <p class = "nonEssSong listenTrackTitle 1">Title</p>
+                                        <p class = "nonEssSong listenTrackArtist 1">Artist</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class = "nonEssSong durationCont 1">
-                                <p class = "nonEssSong listenAlbumTitle 1">Album</p>
-                                <p class = "nonEssSong listenDurationTime 1">0:00</p>
-                            </div>
-                        </button>   
-                        <button class="nonEssSong listenLaterPause 1">Pause</button>
-                    </div>  
-                </div>
-
-                <div class="eventuallyList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <p>Add a Song</p>
-
-                    <div class="eventuallySong listenSongCont 1">
-                        <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)">Bar</div>
-                        <button class = "eventuallySong SongBtnCont 1">
-                            <div class = "eventuallySong listenTrackImage 1"></div>
-                            <div class = "eventuallySong listenOrderCont 1">
-                                <div class = "eventuallySong listenTrackInfoCont 1">
-                                    <p class = "eventuallySong listenTrackTitle 1">Title</p>
-                                    <p class = "eventuallySong listenTrackArtist 1">Artist</p>
+                                <div class = "nonEssSong durationCont 1">
+                                    <p class = "nonEssSong listenAlbumTitle 1">Album</p>
+                                    <p class = "nonEssSong listenDurationTime 1">0:00</p>
                                 </div>
-                            </div>
-                            <div class = "eventuallySong listenDurationCont 1">
-                                <p class = "eventuallySong listenAlbumTitle 1">Album</p>
-                                <p class = "eventuallySong listenDurationTime 1">0:00</p>
-                            </div>
-                        </button>  
-                        <button class=" eventuallySong listenLaterPause 1">Pause</button>   
+                            </button>   
+                            <button class="nonEssSong listenLaterPause 1"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg></button>
+                        </div>  
                     </div>
                 </div>
 
+                <div class = "dropZoneCont 3">
+                    <button class = "laterTabHeader 3">Eventually</button>
+                    <div class="eventuallyList dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <p class="eventuallyList dropzoneHeader 1">Add a Song</p>
+                        <div class="eventuallyList dropzoneImage 1"></div>
+                    
+                        <div class="eventuallySong listenSongCont 1">
+                            <div class = "songHandleBar" draggable="true" ondragstart="dragEntire(event)"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="18" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"><g fill="#fff" fill-rule="evenodd" clip-rule="evenodd"><path d="M19 10C19 12.2091 17.2091 14 15 14C12.7909 14 11 12.2091 11 10C11 7.79086 12.7909 6 15 6C17.2091 6 19 7.79086 19 10ZM15 28C17.2091 28 19 26.2091 19 24C19 21.7909 17.2091 20 15 20C12.7909 20 11 21.7909 11 24C11 26.2091 12.7909 28 15 28ZM15 42C17.2091 42 19 40.2091 19 38C19 35.7909 17.2091 34 15 34C12.7909 34 11 35.7909 11 38C11 40.2091 12.7909 42 15 42Z"></path><path d="M37 10C37 12.2091 35.2091 14 33 14C30.7909 14 29 12.2091 29 10C29 7.79086 30.7909 6 33 6C35.2091 6 37 7.79086 37 10ZM33 28C35.2091 28 37 26.2091 37 24C37 21.7909 35.2091 20 33 20C30.7909 20 29 21.7909 29 24C29 26.2091 30.7909 28 33 28ZM33 42C35.2091 42 37 40.2091 37 38C37 35.7909 35.2091 34 33 34C30.7909 34 29 35.7909 29 38C29 40.2091 30.7909 42 33 42Z"></path></g></svg></div>
+
+                            <button class = "eventuallySong SongBtnCont 1">
+                                <div class = "eventuallySong listenTrackImage 1"></div>
+                                <div class = "eventuallySong listenOrderCont 1">
+                                    <div class = "eventuallySong listenTrackInfoCont 1">
+                                        <p class = "eventuallySong listenTrackTitle 1">Title</p>
+                                        <p class = "eventuallySong listenTrackArtist 1">Artist</p>
+                                    </div>
+                                </div>
+                                <div class = "eventuallySong listenDurationCont 1">
+                                    <p class = "eventuallySong listenAlbumTitle 1">Album</p>
+                                    <p class = "eventuallySong listenDurationTime 1">0:00</p>
+                                </div>
+                            </button>  
+                            <button class=" eventuallySong listenLaterPause 1"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg></button>   
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
 
-<!--         Search                                                  Tab 4 of Library                                               -->
+    <!--    Search (3)                                   tab4   -->
     <div class = "yourLibrarySect tab 4">
         <div class = "searchCont tab4">
 
@@ -247,38 +325,46 @@
 
                     <div class = "recentSearch allAlbumCont">
                         <div class = "recentSearchAlbumCont 1">
-                            <button class = "recentSearch albumRemove 1">X</button>
+                            <!-- <button class = "recentSearch albumRemove 1">X</button> --->
                             <div class = "recentSearch albumInfo 1">
                                 <div class = "recentSearch albumInfoCover 1"></div>
-                                <p class = "recentSearch albumInfoName 1">7 EP</p>
-                                <p class = "recentSearch albumInfoArtist 1">Lil Nas X</p>
+                                <div class = "recentSearch textCont 1">
+                                    <p class = "recentSearch albumInfoName 1">7 EP</p>
+                                    <p class = "recentSearch albumInfoArtist 1">Lil Nas X</p>
+                                </div>
                             </div>
                         </div>
 
                         <div class = "recentSearchAlbumCont 2">
-                            <button class = "recentSearch albumRemove 2">X</button>
+                            <!-- <button class = "recentSearch albumRemove 2">X</button> --->
                             <div class = "recentSearch albumInfo 2">
                                 <div class = "recentSearch albumInfoCover 2"></div>
-                                <p class = "recentSearch albumInfoName 2">Currents B-Sides & Remixes</p>
-                                <p class = "recentSearch albumInfoArtist 2">Tame Impala</p>
+                                <div class = "recentSearch textCont 2">
+                                    <p class = "recentSearch albumInfoName 2">Currents B-Sides & Remixes</p>
+                                    <p class = "recentSearch albumInfoArtist 2">Tame Impala</p>
+                                </div>
                             </div>
                         </div>
 
                         <div class = "recentSearchAlbumCont 3">
-                            <button class = "recentSearch albumRemove 3">X</button>
+                            <!-- <button class = "recentSearch albumRemove 3">X</button> --->
                             <div class = "recentSearch albumInfo 3">
                                 <div class = "recentSearch albumInfoCover 3"></div>
-                                <p class = "recentSearch albumInfoName 3">My Dear Melancholy,</p>
-                                <p class = "recentSearch albumInfoArtist 3">The Weeknd</p>
+                                <div class = "recentSearch textCont 3">
+                                    <p class = "recentSearch albumInfoName 3">My Dear Melancholy,</p>
+                                    <p class = "recentSearch albumInfoArtist 3">The Weeknd</p>
+                                </div>
                             </div>
                         </div>
 
                         <div class = "recentSearchAlbumCont 4">
-                            <button class = "recentSearch albumRemove 4">X</button>
+                            <!-- <button class = "recentSearch albumRemove 4">X</button> -->
                             <div class = "recentSearch albumInfo 4">
                                 <div class = "recentSearch albumInfoCover 4"></div>
-                                <p class = "recentSearch albumInfoName 4">Where Does The Devil Hide</p>
-                                <p class = "recentSearch albumInfoArtist 4">Zella Day</p>
+                                <div class = "recentSearch textCont 4">
+                                    <p class = "recentSearch albumInfoName 4">Where Does The Devil Hide</p>
+                                    <p class = "recentSearch albumInfoArtist 4">Zella Day</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -421,19 +507,15 @@
                                 <div class = "browseAll genreBlockImage 20"></div>
                             </div>
 
+                            <div class = "browseAll empty genreBlock 21"></div> <!-- adds white space to bottom -->
                         </div>
                     </div>
-
             </div>
         </div>
     </div>
 
 
-
-
-
-<!--         Create Playlist                                            Tab 5 of Library                                               -->
-
+    <!--    Playlist (3)                                 tab5   -->
     <div class = "yourLibrarySect tab 5">
         <div class = "createPlaylist tab5">
 
@@ -457,9 +539,7 @@
                 </div>
             </div>
 
-
-
-            <!--    playlistSongs (bottom)    -->
+            <!--    playlistSongs (Middle of Page, Bottom Cont)    -->
             <div class = "library newPlaylistCont 1">
                 <div class = "newPlaylistControlCont 1">
                     <div class = 'playlistControlLeftCont 1'>
@@ -470,7 +550,7 @@
                         </button>
                         <button class = "playlistDownloadBtn 1">
                             <div class = "playlistDownloadImage 1">
-                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.5em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M24.59 16.59L17 24.17V4h-2v20.17l-7.59-7.58L6 18l10 10l10-10l-1.41-1.41z" fill="currentColor"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.5em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M24.59 16.59L17 24.17V4h-2v20.17l-7.59-7.58L6 18l10 10l10-10l-1.41-1.41z" fill="currentColor"/></svg> 
                             </div>
                         </button>
                         <button class = "playlistSettingsBtn 1">
@@ -479,19 +559,20 @@
                     </div>
                     <div class = 'playlistControlRightCont 1'>
                         <button class = "playlistBackwardsBtn">
-                            <div class = "playlistBackwardsIcon 1">Back</div>
+                            <div class = "playlistBackwardsIcon 1"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg></div>
                         </button>
 
+                    <!-- Search Songs. Will be added in future
                         <button class = "playlistSearchBtn 1">
                             <div class = "playlistSearchImage 1"></div><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 15 15"><g fill="#B3B3B3"><path d="M8.5 8.5l2 2M7 9.5a2.5 2.5 0 1 1 0-5a2.5 2.5 0 0 1 0 5z" stroke="#B3B3B3"/></g></svg></button>
                         <button class = "playlistFilterSongBtn 1">
                             <div class = "playlistFilterSongImage 1"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.5em" height="1.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M11.646 15.146L5.854 9.354a.5.5 0 0 1 .353-.854h11.586a.5.5 0 0 1 .353.854l-5.793 5.792a.5.5 0 0 1-.707 0z" fill="#B3B3B3"/></svg></div>
-                        </button>
+                        </button>-->
                     </div>
                 </div>
 
 
-                <!--    playlist songHeaders Div      -->
+                <!--    playlist songHeader Categories Div      -->
                 <div class = "newPlaylist colmHeaders 1">
                     <div class = "newPlaylist orderCont 1">
                         <div class = "playlistSong orderHeader 1">#</div>
@@ -507,15 +588,8 @@
                     </div>
 
                     <button class = "playlistFilterBtn 1">
-                        <div class = "playlistFilterIcon 1">Title</div>
+                        <div class = "playlistFilterIcon 1">Sort</div>
                     </button>
-
-                    <div class = "newPlaylist durationCont 1">
-                        <div class = "playlistSong durationArrowIcon 1"></div>
-                        <div class = "playlistSong durationIcon 1">
-                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 1 9-9a9 9 0 0 1-9 9zm0-16.5a7.5 7.5 0 1 0 7.5 7.5A7.5 7.5 0 0 0 12 4.5z" fill="currentColor"/><path d="M15 12.75h-3a.76.76 0 0 1-.75-.75V7a.75.75 0 0 1 1.5 0v4.25H15a.75.75 0 0 1 0 1.5z" fill="currentColor"/></svg>
-                        </div>
-                    </div>
                 </div>
 
 
@@ -544,15 +618,12 @@
                         <p class = "playlistSong durationTime 1"></p>
                     </div>
 
-                    <!--    Song Settings   -->
+                    <!--    Song Settings Options   -->
                     <nav class="song-nav 1">
                         <ul class="song-nav-ul">
                             <li class = "liHeader1 optionHeader"><div class ="menuGear"></div></li>
                             <ul class="level1">
                                 <ul class="sub-nav-ul">
-                                    <li class = "liHeader optionHeader">Like</li>
-                                    <li class = "liHeader optionHeader">Queue</li>
-                                    <li class = "liHeader optionHeader">Add to Playlist</li>
                                     <li class = "liHeader optionHeader">Listen Later
                                         <ul class="level2">
                                             <li class="optionHeader later 1">Priority</li>
@@ -560,6 +631,9 @@
                                             <li class="optionHeader later 1">Eventually</li>
                                         </ul>
                                     </li>
+                                    <li class = "liHeader optionHeader">Like</li>
+                                    <li class = "liHeader optionHeader">Queue</li>
+                                    <li class = "liHeader optionHeader">Add to Playlist</li>
                                 </ul>
                             </ul>
                         </ul>
@@ -568,68 +642,25 @@
                 </button>
             </div>
 
+            <!-- New Playlist Creation Mode Options -->
             <div class = "addNewSongsPlaylistCont">
                 <p class = "findSongsPlaylistHeader">Let's find something for your playlist</p>
                 <button class = "addSongsPlaylistBtn">Add Songs</button>
             </div>
 
-
-
             <button class = "finishedPlaylistBtn">Finished Creating</button>
-
         </div>
-
     </div>
 
 
 
 
 
-<!--        (3) librarySideBar                                  Section3               -->
-    <div class = "librarySideBar">
-
-        <div class = "librarySideBar headerCont">
-            <div class = "sideBarHeader">
-                <div class = "app profileImage 1"></div>
-                <h1 class = "librarySideBar mainHeader 1">Your Library</h1>
-            </div>
-
-            <div class = "librarySideBarContent">
-                <button class = "librarySideBar headerBtn 1">
-                    <div class = "sideBar Icon 1"></div>
-                    <p class = "sideBarHeader 1">Home</p>
-                </button>
-
-                <button class = "librarySideBar headerBtn 2">
-                    <div class = "sideBar Icon 2"></div>
-                    <p class = "sideBarHeader 2">Your Library</p>
-                </button>
-
-                <button class = "librarySideBar headerBtn 3">
-                    <div class = "sideBar Icon 3"></div>
-                    <p class = "sideBarHeader 3">Listen Later</p>
-                </button>
-
-                <button class = "librarySideBar headerBtn 4">
-                    <div class = "sideBar Icon 4"></div>
-                    <p class = "sideBarHeader 4">Search</p>
-                </button>
-
-                 <button class = "librarySideBar headerBtn 5">
-                    <div class = "sideBar Icon 5"></div>
-                    <p class = "sideBarHeader 5">Create Playlist</p>
-                </button>
-
-            </div>
-        </div>
-
-    </div>
-
-
-<!--        (4) playingNowSect                                                     Section4              -->
+<!--        (4) playingNowSect                                                                   section4               -->
     <div class = "playingNowSect">
         <div class = "playingNowSectCont">
 
+            <!-- Lyric API Section will be worked on in near future
             <div class = "songInfo playNowCategory 1">
                 <div class = "playNow Icon 1"></div>
                 <div class = "songInfo Container">
@@ -642,9 +673,37 @@
                     <p class = "songInfo Desc 1">On "HUMBLE." Kendrick Lamar challenges his competition</p>
                 </div>
             </div>
+            --->
 
             <div class = "songPlaying playNowCategory 2">
                 <div class = "songPlayingCont">
+
+                    <div class = "songPlaying ProgressCont">
+                        <div class = "songSkipSettings 1">
+                            <button class = "songSkip Setting 1">
+                              <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill ="#6a6a6a" d="M3.3 1a.7.7 0 01.7.7v5.15l9.95-5.744a.7.7 0 011.05.606v12.575a.7.7 0 01-1.05.607L4 9.149V14.3a.7.7 0 01-.7.7H1.7a.7.7 0 01-.7-.7V1.7a.7.7 0 01.7-.7h1.6z"></path></svg>
+                            </button>
+
+                            <button class = "songSkip Setting 2">
+                                <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path></svg>
+                            </button>
+
+                            <button class = "songSkip Setting 3">
+                               <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill ="#6a6a6a" d="M12.7 1a.7.7 0 00-.7.7v5.15L2.05 1.107A.7.7 0 001 1.712v12.575a.7.7 0 001.05.607L12 9.149V14.3a.7.7 0 00.7.7h1.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-1.6z"></path></svg>
+                            </button>
+                        </div>
+
+                        <div class = "songProgressCont">
+                            <div class="songProgressSecCont">
+                                <p class = "songProgressSec">0:00</p>
+                                <div class = "songEmpty ProgBar 1">
+                                    <div class = "songShown ProgBar 2"></div>
+                                </div>
+                                <p class = "songProgressSec total">4:10</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class = "songPlayingImageCont">
                         <div class = "songPlayingAlbum Image 1"></div>
                         <div class = "songPlayingNameCont 1">
@@ -653,36 +712,6 @@
                         </div>
                     </div>
 
-                    <div class = "songPlaying ProgressCont">
-                        <div class = "songSkipSettings 1">
-                            <button class = "songSkip Setting 1">
-                                <div class = "songBack playBackIcon 1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M112 64a16 16 0 0 1 16 16v136.43L360.77 77.11a35.13 35.13 0 0 1 35.77-.44c12 6.8 19.46 20 19.46 34.33v290c0 14.37-7.46 27.53-19.46 34.33a35.14 35.14 0 0 1-35.77-.45L128 295.57V432a16 16 0 0 1-32 0V80a16 16 0 0 1 16-16z" fill="#FFFFFF"/></svg>
-                                </div>
-                            </button>
-
-                            <button class = "songSkip Setting 2">
-                                <div class = "songPause playBackIcon 1">
-                                   <svg class = "playBtnIcon1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M8 5.14v14l11-7l-11-7z" fill="currentColor"/></svg> 
-                                </div>
-                            </button>
-
-                            <button class = "songSkip Setting 3">
-                                <div class = "songForward playBackIcon 1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M400 64a16 16 0 0 0-16 16v136.43L151.23 77.11a35.13 35.13 0 0 0-35.77-.44C103.46 83.47 96 96.63 96 111v290c0 14.37 7.46 27.53 19.46 34.33a35.14 35.14 0 0 0 35.77-.45L384 295.57V432a16 16 0 0 0 32 0V80a16 16 0 0 0-16-16z" fill="#FFFFFF"/></svg>
-                                </div>
-                            </button>
-                        </div>
-
-                        <div class = "songProgressCont">
-                            <p class = "songProgressSec">0:00</p>
-                            <div class = "songEmpty ProgBar 1">
-                                <div class = "songShown ProgBar 2"></div>
-                            </div>
-                            <p class = "songProgressSec total">4:10</p>
-                        </div>
-
-                    </div>
                 </div>
             </div>
 
@@ -692,48 +721,40 @@
                         <div class = "topContHeader">Global</div>
                         <div class = "songSkipSettings 2">
                             <button class = "songSkip Setting 4">
-                                <div class = "songShuffle playBackIcon 1">Shuffle
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 15 15"><g fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.15 7.5c0-2.835-2.21-5.65-5.65-5.65c-2.778 0-4.152 2.056-4.737 3.15H4.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.813C2.705 3.071 4.334.85 7.5.85c4.063 0 6.65 3.335 6.65 6.65c0 3.315-2.587 6.65-6.65 6.65c-1.944 0-3.562-.77-4.715-1.942a6.772 6.772 0 0 1-1.427-2.167a.5.5 0 1 1 .925-.38c.28.681.692 1.314 1.216 1.846c.972.99 2.336 1.643 4.001 1.643c3.44 0 5.65-2.815 5.65-5.65zM7.5 4a.5.5 0 0 1 .5.5v2.793l1.854 1.853a.5.5 0 0 1-.708.708l-2-2A.5.5 0 0 1 7 7.5v-3a.5.5 0 0 1 .5-.5z" fill="currentColor"/></g></svg>
+                                <div class = "songShuffle playBackIcon 1">
+                                    <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path class="songShuffleplayBackIcon1" fill="#6a6a6a" d="M13.151.922a.75.75 0 10-1.06 1.06L13.109 3H11.16a3.75 3.75 0 00-2.873 1.34l-6.173 7.356A2.25 2.25 0 01.39 12.5H0V14h.391a3.75 3.75 0 002.873-1.34l6.173-7.356a2.25 2.25 0 011.724-.804h1.947l-1.017 1.018a.75.75 0 001.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 00.39 3.5z"></path><path fill="#6a6a6a" class="songShuffleplayBackIcon2" d="M7.5 10.723l.98-1.167.957 1.14a2.25 2.25 0 001.724.804h1.947l-1.017-1.018a.75.75 0 111.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 11-1.06-1.06L13.109 13H11.16a3.75 3.75 0 01-2.873-1.34l-.787-.938z"></path></svg>
                                 </div>
                             </button>
                             <button class = "songSkip Setting 5">
-                                <div class = "songRepeat playBackIcon 1">Repeat
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 15 15"><g fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.15 7.5c0-2.835-2.21-5.65-5.65-5.65c-2.778 0-4.152 2.056-4.737 3.15H4.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.813C2.705 3.071 4.334.85 7.5.85c4.063 0 6.65 3.335 6.65 6.65c0 3.315-2.587 6.65-6.65 6.65c-1.944 0-3.562-.77-4.715-1.942a6.772 6.772 0 0 1-1.427-2.167a.5.5 0 1 1 .925-.38c.28.681.692 1.314 1.216 1.846c.972.99 2.336 1.643 4.001 1.643c3.44 0 5.65-2.815 5.65-5.65zM7.5 4a.5.5 0 0 1 .5.5v2.793l1.854 1.853a.5.5 0 0 1-.708.708l-2-2A.5.5 0 0 1 7 7.5v-3a.5.5 0 0 1 .5-.5z" fill="currentColor"/></g></svg>
-                                </div>
+                                <div class = "songRepeat playBackIcon 1"><svg role="img" height="16" width="16" viewBox="0 0 16 16"><path class = "songRepeatplayBackIcon1" fill="#6a6a6a" d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5A2.25 2.25 0 001.5 4.75v5A2.25 2.25 0 003.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"></path></svg></div>
                             </button>
                         </div>
                     </div>
 
                     <div class = "globalSetting bottomCont">
+                        <!-- Queue Will be added in next release
                         <button class = "songQueueBtn">
                             <div class = "songQueue playBackIcon 1">
-                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.17em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 28 24"><path d="M0 24.001v-3.165h27.693v3.165zm0-7.912v-3.165h27.693v3.165zm0-7.055V.461A.505.505 0 0 1 .748.059L.745.058l8.483 4.273a.464.464 0 0 1 .003.836l-.003.001L.745 9.437a.534.534 0 0 1-.242.059h-.02A.484.484 0 0 1 0 9.035v-.001zm12.659-2.44V3.429h15.033v3.165z" fill="currentColor"/></svg>
+                                <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>
                             </div>
                         </button>
-
+                        --->
                         <button class = "songMuteBtn">
                             <div class = "songMute playBackIcon 1">
-                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path class="clr-i-solid clr-i-solid-path-1" d="M23.41 25.25a1 1 0 0 1-.54-1.85a6.21 6.21 0 0 0-.19-10.65a1 1 0 1 1 1-1.73a8.21 8.21 0 0 1 .24 14.06a1 1 0 0 1-.51.17z" fill="currentColor"/><path class="clr-i-solid clr-i-solid-path-2" d="M25.62 31.18a1 1 0 0 1-.45-1.89A12.44 12.44 0 0 0 25 6.89a1 1 0 1 1 .87-1.8a14.44 14.44 0 0 1 .24 26a1 1 0 0 1-.49.09z" fill="currentColor"/><path class="clr-i-solid clr-i-solid-path-3" d="M18.33 4l-9.26 8h-6a1 1 0 0 0-1 1v9.92a1 1 0 0 0 1 1h5.81l9.46 8.24a1 1 0 0 0 1.66-.73V4.72A1 1 0 0 0 18.33 4z" fill="currentColor"/></svg>
+                                <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="#6a6a6a" d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65l-6.925-4a3.642 3.642 0 01-1.33-4.967 3.639 3.639 0 011.33-1.332l6.925-4a.75.75 0 01.75 0zm-6.924 5.3a2.139 2.139 0 000 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 010 4.88z"></path><path fill="#6a6a6a" d="M11.5 13.614a5.752 5.752 0 000-11.228v1.55a4.252 4.252 0 010 8.127v1.55z"></path></svg>
                             </div>
                         </button>
-
                        
                         <div class = "volumeEmpty ProgBar 1">
                             <div class = "volumeShown ProgBar 2"></div>
                         </div>
                     </div>
-                        
-
                 </div>
-
-
             </div>
-
 
         </div>
     </div>
 
-</div>     
 
       <!-- <script src="app.js" defer></script> 
  </html> --->

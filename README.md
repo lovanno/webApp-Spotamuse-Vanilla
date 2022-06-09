@@ -1,16 +1,17 @@
-# Spotamuse (Work in Progress)   
-#### Do you love music and wish you could add your own twist to your favorites? Speed up your songs, lower the pitch or organize your music to be more accessible with Spotamuse.
+# Spotamuse
+#### Do you love music and wish you could add your own twist to your favorite songs? With Spotamuse, you can speed up music, lower the pitch or organize your music to be more accessible to you.
 
-![displayImg!](Designs/spotaProgress.png)
+![displayImg!](Designs/spotaProgress2%20(v1).png)
 
-**Stack:** *HTML, CSS, Javascript, Typescript*
+**Stack:** *HTML, CSS, Typescript*
 
-#### **Objective 📈:** **Reconstruct and Improve a Web Application (Spotify)**
+#### **Objective 📈:** **Reconstruct and Improve an existing Web Application: Spotify**
 
 #### **Purpose:** 
 
-This project will give you a glimpse of the everyday processes companies employ to improve their services. Everyday, developers are 
-testing new features and brainstorming new ideas. In addition, you will learn to consume data from a database or API. It's the first step towards backend and becoming a Full Stack Developer, as well as working with a team. 
+Every day, developers are testing and brainstorming new ideas. Through Spotamuse, I'll get a glimpse of different techniques companies use to not only improve their services but scale them. In addition, I'll master consuming data from an API.
+
+&nbsp;
 
 **Requirements** 🚦
 
@@ -18,91 +19,93 @@ testing new features and brainstorming new ideas. In addition, you will learn to
 
 • *Must utilize an API or work with data*
 
-• *After implementing base features, you must add new features to enhance the experience*
+• *New and unique features must be added after the base version to enhance the experience*
 
 **Requirement Issues:** 
 
-&emsp; &emsp;After researching the Spotify API, I realized you must have the user logged in to use the API. They also have to log in every 60 minutes. I researched if you could just automatically refresh tokens but it wasn't allowed. 
-This forced me to develop the application without an API, which is a bummer but not the end. Instead, I will probably use the faker API and auto generate playlists for these fake users or use firestore to store and consume data.
+&emsp; &emsp;After researching the Spotify API, I noticed users had to log in to access the API. They’d also have to log in every 60 minutes to continue using Spotamuse. From a data consumption view and a security standpoint, I can understand why Spotify requires this. Although there’s a way you could automatically refresh tokens, it'd violate Spotify’s terms of service and forcing users to log in would just resistance.
+
+This pushed me to develop the application without an API and embed the music library. While upsetting, it’s far from the end. Instead, I will use the faker API and auto generate playlists for a fake users’ feed or use firestore to store the music library in the near future. 
 
 &nbsp;
 
 # Roadmap 📜
-*Current Goal: Convert Javascript into Typescript to ensure quality and improve current program.*
 
-## Version 1: Launch 🌌
+## Version 2: The Experience 🌌
 
-Sort Songs (most played, alphabetical, date created, date added) ✅
+*Music Filters (A new tab)*
 
-Last Played Personal Playlist (plays last 10 songs and updates with each song) ✅
+• Slow down or speed up songs
 
-Play a playlist backwards ✅
-
-Create a playlist shuffle ✅
-
-Listen to later tab. This can organize songs by priority, nonessential, eventually ✅
-
-*Allow songs to replay if repeat cycle button is toggled*
-
-## Version 2: Experience 🌌
-
-Music Filters
-• Slow down music or Speed it up
 • Add an echo to a song (reverb)
+
+• Modify the pitch of a song
+
+• Apply multiple filters with different adjustments and save them as presets
+
+• Include 3 base filters for users to try
+
+• Allow these base filters or any other filter to be deleted or modified
+
+• Toggle on/off music filters in the music controls (playingNow section)
 
 &nbsp;
 
-*Better queue grid*
+*Queue Music*
 
-&emsp; &emsp;• Make temporary playlists through the queue. Temporary Playlists can repeat if you create a button to cycle.
+• Add a song to the queue
+
+• Reorganize songs in the queue 
+
+• Allow users to make temporary playlists of songs through the queue that can also be repeated
+
+&nbsp;
 
 *Organization*
 
-&emsp; &emsp;• Make breaks for Spotify playlists. (Breaks allow for random songs to be played within sections. EX you can’t play a song in section 2 if your skips aren’t broken. Max of 3 skips. Must hold to activate)
+• Allow Spotify playlists to be segmented with breaks. Breaks can be placed anywhere in a playlist and will only play songs within a break’s range. This feature can be added or removed in the app settings. 
 
-&emsp; &emsp;• temporary playlist through queue. It can repeat if you create a button to cycle. It’ll hit the button again and be signaled as the restart.
-• Folders for Spotify 
-• Sort Songs (most played, alphabetical, date created, date added)
+•  Allow playlists to be saved inside folders 
 
-&nbsp;
+• Create a preferred order of albums. This button switches between the original track order and the unique order a user creates
 
-*Album Order*
-
-&emsp; &emsp; • create a preferred order of albums. This button switches between original and the ones you just want to hear. 
-
-*Folders for Spotify*
 
 # Realizations ⌛️
 
 • If there is an error in the HTML markup, your css grid will break. 
 
-&nbsp;
+• You can access dynamic arrays through the DOM window
+
+>window["'" + playlistName.textContent + "'"]
+
+•Functions or css  styles with one line can be placed on the same line to save space
+
+• You can see the exact position someone clicked on a div with offsetX. 
+
+>event.offsetX/element.clientWidth
+
+• You can check playlist attributes with [attribute]
+
+>function sortAlpha(list, _attribute){ list.sort((a, b) => {  if (a[_attribute] > b[_attribute])
 
 &nbsp;
 
-# Current Bugs & Problems 😎
-
-*Note: M = Major, n = nothing serious*
-
-*• M1: Playlist tracks can't be played if cover or song info is touched. | Messing with Z-index didn't solve this issue. Will have to research later.* 
-
-
-&nbsp;
-
-## Problems
-
-• **(05/05/22) Restructure - Removing the musicLibrary object data from javascript and retrieving it locally isn't simple**
-
->JSON data must be uploaded on a remote server to be retrieved for security reasons. Another angle was importing javascript files but this is only an ES6 feature. We'll just have to finish version 1 with the musicLibrary embedded and then restructure with firebase database.
-
-&nbsp;
+# Current Bugs & Problems 😎 
 
 &nbsp;
 
 
-• **(05/10/22) Song Reference vs Copy - Playlist creation**
+## Past Problems
 
-&emsp; &emsp;The music library is an array with objects with each object being a song. To create a new playlist, you'd have to either copy these objects into a new array or reference them but referencing them within javascript isn't simple. Even referencing an entire database for 1 song doesn't make sense, at least in Firestore. The funny part was I knew this would be an issue and wrote it in Big Questions before facing it
+• **(05/05/22) Music Library JSON Restructure Attempt**
+> Replacing the embedded musicLibrary with a JSON file and retrieving it locally requires a remote server. This is due to security reasons. 
+
+&nbsp;
+
+
+• **(05/10/22) Playlist creation - Song Reference vs Copying**
+
+&emsp; &emsp;The music library is an array of objects with each object being a song. To create a new playlist, you'd have to either copy these objects into a new array or reference them but referencing them within javascript isn't simple. Even referencing an entire database for 1 song doesn't make sense, at least in Firestore. The funny part was I knew this would be an issue and wrote it down before I faced it.
 
 &nbsp;
 
@@ -142,26 +145,6 @@ The other issue was track creation. The first playlist song would never be avail
 &nbsp;
 
 
-### 🔱 Big Questions during Development 🔱
-
-• *How would you cache data downloaded files and avoid multiple api calls for each song?*
-
-• *How can you make new playlists without duplicating data? Would you make a reference or would you duplicate each time (since firebase is noSQL and duplication is fine)?*
-
-• *Is it bad design to reuse one element variable multiple times? I keep thinking of using a getter or a way to lock the variable so only functions can modify them*
-
-
-&nbsp;
-
-
-*Scraped Features*
-
-   >Global Rewind and Shuffle
-    
-    Global rewind is a feature I'd love in Spotify. With global rewind, you'd be able to play the last song listened to from a previous playlist. To make a true global experience, I also wanted to make a global shuffle feature that allowed you to play a random song from all your playlists. 
-
-    Reason for Removal: All created playlists are based on home library of MP3's. So playing a song from a random playlist is just playing a random from the home library.It just doesn't make sense to implement this feature. This reasoning also extends to the global shuffle. Instead, I'll just make a shuffle feature for the current playlist. 
-
 
 *📚 Sources*
 
@@ -175,28 +158,14 @@ https://tunebat.com/
 https://songdata.io/search
         
         
->Although there is this website that uses the spotify API with no auth, I don't want to risk safety. 
+>Webapps that use Spotify’s API without Auth
 
 http://sixdegreesofkanyewest.com/699OTQXzgjhIYAHMy9RyPD
 
 
->Searches with no Log In's.
+>Spotify artist and song searches without API log In's.
 
 https://spotify-search-artist.glitch.me/
-
-
->Audiomack has auth points. Couldn't use
-
-
-https://api.audiomack.com/v1/music/rap/trending (1003, 401)
-
-https://audiomack.com/v1/search?q=the%20weeknd (1003, 401)
-
-https://api.audiomack.com/v1/music/song/the-weeknd/song/save-your-tears (1003, 401)
-
-https://api.audiomack.com/v1/playlist/trending (1003, 401)
-
-
 
 
 >Song Settings: Vertical Dropdown Menu w/ Submenu Inspo
