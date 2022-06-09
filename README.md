@@ -1,4 +1,6 @@
 # Spotamuse
+*Note: The website is live but hasn't been optimized yet* - https://main--spotamuse.netlify.app/pages/
+
 #### Do you love music and wish you could add your own twist to your favorite songs? With Spotamuse, you can speed up music, lower the pitch or organize your music to be more accessible to you.
 
 ![displayImg!](Designs/spotaProgress2%20(v1).png)
@@ -147,7 +149,6 @@ The other issue was track creation. The first playlist song would never be avail
 
 
 *📚 Sources*
-
 
 >Music metadata sources:
 
