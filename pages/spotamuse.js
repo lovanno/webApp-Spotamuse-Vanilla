@@ -2112,6 +2112,9 @@ const musicLibrary = [
             console.log("Please enter a valid Playlist Name");
         } 
         else {
+            const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
+            currentPlaylistCover.style.backgroundImage = "url(" + "../material/appIcons/createPlaylist_icon.jpg)";
+
             playlistName.textContent = newPlaylistName;
             createPlaylistBox();
             refreshPlaylist();
@@ -2133,6 +2136,7 @@ const musicLibrary = [
 
             const newPlaylistCover = document.createElement("div");
             newPlaylistCover.classList.add("yourLibrary", "playlistCover", playlistBoxes)
+            newPlaylistCover.style.backgroundImage = "url(" + "../material/appIcons/createPlaylist_icon.jpg)";
             newPlaylistBox.appendChild(newPlaylistCover);
 
             const updatePlaylistName = document.createElement("div");
@@ -2448,14 +2452,19 @@ const musicLibrary = [
         }
             
         if(hasClass(from, "playlistBtnCont") && !hasSuperClass(from, "yourLibrary playlistBtnCont 1") && !hasSuperClass(from, "yourLibrary playlistBtnCont 0")){
+
+            if(window["'" + from.lastElementChild.textContent + "'"] == undefined){     /*Prevents playlist creation error from empty playlists. Adding more songs to a playlist will be added in the future*/
+                return console.log("Playlist can't be opened. It has no Songs");
+            }
+
             refreshPlaylist();
             document.querySelector("button.newPlaylistSongs.\\31").style.display = "flex";
-
-            playlistName.textContent = from.lastElementChild.textContent;                
+            playlistName.textContent = from.lastElementChild.textContent;
             musicSource(window["'" + playlistName.textContent + "'"]);
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
             openPlaylistTab();
-            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106); /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43); */
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             removePlaySortFilters(window["'" + playlistName.textContent + "'"]);
@@ -2504,7 +2513,6 @@ const musicLibrary = [
 
 
     /*Add songs to a new Playlist*/
-    const dloadedFilesImgUrl = "url(\"../" + retrieveElmImg(document.querySelector("div.yourLibrary.playlistCover.\\31")).slice(106);
     const createdPlaylists = [];
     const createdPlaylistsName = [];
     const addNewSongsPlaylist = document.querySelector("button.addSongsPlaylistBtn");
@@ -2519,11 +2527,12 @@ const musicLibrary = [
         createdPlaylistsName.push(playlistName.textContent);
         newPlaylistPrep();               /*since we're pulling from the music library. We'll have to revise this when adding from other playlists. Will be fun*/
         musicSource(musicLibrary);
-
         for(let f=1; f<musicLibrary.length; f++){playlistCreation();}
-        const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+
+        const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);  /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);*/
         const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
         currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
+        document.querySelectorAll(".song-nav").forEach(songOption => {songOption.style.visibility = "hidden";});    /*Hides Song Options. Since Playlists are recreated when opened, I don't have to make them visible again*/
     })
 
     /*Listens when new playlist creation is finished*/
@@ -2544,9 +2553,10 @@ const musicLibrary = [
             else{document.querySelector("div.yourLibrary.playlistCover.\\3" + spaceTens(playlistBoxes)).style.backgroundImage ="url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
 
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
-            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106); /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);*/
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
+            document.querySelector("nav.song-nav").style.visibility = "initial";     /*The 1st track has to be set to initial since it never gets destroyed*/
         }
     });
 
