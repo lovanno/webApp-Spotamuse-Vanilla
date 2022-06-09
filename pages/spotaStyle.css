@@ -319,13 +319,6 @@
       width: 12.5rem;
     }
 
-    /* Unused Remove Button
-    button.homeContentCont.albumRemove {
-      position: relative;
-      top: 10%;
-      left: 32%;
-    }*/
-
     .homeContentCont.albumInfo {       /*Recent Search Albums*/
       cursor: pointer;
       margin-left: 15px;
@@ -638,13 +631,6 @@
       height: 17.375rem;
       width: 12.5rem;
     }
-
-    /* Unused Remove Album Btn
-    button.recentSearch.albumRemove {
-      position: relative;
-      top: 10%;
-      left: 32%;
-    }*/
 
     .recentSearch.albumInfo {       /*Individual Album Box Conts */
       margin-left: 12px;
@@ -1159,20 +1145,6 @@
       justify-content: space-between;
       width: 60%;
     }
-
-    /* Unused Lyrics Section
-    .songInfo.Container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-    .songInfo.Name.\31 {text-align: left;}
-    h3.songInfoHeader.\31 {color: white;}
-    p.songInfoArtist.\31 {color: white;}
-    p.songInfoTrack.\31 {color: white;}*/
-
-
 
     /*Song Playing Now Controls*/
     .songInfo.playNowCategory.\31 {margin-left: 20px;}

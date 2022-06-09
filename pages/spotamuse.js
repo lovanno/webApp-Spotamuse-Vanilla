@@ -2464,7 +2464,7 @@ const musicLibrary = [
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
             openPlaylistTab();
 
-            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106); /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43); */
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43); 
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             removePlaySortFilters(window["'" + playlistName.textContent + "'"]);
@@ -2529,7 +2529,7 @@ const musicLibrary = [
         musicSource(musicLibrary);
         for(let f=1; f<musicLibrary.length; f++){playlistCreation();}
 
-        const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106);  /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);*/
+        const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);
         const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
         currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
         document.querySelectorAll(".song-nav").forEach(songOption => {songOption.style.visibility = "hidden";});    /*Hides Song Options. Since Playlists are recreated when opened, I don't have to make them visible again*/
@@ -2553,7 +2553,7 @@ const musicLibrary = [
             else{document.querySelector("div.yourLibrary.playlistCover.\\3" + spaceTens(playlistBoxes)).style.backgroundImage ="url('" + window["'" + playlistName.textContent + "'"][0].track_coverUrl + "')";}
 
             for(let f=1; f<playlistShow.length; f++){playlistCreation();}
-            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(106); /*DeployedDiff const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);*/
+            const newPlaylistImg =  retrieveElmImg(document.querySelector("div.playlistSong.trackImage.\\31")).slice(43);
             const currentPlaylistCover = playlistName.parentElement.previousElementSibling;
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             document.querySelector("nav.song-nav").style.visibility = "initial";     /*The 1st track has to be set to initial since it never gets destroyed*/
