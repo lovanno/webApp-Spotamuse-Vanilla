@@ -2050,6 +2050,8 @@ const musicLibrary = [
             allTabs[clickedTab].style.display = "block";    /*Display new tab display + color*/
             document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
             document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff";
+            queueTab6.style.display = "none";
+            queueSvgColor.style.fill = '#6a6a6a';
         }
     });
 
@@ -2079,6 +2081,8 @@ const musicLibrary = [
             allTabs[clickedTab].style.display = "block";
             document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
             document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff"
+            queueTab6.style.display = "none";
+            queueSvgColor.style.fill = '#6a6a6a';
         }
         if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}      /* Hide Announcements Banner */
     });
@@ -2476,23 +2480,6 @@ const musicLibrary = [
 
             let clickedTrack = parseInt(from.className.slice(-2));   /*slice(-2) limits total range from 0-99*/
             song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
-            
-            /*A perm solution would be the following: 
-            for(let i=1; i<100; i++){   
-                /*if(isNaN(parseInt(from.className.slice(Math.abs(i) * -1)))){ 
-                    clickedTrack = parseInt(from.className.slice(Math.abs(i-1) * -1));
-                    break;
-                }*/
-
-                /*Test for large Numbers 
-                let testLargeSong = "playlistSong 202010";
-                if(isNaN(parseInt(testLargeSong.slice(Math.abs(i) * -1)))){
-                    console.log(parseInt(testLargeSong.slice(Math.abs(i-1) * -1)));     /*solution passed
-                    break;
-                }
-            }*/
-            
-
             song.volume = appVolume;
             stopAll();
             song.play();
@@ -2948,6 +2935,21 @@ catch{}
     }
 
     /**                       Playback Functions                                **/
+
+    const queueBtn = document.querySelector("button.songSkip.Setting.\\36");
+    const queueSvgColor = document.querySelector("path.songQueueplayBackIcon1");
+    const queueTab6 = document.querySelector("div.yourLibraryQueueSectTab6");
+    queueBtn.addEventListener("click", function(){
+        if(queueSvgColor.style.fill == 'rgb(106, 106, 106)' || queueSvgColor.style.fill == ''){
+            queueSvgColor.style.fill = '#fff';
+            queueTab6.style.display = "block";
+        }   
+        else{
+            queueSvgColor.style.fill = '#6a6a6a';
+            queueTab6.style.display = "none";
+        }
+    });
+
     /*    Shuffle Feature   */
     let shuffleMode = false;
     let lastSongOrder;
@@ -2964,6 +2966,7 @@ catch{}
         }
     });
 
+    /*    Repeat Feature   */
     let repeatCycleMode = false;
     const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
     repeatCycleBtn.addEventListener("click", function(){
