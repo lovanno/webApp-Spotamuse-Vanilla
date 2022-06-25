@@ -2482,12 +2482,15 @@ const musicLibrary = [
             song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
             song.volume = appVolume;
             stopAll();
+            if(songFilterMode == true){updateAudioFilt(song);}
+
             song.play();
             recentlyPlayedAudio.push(song);
             recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1])
             recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
             updateSongTime();
+            playPauseToggle = false;
             songOrder = clickedTrack-1;
             nowPlayingInfo(playlistShow[songOrder]);
 
@@ -2925,6 +2928,7 @@ catch{}
 
         song.volume = appVolume;
         stopAll();
+        if(songFilterMode == true){updateAudioFilt(song);}
         song.play();
     }
 
@@ -2935,7 +2939,6 @@ catch{}
     }
 
     /**                       Playback Functions                                **/
-
     const queueBtn = document.querySelector("button.songSkip.Setting.\\36");
     const queueSvgColor = document.querySelector("path.songQueueplayBackIcon1");
     const queueTab6 = document.querySelector("div.yourLibraryQueueSectTab6");
@@ -3017,6 +3020,7 @@ catch{}
                 recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
                 playPauseToggle = false;
                 updateSongTime();
+                if(currentSongFilt == getAudioFilterVar[3]){updateSongGradual();}       // Returns to last Interval to make audioFilter work
             }
             stopLaterSongs();
             listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
@@ -3105,7 +3109,6 @@ catch{}
     startSong = new Audio(mp3UrlLibrary[0]);
     recentlyPlayedAudio.push(startSong);
     recentlyPlayedPlaylist.push(musicLibrary[0]);
-
     
     /*backwards playlist toggle*/
     let backwardsMode = false;       /*A great idea would be making backwards mode inaccessible in the scope so it can't be modified whenever. This may be a major issue I keep repeating thoughout my code*/
@@ -3133,4 +3136,84 @@ catch{}
                 playlistCreation();
             }
         openPlaylistTab();
+    })
+
+
+    /***        Queue (3)                                     tab6               ***/   
+    /*  Song Audio Filters  */
+    let currentSongFilt;
+    let songFilterMode = false;
+    const getAudioFilterVar = ({
+        1: 'Slowed',
+        2: 'Nightcore',
+        3: 'Gradual'
+    })
+
+    function slowSongPitch(enterSong){
+        enterSong.playbackRate = 0.85;
+        enterSong.preservesPitch = false;
+    }
+
+    function nightCoreSong(enterSong){
+        enterSong.playbackRate = 1.08;
+        enterSong.preservesPitch = false;
+    }
+
+    function updateSongGradual() {
+        let currentInterval2 = setInterval(function() {
+            songTimeIntervals.push(currentInterval2);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
+            const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
+
+            if(songSeconds == 0){
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 0.8;
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;
+            }
+            if(songSeconds > 7 && songSeconds < 15){
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = (songSeconds % 60)/10;
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = true;
+            }
+            else if (songSeconds > 16){
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 1.2;    
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;    
+            }
+            if(songSeconds % 60 == 30){clearInterval(currentInterval2);}
+        }, 0);
+    }
+
+    function resetSongFilter(enterSong){
+        enterSong.playbackRate = 1;
+        enterSong.preservesPitch = true;
+    }
+
+    function updateAudioFilt(song){
+        if(currentSongFilt == getAudioFilterVar[1]){
+            recentlyPlayedAudio.forEach(f=> resetSongFilter(f));
+            songTimeIntervals.forEach(f => clearInterval(f));
+            slowSongPitch(song);
+        }
+        if(currentSongFilt == getAudioFilterVar[2]){
+            recentlyPlayedAudio.forEach(f => resetSongFilter(f));     
+            songTimeIntervals.forEach(f => clearInterval(f));
+            nightCoreSong(song);
+        }
+        if(currentSongFilt == getAudioFilterVar[3]){
+            recentlyPlayedAudio.forEach(f=> resetSongFilter(f));
+            updateSongGradual();
+        }
+    }
+
+
+    /*Queue Tab Body Listener - Song Filters*/
+    document.body.addEventListener("click", function(event){
+        from = event.target;
+        if(hasClass(from, "effectPresetBtn")){
+            songFilterMode = true;
+            const filtNum = from.className.slice(-1);
+            currentSongFilt = getAudioFilterVar[filtNum];
+        }
+
+        if(hasClass(from, "resetSongEffectBtn")){
+            songFilterMode = false;
+            songTimeIntervals.forEach(f => clearInterval(f));
+        }
     })
