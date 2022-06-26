@@ -3154,6 +3154,11 @@ catch{}
         recentlyPlayedAudio.forEach(f => resetSongFilter(f)); 
     }
 
+    function createAudioFiltEffect(song, speed, keepPitch){
+        song.playbackRate = speed;
+        song.preservesPitch = keepPitch;
+    }
+
     function slowSongPitch(enterSong){
         enterSong.playbackRate = 0.85;
         enterSong.preservesPitch = false;
@@ -3166,28 +3171,23 @@ catch{}
 
     function updateSongGradual() {
         let currentInterval2 = setInterval(function() {
-            songTimeIntervals.push(currentInterval2);     /*Interval will run infinitely if no interaction happens so we'll store all intervals and clear them on pause*/
-            const songSeconds = (Math.floor(recentlyPlayedAudio[recentlyPlayedAudio.length-1].currentTime));
+            songTimeIntervals.push(currentInterval2);     
+            const recentSong = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
+            const songSeconds = (Math.floor(recentSong.currentTime));
 
-            if(songSeconds == 0){
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 0.8;
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;
-                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "60%";
-                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+            if(songSeconds < 7){
+                createAudioFiltEffect(recentSong, 0.8, false);
+                setAudioEffectProgBar("60%", "100%");
                 document.querySelector("p.songEffectNum.\\31").textContent = 0.8;
             }
             if(songSeconds > 7 && songSeconds < 15){
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = (songSeconds % 60)/10;
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = true;     
-                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = (100-(songSeconds*5)) + "%"; 
-                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+                createAudioFiltEffect(recentSong, (songSeconds % 60)/10, true); 
+                setAudioEffectProgBar((100-(songSeconds*5)) + "%", "0%");
                 document.querySelector("p.songEffectNum.\\31").textContent = (songSeconds % 60)/10;
             }
             else if (songSeconds > 16){
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 1.2;    
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;   
-                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "40%"; 
-                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+                createAudioFiltEffect(recentSong, 1.2, false);
+                setAudioEffectProgBar("40%", "100%");
                 document.querySelector("p.songEffectNum.\\31").textContent = 1.2;
             }
             if(songSeconds % 60 == 30){clearInterval(currentInterval2);}
@@ -3203,15 +3203,13 @@ catch{}
         if(currentSongFilt == getAudioFilterVar[1]){
             resetAudioNTime();
             slowSongPitch(song);
-            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "57.5%";
-            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+            setAudioEffectProgBar("57.5%", "100%");
             document.querySelector("p.songEffectNum.\\31").textContent = 0.85;
         }
         if(currentSongFilt == getAudioFilterVar[2]){
             resetAudioNTime();
             nightCoreSong(song);
-            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "49%";
-            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+            setAudioEffectProgBar("49%", "100%");
             document.querySelector("p.songEffectNum.\\31").textContent = 1.1;
         }
         if(currentSongFilt == getAudioFilterVar[3]){
@@ -3221,7 +3219,6 @@ catch{}
     }
 
     
-
     /*  Song Effects View */
     const allAudioFiltBtns = document.querySelector("div.songEffectPresetsCont");
     function resetAudioFiltBtnStyles(){
@@ -3229,6 +3226,11 @@ catch{}
             button.style.borderStyle = "outset";
             button.style.backgroundColor = "#EFEFEF";
         }
+    }
+
+    function setAudioEffectProgBar(firstBarHeight, secondBarHeight){
+        document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = firstBarHeight;
+        document.querySelector("div.songEffectVertShownBarEmpty.\\32").style.height = secondBarHeight;
     }
 
     function resetEffectsView(){
@@ -3250,8 +3252,7 @@ catch{}
                 resetAudioFiltBtnStyles();
                 songFilterMode = false;
                 currentSongFilt = "";
-                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "50%"; 
-                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+                setAudioEffectProgBar("50%", "0%");
                 document.querySelector("p.songEffectNum.\\31").textContent = "1.0";
                 resetAudioNTime();  
                 updateSongTime();
@@ -3271,8 +3272,7 @@ catch{}
 
         if(hasClass(from, "resetSongEffectBtn")){
             resetEffectsView();
-            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "50%"; 
-            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+            setAudioEffectProgBar("50%", "0%");
             document.querySelector("p.songEffectNum.\\31").textContent = 1.0;
         }
     })
