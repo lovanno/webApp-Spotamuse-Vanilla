@@ -905,16 +905,21 @@
       cursor: pointer;
       height: 100%;
       width: 3rem;
-      background-color: grey;
+      background-color: #fff;
     }
 
-    .songEffectVertShownBarEmpty.\31 {
+    .songEffectVertShownBarEmpty {
       cursor: pointer;
-      height: 100%;
+      height: 50%;
       width: 3rem;
       background-color: grey;
     }
+    .songEffectVertShownBarEmpty.\32 {height: 0%;}
     
+    p.songEffectNum.\31 {
+      position: relative;
+      top: 47%;
+    }
 
 
 

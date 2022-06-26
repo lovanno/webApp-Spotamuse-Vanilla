@@ -3149,6 +3149,11 @@ catch{}
         3: 'Gradual'
     })
 
+    function resetAudioNTime(){
+        songTimeIntervals.forEach(f => clearInterval(f));
+        recentlyPlayedAudio.forEach(f => resetSongFilter(f)); 
+    }
+
     function slowSongPitch(enterSong){
         enterSong.playbackRate = 0.85;
         enterSong.preservesPitch = false;
@@ -3167,14 +3172,23 @@ catch{}
             if(songSeconds == 0){
                 recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 0.8;
                 recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;
+                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "60%";
+                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+                document.querySelector("p.songEffectNum.\\31").textContent = 0.8;
             }
             if(songSeconds > 7 && songSeconds < 15){
                 recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = (songSeconds % 60)/10;
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = true;
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = true;     
+                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = (100-(songSeconds*5)) + "%"; 
+                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+                document.querySelector("p.songEffectNum.\\31").textContent = (songSeconds % 60)/10;
             }
             else if (songSeconds > 16){
                 recentlyPlayedAudio[recentlyPlayedAudio.length-1].playbackRate = 1.2;    
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;    
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].preservesPitch = false;   
+                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "40%"; 
+                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+                document.querySelector("p.songEffectNum.\\31").textContent = 1.2;
             }
             if(songSeconds % 60 == 30){clearInterval(currentInterval2);}
         }, 0);
@@ -3187,14 +3201,18 @@ catch{}
 
     function updateAudioFilt(song){
         if(currentSongFilt == getAudioFilterVar[1]){
-            recentlyPlayedAudio.forEach(f=> resetSongFilter(f));
-            songTimeIntervals.forEach(f => clearInterval(f));
+            resetAudioNTime();
             slowSongPitch(song);
+            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "57.5%";
+            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+            document.querySelector("p.songEffectNum.\\31").textContent = 0.85;
         }
         if(currentSongFilt == getAudioFilterVar[2]){
-            recentlyPlayedAudio.forEach(f => resetSongFilter(f));     
-            songTimeIntervals.forEach(f => clearInterval(f));
+            resetAudioNTime();
             nightCoreSong(song);
+            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "49%";
+            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '100%';
+            document.querySelector("p.songEffectNum.\\31").textContent = 1.1;
         }
         if(currentSongFilt == getAudioFilterVar[3]){
             recentlyPlayedAudio.forEach(f=> resetSongFilter(f));
@@ -3202,6 +3220,24 @@ catch{}
         }
     }
 
+    
+
+    /*  Song Effects View */
+    const allAudioFiltBtns = document.querySelector("div.songEffectPresetsCont");
+    function resetAudioFiltBtnStyles(){
+        for(let button of allAudioFiltBtns.children) {
+            button.style.borderStyle = "outset";
+            button.style.backgroundColor = "#EFEFEF";
+        }
+    }
+
+    function resetEffectsView(){
+        resetAudioFiltBtnStyles();
+        resetAudioNTime();
+        songFilterMode = false;
+        currentSongFilt = "";
+    }
+    
 
     /*Queue Tab Body Listener - Song Filters*/
     document.body.addEventListener("click", function(event){
@@ -3209,11 +3245,34 @@ catch{}
         if(hasClass(from, "effectPresetBtn")){
             songFilterMode = true;
             const filtNum = from.className.slice(-1);
-            currentSongFilt = getAudioFilterVar[filtNum];
+
+            if(currentSongFilt == getAudioFilterVar[filtNum]){
+                resetAudioFiltBtnStyles();
+                songFilterMode = false;
+                currentSongFilt = "";
+                document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "50%"; 
+                document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+                document.querySelector("p.songEffectNum.\\31").textContent = "1.0";
+                resetAudioNTime();  
+                updateSongTime();
+            }
+            else{
+                resetAudioFiltBtnStyles();
+                currentSongFilt = getAudioFilterVar[filtNum];
+                from.style.borderStyle = "inset";
+                from.style.backgroundColor = "#666";
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].pause();
+                updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);
+
+                updateSongTime();
+                recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
+            }
         }
 
         if(hasClass(from, "resetSongEffectBtn")){
-            songFilterMode = false;
-            songTimeIntervals.forEach(f => clearInterval(f));
+            resetEffectsView();
+            document.querySelector("div.songEffectVertShownBarEmpty.\\31").style.height = "50%"; 
+            document.querySelector(`div.songEffectVertShownBarEmpty.\\32`).style.height = '0%';
+            document.querySelector("p.songEffectNum.\\31").textContent = 1.0;
         }
     })
