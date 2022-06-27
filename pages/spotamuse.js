@@ -2487,6 +2487,7 @@ const musicLibrary = [
             recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
 
             stopAll();
+            stopLaterSongs();   
             if(songFilterMode == true){updateAudioFilt(song);}
             song.play();
             updateSongTime();
@@ -3001,6 +3002,7 @@ catch{}
             nowPlayingInfo(chosenPlaylist[songOrder]);
             updateSongTime();
             stopLaterSongs();
+            playPauseToggle = false;
             listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
                 laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
             });
@@ -3041,6 +3043,7 @@ catch{}
             nowPlayingInfo(chosenPlaylist[songOrder]);
             updateSongTime();
             stopLaterSongs();
+            playPauseToggle = false;
             listenedLaterDivs.forEach(laterSongDivs => {        /*reset all listenLaterSongs pause buttons*/
                 laterSongDivs.lastElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#fff" d="m15 12.33l-6 4.33V8l6 4.33Z"></path></svg>';
             });
@@ -3236,7 +3239,6 @@ catch{}
 
     //Puts all previous filters together into one dynamic function
     function updateAudioFilt(song){
-        stopLaterSongs();   //Prevents listenLater song overlap
         if(currentSongFilt == getAudioFilterVar[1]){
             resetAudioNTime();
             slowSongPitch(song);
@@ -3281,6 +3283,15 @@ catch{}
         currentSongFilt = "";
     }
     
+    function playAudioFiltNow(){
+        const song = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
+        if(!playPauseToggle){   
+            stopLaterSongs();   //Prevents listenLater song overlap
+            song.pause();      
+            updateSongTime();
+            song.play(); 
+        }
+    }
 
     /*Queue Tab Body Listener - Song Filters*/
     document.body.addEventListener("click", function(event){
@@ -3290,9 +3301,10 @@ catch{}
             setAudioEffectProgBar("50%", "0%");
             document.querySelector("p.songEffectNum.\\31").textContent = 1.0;
             customUserPreset.updateAllEffects(1.0, true);
+            playAudioFiltNow();
         }
 
-        if(hasClass(from, "effectPresetBtn")){  //Filter Preset Buttons
+        if(hasClass(from, "effectPresetBtn")){  //Filter Preset Buttons            
             const filtNum = from.className.slice(-1);
             const recentSong = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
             songFilterMode = true;
@@ -3304,7 +3316,7 @@ catch{}
                 setAudioEffectProgBar("50%", "0%");
                 document.querySelector("p.songEffectNum.\\31").textContent = "1.0";
                 resetAudioNTime();  
-                updateSongTime();
+                playAudioFiltNow();
             }
             else{
                 resetAudioFiltBtnStyles();
@@ -3312,10 +3324,8 @@ catch{}
                 from.style.borderStyle = "inset";
                 from.style.backgroundColor = "#666";
 
-                recentSong.pause();      
                 updateAudioFilt(recentSong);
-                updateSongTime();
-                recentSong.play(); //Automatically plays music w/ filter
+                playAudioFiltNow();
             }
         }
 
@@ -3338,20 +3348,14 @@ catch{}
                 if(speed < 50){
                     document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(100).toFixed(2));
                     customUserPreset.updateSpeed(convertSpeed(100).toFixed(2));
-
-                    recentSong.pause();
-                    updateAudioFilt(recentSong);                    
-                    updateSongTime();
-                    recentSong.play();
+                    updateAudioFilt(recentSong);   
+                    playAudioFiltNow();                
                 }
                 else{
                     document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(50).toFixed(2));
                     customUserPreset.updateSpeed(convertSpeed(50).toFixed(2));
-
-                    recentSong.pause();
                     updateAudioFilt(recentSong);
-                    updateSongTime();
-                    recentSong.play();
+                    playAudioFiltNow();
                 }
             }
             //Pitch progBar
@@ -3360,13 +3364,13 @@ catch{}
                     progressEffectBar.style.height = '0%';
                     customUserPreset.updatePitch(true);
                     updateAudioFilt(recentSong);
-                    updateSongTime();
+                    playAudioFiltNow();
                 }
                 else{
                     progressEffectBar.style.height = '100%';
                     customUserPreset.updatePitch(false);
                     updateAudioFilt(recentSong);
-                    updateSongTime();
+                    playAudioFiltNow();               
                 }
             }
         }
