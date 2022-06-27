@@ -2479,8 +2479,9 @@ const musicLibrary = [
             || hasClass(from, "playlistSongs") && hasClass(from, "dateAddedCont") || hasClass(from, "playlistSongs") && hasClass(from, "durationCont")){
 
             let clickedTrack = parseInt(from.className.slice(-2));   /*slice(-2) limits total range from 0-99*/
-            song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
+            const song = new Audio(playlistShow[clickedTrack-1].track_mp3Url);
             song.volume = appVolume;
+            playPauseToggle = false;
             recentlyPlayedAudio.push(song);
             recentlyPlayedPlaylist.push(playlistShow[clickedTrack-1]);
             recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
@@ -2488,9 +2489,7 @@ const musicLibrary = [
             stopAll();
             if(songFilterMode == true){updateAudioFilt(song);}
             song.play();
-           
             updateSongTime();
-            playPauseToggle = false;
             songOrder = clickedTrack-1;
             nowPlayingInfo(playlistShow[songOrder]);
 
@@ -2920,13 +2919,13 @@ catch{}
     }
 
     function updatePlaylistSong(chosenPlaylist){
+        const song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
+        song.volume = appVolume;
         playButtonToggle = false;
-        song = new Audio(chosenPlaylist[songOrder].track_mp3Url);
         recentlyPlayedAudio.push(song);
         recentlyPlayedPlaylist.push(chosenPlaylist[songOrder]);
         recent10 = recentlyPlayedPlaylist.slice(Math.max(recentlyPlayedPlaylist.length - 10, 0));
-
-        song.volume = appVolume;
+        
         stopAll();
         if(songFilterMode == true){updateAudioFilt(song);}
         song.play();
@@ -3155,9 +3154,9 @@ catch{}
         recentlyPlayedAudio.forEach(f => resetSongFilter(f)); 
     }
 
-    function createAudioFiltEffect(song, speed, keepPitch){
-        song.playbackRate = speed;
-        song.preservesPitch = keepPitch;
+    function resetSongFilter(enterSong){
+        enterSong.playbackRate = 1;
+        enterSong.preservesPitch = true;
     }
 
     const makeAudioFilt = (function() {
@@ -3192,6 +3191,13 @@ catch{}
     })();
     const customUserPreset = makeAudioFilt;
 
+    /*The logical thing to do would be to use makeAudioFilt to make the following functions but
+    The names on these functions are shorter, to the point, and redirect back to the filter definition */
+    function createAudioFiltEffect(song, speed, keepPitch){
+        song.playbackRate = speed;
+        song.preservesPitch = keepPitch;
+    }
+
     function slowSongPitch(enterSong){
         enterSong.playbackRate = 0.85;
         enterSong.preservesPitch = false;
@@ -3203,10 +3209,10 @@ catch{}
     }
 
     function updateSongGradual() {
-        let currentInterval2 = setInterval(function() {
-            songTimeIntervals.push(currentInterval2);     
+        let currentInterval2 = setInterval(function() {   
             const recentSong = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
             const songSeconds = (Math.floor(recentSong.currentTime));
+            songTimeIntervals.push(currentInterval2);  
 
             if(songSeconds < 7){
                 createAudioFiltEffect(recentSong, 0.8, false);
@@ -3227,11 +3233,8 @@ catch{}
         }, 0);
     }
 
-    function resetSongFilter(enterSong){
-        enterSong.playbackRate = 1;
-        enterSong.preservesPitch = true;
-    }
 
+    //Puts all previous filters together into one dynamic function
     function updateAudioFilt(song){
         stopLaterSongs();   //Prevents listenLater song overlap
         if(currentSongFilt == getAudioFilterVar[1]){
@@ -3281,7 +3284,7 @@ catch{}
 
     /*Queue Tab Body Listener - Song Filters*/
     document.body.addEventListener("click", function(event){
-        from = event.target;
+        const from = event.target;
         if(hasClass(from, "resetSongEffectBtn")){   //Reset Button
             resetEffectsView();
             setAudioEffectProgBar("50%", "0%");
@@ -3290,8 +3293,9 @@ catch{}
         }
 
         if(hasClass(from, "effectPresetBtn")){  //Filter Preset Buttons
-            songFilterMode = true;
             const filtNum = from.className.slice(-1);
+            const recentSong = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
+            songFilterMode = true;
 
             if(currentSongFilt == getAudioFilterVar[filtNum]){
                 resetAudioFiltBtnStyles();
@@ -3307,56 +3311,63 @@ catch{}
                 currentSongFilt = getAudioFilterVar[filtNum];
                 from.style.borderStyle = "inset";
                 from.style.backgroundColor = "#666";
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].pause();
-                updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);
 
+                recentSong.pause();      
+                updateAudioFilt(recentSong);
                 updateSongTime();
-                recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
+                recentSong.play(); //Automatically plays music w/ filter
             }
         }
 
-        if(hasClass(from, "songEffectVertShownBar") || hasClass(from, "songEffectVertShownBarEmpty")){
-            effectNum = from.className.slice(-1);
-            resetAudioFiltBtnStyles();
+        if(hasClass(from, "songEffectVertShownBar") || hasClass(from, "songEffectVertShownBarEmpty")){      //progBar of Filters
+            const effectNum = from.className.slice(-1);
+            const recentSong = recentlyPlayedAudio[recentlyPlayedAudio.length-1];
+            const progressEffectBar = document.querySelector(`div.songEffectVertShownBarEmpty.\\3${effectNum}`);
+            
             songFilterMode = true;
             currentSongFilt = "Custom";
+            resetAudioFiltBtnStyles();
             songTimeIntervals.forEach(f => clearInterval(f));
 
-            if(effectNum == 1){
+            //Speed progBar
+            if(effectNum == 1){ 
                 let speed = (event.offsetY/from.clientHeight)*100;
-                document.querySelector(`div.songEffectVertShownBarEmpty.\\3${effectNum}`).style.height = ((event.offsetY/from.clientHeight)*100) + '%';
+                const convertSpeed = (num) => (2.0-(speed/num));
+                progressEffectBar.style.height = speed + '%';
               
                 if(speed < 50){
-                    document.querySelector("p.songEffectNum.\\31").textContent = (2.0-(speed/100)).toFixed(2);
-                    customUserPreset.updateSpeed(((2.0-(speed/100)).toFixed(2)));
-                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].pause();
-                    updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);                    
-                    updateSongTime();
-                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
-                }
-                else{
-                    document.querySelector("p.songEffectNum.\\31").textContent = (2.0-(speed/50)).toFixed(2);
-                    customUserPreset.updateSpeed(((2.0-(speed/50)).toFixed(2)));
-                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].pause();
-                    updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);
-                    updateSongTime();
-                    recentlyPlayedAudio[recentlyPlayedAudio.length-1].play();
-                }
+                    document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(100).toFixed(2));
+                    customUserPreset.updateSpeed(convertSpeed(100).toFixed(2));
 
+                    recentSong.pause();
+                    updateAudioFilt(recentSong);                    
+                    updateSongTime();
+                    recentSong.play();
+                }
+                else{
+                    document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(50).toFixed(2));
+                    customUserPreset.updateSpeed(convertSpeed(50).toFixed(2));
+
+                    recentSong.pause();
+                    updateAudioFilt(recentSong);
+                    updateSongTime();
+                    recentSong.play();
+                }
             }
-            else{
-                if(document.querySelector(`div.songEffectVertShownBarEmpty.\\3${effectNum}`).style.height == '100%'){
-                    document.querySelector(`div.songEffectVertShownBarEmpty.\\3${effectNum}`).style.height = '0%';
+            //Pitch progBar
+            else{   
+                if(progressEffectBar.style.height == '100%'){
+                    progressEffectBar.style.height = '0%';
                     customUserPreset.updatePitch(true);
-                    updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);
+                    updateAudioFilt(recentSong);
                     updateSongTime();
                 }
                 else{
-                    document.querySelector(`div.songEffectVertShownBarEmpty.\\3${effectNum}`).style.height = '100%';
+                    progressEffectBar.style.height = '100%';
                     customUserPreset.updatePitch(false);
-                    updateAudioFilt(recentlyPlayedAudio[recentlyPlayedAudio.length-1]);
+                    updateAudioFilt(recentSong);
                     updateSongTime();
                 }
             }
         }
-    })
+    });
