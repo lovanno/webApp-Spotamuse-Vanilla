@@ -33,21 +33,15 @@ This pushed me to develop the application without an API and embed the music lib
 
 ## Version 2: The Experience 🌌
 
-*Music Filters (A new tab)*
+*Music Filters (A new tab)* ✅
 
-• Slow down or speed up songs
+• Include 3 preset filters for users to try ✅
 
-• Add an echo to a song (reverb)
+• Allow users to slow down or speed up songs ✅
 
-• Modify the pitch of a song
+• Allow users to modify the pitch of a song ✅
 
-• Apply multiple filters with different adjustments and save them as presets
-
-• Include 3 base filters for users to try
-
-• Allow these base filters or any other filter to be deleted or modified
-
-• Toggle on/off music filters in the music controls (playingNow section)
+• Incl'd a Reset button for music filters and a toggle on music presets ✅
 
 &nbsp;
 

@@ -3342,16 +3342,21 @@ catch{}
             //Speed progBar
             if(effectNum == 1){ 
                 let speed = (event.offsetY/from.clientHeight)*100;
+                if(speed >= 95){
+                    speed = 92; 
+                    console.log("Music speed cannot be set any lower");
+                }
+
                 const convertSpeed = (num) => (2.0-(speed/num));
                 progressEffectBar.style.height = speed + '%';
               
-                if(speed < 50){
+                if(speed < 50){   //Speeds up Music
                     document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(100).toFixed(2));
                     customUserPreset.updateSpeed(convertSpeed(100).toFixed(2));
                     updateAudioFilt(recentSong);   
                     playAudioFiltNow();                
                 }
-                else{
+                else{ //Slows down Music
                     document.querySelector("p.songEffectNum.\\31").textContent = (convertSpeed(50).toFixed(2));
                     customUserPreset.updateSpeed(convertSpeed(50).toFixed(2));
                     updateAudioFilt(recentSong);
