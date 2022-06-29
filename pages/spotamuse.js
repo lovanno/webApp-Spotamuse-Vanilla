@@ -2038,7 +2038,7 @@ const musicLibrary = [
 
                 /*Resets all tab icons colors just in case different tab order is pressed*/
                 document.querySelector("p.sideBarHeader.\\3" + resetTabs).style.color = "#B3B3B3";
-                document.querySelector("path.sideBarIcon" + resetTabs).style.fill = "inherit";
+                changeSVGFill(document.querySelector("path.sideBarIcon" + resetTabs), "inherit");
             });
 
             allTabs[clickedTab].style.display = "none";     
@@ -2053,9 +2053,9 @@ const musicLibrary = [
             }
             allTabs[clickedTab].style.display = "block";    /*Display new tab display + color*/
             document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
-            document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff";
+            changeSVGFill(document.querySelector("path.sideBarIcon" + (clickedTab+1)), "#fff");
             queueTab6.style.display = "none";
-            queueSvgColor.style.fill = '#6a6a6a';
+            changeSVGFill(queueSvgColor, "#6a6a6a");
         }
     });
 
@@ -2078,15 +2078,15 @@ const musicLibrary = [
                 tabs.scrollTop = 0;
                 tabs.style.display = "none";
                 document.querySelector("p.sideBarHeader.\\3" + resetTabs).style.color = "#B3B3B3";
-                document.querySelector("path.sideBarIcon" + resetTabs).style.fill = "inherit";
+                changeSVGFill(document.querySelector("path.sideBarIcon" + resetTabs), "inherit");
             });
 
             settingNav.classList.toggle('scrolling-active', false);
             allTabs[clickedTab].style.display = "block";
             document.querySelector("p.sideBarHeader.\\3" + (clickedTab+1)).style.color = "#fff";
-            document.querySelector("path.sideBarIcon" + (clickedTab+1)).style.fill = "#fff"
+            changeSVGFill(document.querySelector("path.sideBarIcon" + (clickedTab+1)), "#fff");
             queueTab6.style.display = "none";
-            queueSvgColor.style.fill = '#6a6a6a';
+            changeSVGFill(queueSvgColor, '#6a6a6a');
         }
         if(hasSuperClass(from, "bannerImage hideBtn")){(from.parentElement).style.display = "none";}      /* Hide Announcements Banner */
     });
@@ -2959,11 +2959,11 @@ catch{}
     const queueTab6 = document.querySelector("div.yourLibraryQueueSectTab6");
     queueBtn.addEventListener("click", function(){
         if(queueSvgColor.style.fill == 'rgb(106, 106, 106)' || queueSvgColor.style.fill == ''){
-            queueSvgColor.style.fill = '#fff';
+            changeSVGFill(queueSvgColor, '#fff');
             queueTab6.style.display = "block";
         }   
         else{
-            queueSvgColor.style.fill = '#6a6a6a';
+            changeSVGFill(queueSvgColor, '#6a6a6a');
             queueTab6.style.display = "none";
         }
     });
@@ -3052,7 +3052,8 @@ catch{}
     const repeatCycleBtn = document.querySelector("button.songSkip.Setting.\\35")
     repeatCycleBtn.addEventListener("click", function(){
         repeatCycleMode = !repeatCycleMode;
-        (repeatCycleMode == true)? document.querySelector("path.songRepeatplayBackIcon1").style.fill = "#fff" : document.querySelector("path.songRepeatplayBackIcon1").style.fill = "#6a6a6a"
+        const repeatIcon = document.querySelector("path.songRepeatplayBackIcon1");
+        (repeatCycleMode == true)? changeSVGFill(repeatIcon, "#fff") : changeSVGFill(repeatIcon, "#6a6a6a");
     });
     
     let chosenPlaylist;
