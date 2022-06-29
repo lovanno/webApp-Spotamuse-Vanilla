@@ -1986,6 +1986,10 @@ const musicLibrary = [
         return prodImgRetrieve
     }
 
+    function changeSVGFill(elem, color){
+        elem.style.fill = color;
+    }
+
 
 
     /*!                                                      App Structure
@@ -2340,6 +2344,7 @@ const musicLibrary = [
     function musicSource(array){
         playlistShow = array;
         chosenPlaylist = array;
+        resetQueue();
     }
 
     function newPlaylistPrep(){
@@ -2433,7 +2438,16 @@ const musicLibrary = [
             if(recent10){
                 newPlaylistPrep();
                 let unique = [ ...new Set(recent10) ];    /*Removes duplicate songs*/
-                musicSource(unique);
+                if(unique.length < 5){
+                    playlistShow = unique;
+                    chosenPlaylist = unique;
+                    shuffleMode = false;
+                    changeSVGFill(document.querySelector("path.songShuffleplayBackIcon1"),"#6a6a6a")
+                    changeSVGFill(document.querySelector("path.songShuffleplayBackIcon2"), "#6a6a6a");
+                    console.log("Shuffle doesn't support playlists with less than 5 songs");
+                }
+                else{musicSource(unique);}
+                
                 for(let f=1; f<playlistShow.length; f++){playlistCreation();}
                 removePlaySortFilters(unique);
             }
@@ -2939,6 +2953,7 @@ catch{}
     }
 
     /**                       Playback Functions                                **/
+    /*Queue Feature*/
     const queueBtn = document.querySelector("button.songSkip.Setting.\\36");
     const queueSvgColor = document.querySelector("path.songQueueplayBackIcon1");
     const queueTab6 = document.querySelector("div.yourLibraryQueueSectTab6");
@@ -2953,19 +2968,82 @@ catch{}
         }
     });
 
+    function hasDuplicates(list) {
+        const removeDups = new Set(list);
+        return list.length !== removeDups.size;
+    }
+
+    function createNewQueueList(totalQs, numRange){
+        let newList =[];
+        let i = 0;
+        if(totalQs > numRange){return console.log("Please increase the number range");} //Prevents infinite loop
+
+        do{
+            i++;
+            newList.push(Math.floor(Math.random() * numRange));
+            if(hasDuplicates(newList)){
+                newList.pop();
+                i--;
+            }
+        }
+        while(i !== totalQs);
+        return newList;
+    }
+
+    function addRandToQueue(list, numRange){
+        let newList = [...list];
+        let i = 0;
+        newList.shift();
+        
+        do{
+            i++;
+            newList.push(Math.floor(Math.random() * numRange));
+            if(hasDuplicates(newList)){
+                newList.pop();
+                i--;
+            }
+        }
+        while(i !== 1);
+        return newList;
+    }
+
+    function createRegList(totalQs, limit){
+        let base = songOrder;
+        let newList = [];
+        for(let i=0; i<totalQs; i++){
+            (base == limit-1) ? base = 0 : base++;
+            newList.push(base);
+        }
+        return newList;
+    }
+
+    function resetQueue(){
+        if(shuffleMode == true){currentQueueList = createNewQueueList(5, playlistShow.length);}
+        else{currentQueueList = createRegList(5, playlistShow.length);}
+    }
+
     /*    Shuffle Feature   */
+    let currentQueueList = [];
     let shuffleMode = false;
     let lastSongOrder;
     const shuffleBtn = document.querySelector("button.songSkip.Setting.\\34")
     shuffleBtn.addEventListener("click", function(){
+        const shufTopArr= document.querySelector("path.songShuffleplayBackIcon1");
+        const shufBottomArr = document.querySelector("path.songShuffleplayBackIcon2");
         shuffleMode = !shuffleMode;
         if(shuffleMode == true){
-            document.querySelector("path.songShuffleplayBackIcon1").style.fill = "#fff";
-            document.querySelector("path.songShuffleplayBackIcon2").style.fill = "#fff";
+            changeSVGFill(shufTopArr, "#fff");
+            changeSVGFill(shufBottomArr, "#fff");
+            if(playlistShow.length > 4){currentQueueList = createNewQueueList(5, playlistShow.length);}
+            else{
+                shuffleMode = false;
+                changeSVGFill(shufTopArr, "#6a6a6a");
+                changeSVGFill(shufBottomArr, "#6a6a6a");
+            }
         }
         else{
-            document.querySelector("path.songShuffleplayBackIcon1").style.fill = "#6a6a6a";
-            document.querySelector("path.songShuffleplayBackIcon2").style.fill = "#6a6a6a";
+            changeSVGFill(shufTopArr, "#6a6a6a");
+            changeSVGFill(shufBottomArr, "#6a6a6a");
         }
     });
 
@@ -2985,19 +3063,15 @@ catch{}
         /* Playback Last Song */
         if(from == skipBackBtn || from == skipBackBtn.firstElementChild || from == skipBackBtn.firstElementChild.firstElementChild){
             if(shuffleMode == true){
-                songOrder = (Math.floor(Math.random() * playlistShow.length));
-
-                if(songOrder == -1 || songOrder == lastSongOrder){
-                    songOrder = Math.floor(Math.random() * playlistShow.length);
-                }
+                songOrder = currentQueueList[0];
+                currentQueueList = addRandToQueue(currentQueueList, playlistShow.length);
+                if(songOrder == -1 || songOrder == lastSongOrder){songOrder = Math.floor(Math.random() * playlistShow.length);}
             }
             else{
                 (songOrder == 0) ? songOrder = chosenPlaylist.length-1 : songOrder--;    
             }
 
-            if(repeatCycleMode == true){
-                songOrder = lastSongOrder;
-            }
+            if(repeatCycleMode == true){songOrder = lastSongOrder;}
             updatePlaylistSong(chosenPlaylist);
             nowPlayingInfo(chosenPlaylist[songOrder]);
             updateSongTime();
@@ -3032,8 +3106,8 @@ catch{}
         /* Play Next Song */
         if(from == skipForwardBtn || from == skipForwardBtn.firstElementChild || from == skipForwardBtn.firstElementChild.firstElementChild){
             if(shuffleMode == true){
-                songOrder = (Math.floor(Math.random() * playlistShow.length));
-
+                songOrder = currentQueueList[0];
+                currentQueueList = addRandToQueue(currentQueueList, playlistShow.length);
                 if(songOrder == -1 || songOrder == lastSongOrder){songOrder = Math.floor(Math.random() * playlistShow.length);}
             }
             else{(songOrder == chosenPlaylist.length-1) ? songOrder = 0 : songOrder++; }
@@ -3124,7 +3198,7 @@ catch{}
         backwardsMode = !backwardsMode;
 
         if(backwardsMode){
-                backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
+            backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></g></svg>';
         }
         else{
             backwardsBtn.firstElementChild.firstElementChild.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M11 15V5H4a1 1 0 1 1 0-2h16a1 1 0 0 1 0 2h-7v10h2.24c.15 0 .297.042.421.12c.35.219.444.663.211.991l-3.24 4.57a.74.74 0 0 1-.21.199a.79.79 0 0 1-1.054-.198l-3.24-4.57A.685.685 0 0 1 8 15.714c0-.395.34-.715.76-.715H11Zm9-6a1 1 0 0 1 0 2h-5V9h5ZM8 9h1v2H4a1 1 0 0 1 0-2h4Z"/></svg>'
