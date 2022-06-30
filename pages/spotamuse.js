@@ -3200,20 +3200,19 @@ catch{}
 
 
     /***        Queue (3)                                    tab6               ***/   
-    /*      QueueView Functionality     */  
+    /*      QueueView Functionality     */ 
+    function nowPlayingQueueView(songData){ //While this function looks identical to updateQueueTrackInfo, it takes a song object. It doesn't take the most current song. 
+        document.querySelector("p.queuePlaylistSong.trackTitle.\\31").textContent = songData.track_title;
+        document.querySelector("p.queuePlaylistSong.trackArtist.\\31").textContent = songData.artist;
+        document.querySelector("div.queuePlaylistSong.trackImage.\\31").style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
+    }
+ 
     function updateQueueTrackInfo(queueNum, trackInfoNum){
         document.querySelector("p.queuePlaylistSong.trackTitle.\\3" + queueNum).textContent = playlistShow[trackInfoNum].track_title;
         document.querySelector("p.queuePlaylistSong.trackArtist.\\3" + queueNum).textContent = playlistShow[trackInfoNum].artist;
         document.querySelector("div.queuePlaylistSong.trackImage.\\3" + queueNum).style.backgroundImage = "url(\"" + playlistShow[trackInfoNum].track_coverUrl + "\")";
     }
     
-
-    function nowPlayingQueueView(songData){
-        document.querySelector("p.queuePlaylistSong.trackTitle.\\31").textContent = songData.track_title;
-        document.querySelector("p.queuePlaylistSong.trackArtist.\\31").textContent = songData.artist;
-        document.querySelector("div.queuePlaylistSong.trackImage.\\31").style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
-    }
-
    function updateQueueView(){
         nowPlayingQueueView(playlistShow[songOrder]);
         let m = 0;
@@ -3223,7 +3222,7 @@ catch{}
         }
         while(m != currentQueueList.length);
     }
-
+    
 
     function createNewQueueList(totalQs, numRange){
         let newList =[];
@@ -3275,8 +3274,6 @@ catch{}
     }
 
 
-
-
     function createNewQueueDiv(parent, count){
         const newQueueSongCont = document.createElement("button");
         newQueueSongCont.classList.add("queuePlaylistSongs", count);
@@ -3322,7 +3319,7 @@ catch{}
         //Dom creation requires a base element. We need to update the base element BUT ALSO keep creating DOM elements.This results in an extra DOM element being created and being left empty. This is fixed by reducing length by 1 above and modifying last element below.
         updateQueueTrackInfo((nextUpCont.children.length), currentQueueList[currentQueueList.length-1]);   
     }
-    
+
     //Sets up Next Up Queue on Launch;
     nowPlayingQueueView(playlistShow[0]);   //Sets up the Now Playing Queue on Launch
     setUpQueueView(); 
