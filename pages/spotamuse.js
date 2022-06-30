@@ -1990,6 +1990,10 @@ const musicLibrary = [
         elem.style.fill = color;
     }
 
+    function hasDuplicates(list) {
+        const removeDups = new Set(list);
+        return list.length !== removeDups.size;
+    }
 
 
     /*!                                                      App Structure
@@ -2002,7 +2006,9 @@ const musicLibrary = [
             Your Library (3)                             tab2                                             
             Listen Later (3)                             tab3                                             
             Search (3)                                   tab4                                               
-            Playlist (3)                                 tab5           
+            Playlist (3)                                 tab5
+            Queue (3)                                    tab6                  
+
       (4) playingNowSect                                      section4 /*
 
 /***        (1) appSettingsNav                                                                   section1               ***/
@@ -2567,7 +2573,7 @@ const musicLibrary = [
             currentPlaylistCover.style.backgroundImage = "url(\"../" + newPlaylistImg;
             document.querySelector("nav.song-nav").style.visibility = "initial";     /*The 1st track has to be set to initial since it never gets destroyed*/
             nowPlayingQueueView(recentlyPlayedPlaylist[recentlyPlayedPlaylist.length-1]);
-            
+
             if(playlistShow.length < 5){shuffleModeOff();}
         }
     });
@@ -2962,11 +2968,12 @@ catch{}
     }
 
     /**                                      Playback Functions                                **/
-    /*  Queue Feature   */
+    /*  Queue Feature */
+    // Queue's Functionality for QueueView and Audio Filters can be found on Queue (3)    tab6            
     const queueBtn = document.querySelector("button.songSkip.Setting.\\36");
     const queueSvgColor = document.querySelector("path.songQueueplayBackIcon1");
     const queueTab6 = document.querySelector("div.yourLibraryQueueSectTab6");
-    queueBtn.addEventListener("click", function(){
+    queueBtn.addEventListener("click", function(){  //Tab Functionality
         if(queueSvgColor.style.fill == 'rgb(106, 106, 106)' || queueSvgColor.style.fill == ''){
             changeSVGFill(queueSvgColor, '#fff');
             queueTab6.style.display = "block";
@@ -2976,61 +2983,6 @@ catch{}
             queueTab6.style.display = "none";
         }
     });
-
-    function hasDuplicates(list) {
-        const removeDups = new Set(list);
-        return list.length !== removeDups.size;
-    }
-
-    function createNewQueueList(totalQs, numRange){
-        let newList =[];
-        let i = 0;
-        if(totalQs > numRange){return console.log("Please increase the number range");} //Prevents infinite loop
-
-        do{
-            i++;
-            newList.push(Math.floor(Math.random() * numRange)); //The only reason &&'s second condition exists is because some EP albums have less than 7 songs 
-            if(hasDuplicates(newList) || newList.includes(songOrder) && playlistShow.length > 5){  //and can't have unique queueLists
-                newList.pop();                                                                                 
-                i--;
-            }
-        }
-        while(i !== totalQs);
-        return newList;
-    }
-
-    function addRandToQueue(list, numRange){
-        let newList = [...list];
-        let i = 0;
-        newList.shift();
-        
-        do{
-            i++;
-            newList.push(Math.floor(Math.random() * numRange));
-            if(hasDuplicates(newList) || newList.includes(songOrder) && playlistShow.length > 5){
-                newList.pop();
-                i--;
-            }
-        }
-        while(i !== 1);
-        return newList;
-    }
-
-    function createRegList(totalQs, limit){
-        let base = songOrder;
-        let newList = [];
-        for(let i=0; i<totalQs; i++){
-            (base == limit-1) ? base = 0 : base++;
-            newList.push(base);
-        }
-        return newList;
-    }
-
-    function resetQueue(){
-        if(shuffleMode == true && playlistShow.length > 4){currentQueueList = createNewQueueList(5, playlistShow.length);}
-        else{currentQueueList = createRegList(5, playlistShow.length);}
-    }
-
 
     /*    Shuffle Feature   */
     let currentQueueList = createRegList(5, playlistShow.length); //Displays next 5 songs in regular order
@@ -3064,7 +3016,7 @@ catch{}
             changeSVGFill(shufTopArr, "#6a6a6a");
             changeSVGFill(shufBottomArr, "#6a6a6a");
         }
-        nowPlayingQueueView(recentlyPlayedPlaylist[recentlyPlayedPlaylist.length-1]);
+        nowPlayingQueueView(recentlyPlayedPlaylist[recentlyPlayedPlaylist.length-1]);   //Makes sure currently playing is always visible if a new song isn't played. It's needed because of updateQueueView();
     });
 
     /*    Repeat Feature   */
@@ -3247,8 +3199,137 @@ catch{}
     })
 
 
-    /***        Queue (3)                                     tab6               ***/   
-    /*  Song Audio Filters  */
+    /***        Queue (3)                                    tab6               ***/   
+    /*      QueueView Functionality     */  
+    function updateQueueTrackInfo(queueNum, trackInfoNum){
+        document.querySelector("p.queuePlaylistSong.trackTitle.\\3" + queueNum).textContent = playlistShow[trackInfoNum].track_title;
+        document.querySelector("p.queuePlaylistSong.trackArtist.\\3" + queueNum).textContent = playlistShow[trackInfoNum].artist;
+        document.querySelector("div.queuePlaylistSong.trackImage.\\3" + queueNum).style.backgroundImage = "url(\"" + playlistShow[trackInfoNum].track_coverUrl + "\")";
+    }
+    
+
+    function nowPlayingQueueView(songData){
+        document.querySelector("p.queuePlaylistSong.trackTitle.\\31").textContent = songData.track_title;
+        document.querySelector("p.queuePlaylistSong.trackArtist.\\31").textContent = songData.artist;
+        document.querySelector("div.queuePlaylistSong.trackImage.\\31").style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
+    }
+
+   function updateQueueView(){
+        nowPlayingQueueView(playlistShow[songOrder]);
+        let m = 0;
+        do{
+            m++;
+            updateQueueTrackInfo(m+1, currentQueueList[m-1])    //This updates the Next Up's 1st div
+        }
+        while(m != currentQueueList.length);
+    }
+
+
+    function createNewQueueList(totalQs, numRange){
+        let newList =[];
+        let i = 0;
+        if(totalQs > numRange){return console.log("Please increase the number range");} //Prevents infinite loop
+
+        do{
+            i++;
+            newList.push(Math.floor(Math.random() * numRange)); //The only reason &&'s second condition exists is because some EP albums have less than 7 songs 
+            if(hasDuplicates(newList) || newList.includes(songOrder) && playlistShow.length > 5){  //and can't have unique queueLists
+                newList.pop();                                                                                 
+                i--;
+            }
+        }
+        while(i !== totalQs);
+        return newList;
+    }
+
+    function addRandToQueue(list, numRange){
+        let newList = [...list];
+        let i = 0;
+        newList.shift();
+        
+        do{
+            i++;
+            newList.push(Math.floor(Math.random() * numRange));
+            if(hasDuplicates(newList) || newList.includes(songOrder) && playlistShow.length > 5){
+                newList.pop();
+                i--;
+            }
+        }
+        while(i !== 1);
+        return newList;
+    }
+
+    function createRegList(totalQs, limit){
+        let base = songOrder;
+        let newList = [];
+        for(let i=0; i<totalQs; i++){
+            (base == limit-1) ? base = 0 : base++;
+            newList.push(base);
+        }
+        return newList;
+    }
+
+    function resetQueue(){
+        if(shuffleMode == true && playlistShow.length > 4){currentQueueList = createNewQueueList(5, playlistShow.length);}
+        else{currentQueueList = createRegList(5, playlistShow.length);}
+    }
+
+
+
+
+    function createNewQueueDiv(parent, count){
+        const newQueueSongCont = document.createElement("button");
+        newQueueSongCont.classList.add("queuePlaylistSongs", count);
+        parent.appendChild(newQueueSongCont);
+
+                const queueOrderCont = document.createElement("div");
+                queueOrderCont.classList.add("queuePlaylistSong", "orderCont", + count);
+                newQueueSongCont.appendChild(queueOrderCont);
+
+                        const queueOrderNumber = document.createElement("p");
+                        queueOrderNumber.classList.add("queuePlaylistSong", "trackOrder", + count);
+                        queueOrderNumber.textContent = count;
+                        queueOrderCont.appendChild(queueOrderNumber);
+
+                        const queueCoverImg = document.createElement("div");
+                        queueCoverImg.classList.add("queuePlaylistSong", "trackImage", + count);
+                        queueOrderCont.appendChild(queueCoverImg);
+
+                        const queueTrackCont = document.createElement("div");
+                        queueTrackCont.classList.add("queuePlaylistSong", "trackInfoCont", + count);
+                        queueOrderCont.appendChild(queueTrackCont);
+
+                                const queueTrackTitle = document.createElement("p");
+                                queueTrackTitle.textContent = "Track Title";
+                                queueTrackTitle.classList.add("queuePlaylistSong", "trackTitle", + count); 
+                                queueTrackCont.appendChild(queueTrackTitle);
+
+                                const queueTrackArtist = document.createElement("p");
+                                queueTrackArtist.textContent = "Artist";
+                                queueTrackArtist.classList.add("queuePlaylistSong", "trackArtist", + count); 
+                                queueTrackCont.appendChild(queueTrackArtist);
+    }
+
+    function setUpQueueView(){
+        const nextUpCont = document.querySelector("div.queueNextUpCont");
+        let m = 0;
+        do{
+            m++;
+            updateQueueTrackInfo(m+1, currentQueueList[m-1])    //This updates the Next Up's 1st div
+            createNewQueueDiv(nextUpCont, m+2);  //2 is added because nowPlaying + NextUp each have 1 base div. So we have to skip to avoid recreating the first 2 div's
+        }
+        while(m != currentQueueList.length-1);
+        //Dom creation requires a base element. We need to update the base element BUT ALSO keep creating DOM elements.This results in an extra DOM element being created and being left empty. This is fixed by reducing length by 1 above and modifying last element below.
+        updateQueueTrackInfo((nextUpCont.children.length), currentQueueList[currentQueueList.length-1]);   
+    }
+    
+    //Sets up Next Up Queue on Launch;
+    nowPlayingQueueView(playlistShow[0]);   //Sets up the Now Playing Queue on Launch
+    setUpQueueView(); 
+
+
+
+    /*      Song Audio Filters       */
     let currentSongFilt;
     let songFilterMode = false;
     const getAudioFilterVar = ({
@@ -3399,7 +3480,7 @@ catch{}
         }
     }
 
-    /*Queue Tab Body Listener - Song Filters*/
+    /*Song Filters Body Listener*/
     document.body.addEventListener("click", function(event){
         const from = event.target;
         if(hasClass(from, "resetSongEffectBtn")){   //Reset Button
@@ -3486,75 +3567,3 @@ catch{}
             }
         }
     });
-
-    /* 2nd Side: More Queue Functions */
-    function nowPlayingQueueView(songData){
-        document.querySelector("p.queuePlaylistSong.trackTitle.\\31").textContent = songData.track_title;
-        document.querySelector("p.queuePlaylistSong.trackArtist.\\31").textContent = songData.artist;
-        document.querySelector("div.queuePlaylistSong.trackImage.\\31").style.backgroundImage = "url(\"" + songData.track_coverUrl + "\")";
-    }
-    nowPlayingQueueView(playlistShow[0]);   //Sets up the Now Playing Queue on Launch
-
-    function createNewQueueDiv(parent, count){
-        const newQueueSongCont = document.createElement("button");
-        newQueueSongCont.classList.add("queuePlaylistSongs", count);
-        parent.appendChild(newQueueSongCont);
-
-                const queueOrderCont = document.createElement("div");
-                queueOrderCont.classList.add("queuePlaylistSong", "orderCont", + count);
-                newQueueSongCont.appendChild(queueOrderCont);
-
-                        const queueOrderNumber = document.createElement("p");
-                        queueOrderNumber.classList.add("queuePlaylistSong", "trackOrder", + count);
-                        queueOrderNumber.textContent = count;
-                        queueOrderCont.appendChild(queueOrderNumber);
-
-                        const queueCoverImg = document.createElement("div");
-                        queueCoverImg.classList.add("queuePlaylistSong", "trackImage", + count);
-                        queueOrderCont.appendChild(queueCoverImg);
-
-                        const queueTrackCont = document.createElement("div");
-                        queueTrackCont.classList.add("queuePlaylistSong", "trackInfoCont", + count);
-                        queueOrderCont.appendChild(queueTrackCont);
-
-                                const queueTrackTitle = document.createElement("p");
-                                queueTrackTitle.textContent = "Track Title";
-                                queueTrackTitle.classList.add("queuePlaylistSong", "trackTitle", + count); 
-                                queueTrackCont.appendChild(queueTrackTitle);
-
-                                const queueTrackArtist = document.createElement("p");
-                                queueTrackArtist.textContent = "Artist";
-                                queueTrackArtist.classList.add("queuePlaylistSong", "trackArtist", + count); 
-                                queueTrackCont.appendChild(queueTrackArtist);
-    }
-
-    function updateQueueTrackInfo(queueNum, trackInfoNum){
-        document.querySelector("p.queuePlaylistSong.trackTitle.\\3" + queueNum).textContent = playlistShow[trackInfoNum].track_title;
-        document.querySelector("p.queuePlaylistSong.trackArtist.\\3" + queueNum).textContent = playlistShow[trackInfoNum].artist;
-        document.querySelector("div.queuePlaylistSong.trackImage.\\3" + queueNum).style.backgroundImage = "url(\"" + playlistShow[trackInfoNum].track_coverUrl + "\")";
-    }
-
-    //Sets up Next Up Queue on Launch;
-    function setUpQueueView(){
-        const nextUpCont = document.querySelector("div.queueNextUpCont");
-        let m = 0;
-        do{
-            m++;
-            updateQueueTrackInfo(m+1, currentQueueList[m-1])    //This updates the Next Up's 1st div
-            createNewQueueDiv(nextUpCont, m+2);  //2 is added because nowPlaying + NextUp each have 1 base div. So we have to skip to avoid recreating the first 2 div's
-        }
-        while(m != currentQueueList.length-1);
-        //Dom creation requires a base element. We need to update the base element BUT ALSO keep creating DOM elements.This results in an extra DOM element being created and being left empty. This is fixed by reducing length by 1 above and modifying last element below.
-        updateQueueTrackInfo((nextUpCont.children.length), currentQueueList[currentQueueList.length-1]);   
-    }
-   setUpQueueView();   
-
-   function updateQueueView(){
-        nowPlayingQueueView(playlistShow[songOrder]);
-        let m = 0;
-        do{
-            m++;
-            updateQueueTrackInfo(m+1, currentQueueList[m-1])    //This updates the Next Up's 1st div
-        }
-        while(m != currentQueueList.length);
-    }
